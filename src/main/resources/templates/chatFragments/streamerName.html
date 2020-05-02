@@ -1,0 +1,21 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bodyChatStreamerNicknameBlock">
+    <div id="bodyChatScrollNewMessages" onclick="restoreScroll()"
+         th:text="#{pages.chat.scroll.newMessages}"></div>
+    <div id="bodyChatScrollEnableScroll" onclick="restoreScroll()"
+         th:text="#{pages.chat.scroll.restore}"></div>
+
+    <div id="bodyChatStreamerNicknameBlock">
+        <div>
+            <div id="streamerArrow"></div>
+            <div id="streamerName" th:text="${stream.getUser().getNickname()}"></div>
+        </div>
+        <div>
+            <div id="streamerDonate" th:text="#{pages.chat.donate}"></div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
+

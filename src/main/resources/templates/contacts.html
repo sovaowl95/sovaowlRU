@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.contacts.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/contacts.css}">
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+    <div class="contactsContainer">
+        <div class="contactsContainerRow">
+            <a href="https://vk.com/id25729683">
+                <img src="/img/vk.png" alt="vk">
+                <label th:text="#{pages.contacts.vk.profile}"></label>
+            </a>
+        </div>
+        <div class="contactsContainerRow">
+            <a href="https://vk.com/sovaowltv">
+                <img src="/img/vk.png" alt="vk">
+                <label th:text="#{pages.contacts.vk.group}"></label>
+            </a>
+        </div>
+        <div class="contactsContainerRow">
+            <a href="https://discordapp.com/users/247785227571691520">
+                <img src="/img/discord.png" alt="discord">
+                <label th:text="#{pages.contacts.discord.profile}"></label></a>
+        </div>
+        <div class="contactsContainerRow">
+            <a href="https://discord.gg/c96pUH">
+                <img src="/img/discord.png" alt="discord">
+                <label th:text="#{pages.contacts.discord.group}"></label></a>
+        </div>
+        <div class="contactsContainerRow">
+            <a href="mailto:admin@sovaowl.ru">
+                <img src="/img/email2.png" alt="email">
+                <label th:utext="'admin@sovaowl.ru'"></label></a>
+        </div>
+        <div class="contactsContainerRow">
+            <a href="/feedback">
+                <img src="/img/feedback.png" alt="feedback">
+                <label th:text="#{pages.contacts.feedback}"></label></a>
+        </div>
+    </div>
+</body>
+</html>

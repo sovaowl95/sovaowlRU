@@ -1,0 +1,6 @@
+#bodyChatWrap {
+    height: 100% !important;
+    position: relative !important;
+    padding-right: 5px !important;
+    /*overflow: scroll !important;*/
+}

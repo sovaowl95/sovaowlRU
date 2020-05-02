@@ -1,0 +1,85 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.profile.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+
+    <link rel="stylesheet" th:href="@{/css/profilePage.css}">
+    <script th:src="@{/js/profilePage.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/tooltip.css}">
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div class="profilePage">
+    <div class="profileHolder">
+        <div class="profileHolderTop">
+            <img alt="avatar" class="profileHolderAvatar"
+                 th:src="'/avatars/' + ${userP.getUserAvatar()}" src="#"/>
+            <div class="profileHolderNick" th:text="${userP.getNickname()}"></div>
+            <div class="profileHolderNick"
+                 th:text="${userP.getRegDate().getDayOfMonth()} + '-' +  ${userP.getRegDate().getMonth()} + '-' +  ${userP.getRegDate().getYear()}"></div>
+        </div>
+        <hr class="hr">
+        <div class="row">
+            <a href="#" onclick="show(1)">
+                <div th:utext="'<img class=\'rowImg\' src=\'/img/wallet.png\'>' + '' + #{pages.profile.tabs.one}"></div>
+            </a>
+            <a href="#" onclick="show(2)">
+                <div th:utext="'<img class=\'rowImg\' src=\'/img/rank.png\'>' + '' + #{pages.profile.tabs.two}"></div>
+            </a>
+            <a href="#" onclick="show(3)">
+                <div th:utext="'<img class=\'rowImg\' src=\'/img/gender.png\'>' + '' + #{pages.profile.tabs.three}"></div>
+            </a>
+            <a href="#" onclick="show(4)">
+                <div th:utext="'<img class=\'rowImg\' src=\'/img/gear.png\'>' + '' + #{pages.profile.tabs.four}"></div>
+            </a>
+            <a href="#" onclick="show(5)">
+                <div th:utext="'<img class=\'rowImg\' src=\'/img/award.png\'>' + '' + #{pages.profile.tabs.five}"></div>
+            </a>
+        </div>
+        <div id='1' class="profileHolderBodyLine">
+            <img alt="wallet" src="/img/wallet.png">
+            <div th:text="#{pages.profile.coins}"></div>
+            <div th:text="${#numbers.formatInteger(userP.getCoins(), 0, 'POINT')}"></div>
+        </div>
+        <div id='2' class="profileHolderBodyLine">
+            <img alt="rank" src="/img/rank.png">
+            <div th:text="#{pages.profile.level}"></div>
+            <div th:text="${userP.getLevel()}"></div>
+            <div style="width: 50px"></div>
+            <img alt="progress-chart" src="/img/progress-chart.png">
+            <div th:text="#{pages.profile.exp}"></div>
+            <div th:text="${user.getExp()} +  '/' + (${levelExpMultiplier} * ${user.getLevel()})"></div>
+        </div>
+        <div id='3' class="profileHolderBodyLine">
+            <div th:text="${userP.isMale()} ? #{pages.profile.male} : #{pages.profile.female}"></div>
+        </div>
+        <div id='4' class="profileHolderBodyLine">
+            <div th:text="#{pages.profile.roles}"></div>
+            <th:block th:each="role:${#lists.sort(userP.getRoles())}">
+                <!--/*@thymesVar id="role" type="ru.sovaowltv.model.user.Role"*/-->
+                <img alt="USER" th:if="${role.name() == 'USER'}" src="/img/user.png"/>
+                <img alt="MODERATOR" th:if="${role.name() == 'MODERATOR'}" src="/img/moderator.png"/>
+                <img alt="ADMIN" th:if="${role.name() == 'ADMIN'}" src="/img/admin.png">
+                <img alt="BANNED" th:if="${role.name() == 'BANNED'}" src="/img/banned.png">
+            </th:block>
+        </div>
+        <div id='5' class="profileHolderBodyLine profileHolderBodyLineAch">
+            <!--/*@thymesVar id="ach" type="ru.sovaowltv.model.user.Achievements"*/-->
+            <th:block th:each="ach:${#lists.sort(userP.getAchievements())}">
+                <div class="tooltip">
+                    <img alt="img-link" th:src="${ach.getImgLink()}" src="#">
+                    <span class="tooltiptext" th:utext="#{'achievements.'+${ach.name()} + '.name'}+ '<hr>' + #{'achievements.'+${ach.name()} + '.description'}"></span>
+                </div>
+            </th:block>
+        </div>
+    </div>
+</div>
+</body>
+</html>

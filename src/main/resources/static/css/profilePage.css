@@ -1,0 +1,96 @@
+.profilePage {
+    width: 70%;
+    margin: 15px auto;
+    font-size: 24px;
+}
+
+.profileHolder {
+    background-color: #353535;
+    border: 1px solid white;
+    color: white;
+    padding: 10px;
+}
+
+.profileHolderTop {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+.profileHolderTop div, .profileHolderTop img{
+    margin: auto 10px;
+}
+
+.profileHolderAvatar {
+    display: block;
+    width: 64px;
+    height: 64px;
+}
+
+.profileHolderNick {
+    display: block;
+    margin: auto 0;
+}
+
+.profileHolderBodyLine {
+    /*display: flex;*/
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.profileHolderBodyLine div, .profileHolderBodyLine img{
+    margin: auto 5px;
+}
+
+.profileHolderBodyLineAch {
+    /*display: flex;*/
+    justify-content: flex-start;
+    align-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.profileHolderBodyLine img {
+    width: 64px;
+    height: 64px;
+    margin: 5px;
+}
+
+.profileHolderBodyLineAch img{
+    width: 64px;
+    height: 64px;
+    margin: 5px;
+}
+
+.row{
+    color: white;
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.row a{
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 10px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.row a:hover{
+    background-color: grey;
+}
+
+.rowImg{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+hr {
+    opacity: 0.5;
+    margin: 5px auto;
+}

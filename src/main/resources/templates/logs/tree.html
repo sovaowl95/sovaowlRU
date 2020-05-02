@@ -1,0 +1,8 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:each="path:${paths}">
+    <a th:href="@{/admin/logs/custom(path=${path})}" th:text="${path}"></a>
+</div>
+</body>
+</html>

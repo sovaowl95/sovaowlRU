@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{page.forbidden.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+</head>
+<body>
+<div class="container">
+    <div th:text="${errMessage}"></div>
+    <a href="/login" th:text="#{regForm.label.login}"></a>
+</div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+#bodyChatOptionsPopUpBlock {
+    display: none;
+    position: absolute;
+    width: 100%;
+    /*max-height: 300px;*/
+    max-height: 45vh;
+    background-color: #363636;
+    bottom: calc(50px + 30px);
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+#bodyChatOptionsList {
+    /*max-height: 250px;*/
+    max-height: 45vh;
+    /*margin: 5px;*/
+}
+
+.bodyChatOptionsStyleHeader {
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+}
+
+.bodyChatOptionsStyleHeader h1 {
+    color: white;
+    font-size: calc(12px + .5vw);
+}
+
+.bodyChatOptionsPremChoose {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 15px;
+}
+
+.bodyChatOptionsShowMessageTimeChoose {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 15px;
+}
+
+.bodyChatOptionsSmilesSize {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 15px;
+}
+
+.bodyChatOptionsStyleWrapStyles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.bodyChatOptionsStyle {
+    position: relative;
+    margin: 5px;
+    padding: 5px;
+    background-size: 0;
+}
+
+.bodyChatOptionsStyle:hover {
+    background-size: 100%;
+    cursor: pointer;
+}
+
+#smileSizeValue, #textSizeValue {
+    background: #ffffff url(/img/resize.png) no-repeat 5px center;
+    background-size: 25px 25px;
+}
+
+.smileTestWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#smileSizeButton, #smileSizeRestoreButton {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    background-color: #3d3d3d;
+    height: 65px;
+    line-height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    border: #ffffff solid 1px;
+    border-left: 0;
+    border-right: 0;
+    font-size: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+}
+
+
+.styleNotBought {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    margin: auto;
+    text-align: center;
+    left: 0;
+    right: 0;
+    opacity: 0.75;
+}

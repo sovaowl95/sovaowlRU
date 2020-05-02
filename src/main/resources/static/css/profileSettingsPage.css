@@ -1,0 +1,56 @@
+.profileSettingsPage {
+    width: 70%;
+    margin: 15px auto;
+    font-size: 24px;
+}
+
+.selectable, .selected {
+    cursor: pointer;
+    margin: 5px;
+}
+
+.selectable:hover {
+    outline: 3px solid orange;
+}
+
+.selected:hover {
+    outline: 3px solid grey;
+}
+
+.selected {
+    outline: green 3px solid;
+}
+
+.block {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid white;
+    background-color: #353535;
+}
+
+.blockHeader {
+    text-align: center;
+    margin: 5px;
+}
+
+.button {
+    height: 40px;
+    line-height: 40px;
+    /*width: 150px;*/
+    border: 1px solid white;
+    background-color: #222222;
+    cursor: pointer;
+    text-align: center;
+    padding: 0 5px;
+    margin: 5px;
+}
+
+.button:hover{
+    border: 1px solid grey;
+    background-color: grey;
+}
+
+.buttonWrap{
+    display: flex;
+    justify-content: center;
+}

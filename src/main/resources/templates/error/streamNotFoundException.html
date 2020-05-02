@@ -1,0 +1,28 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{page.error.streamNotFound.title} + ' ' + ${nick}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+
+    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/error/style.css}">
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id="body">
+    <div class="errorPageBlock">
+        <div class="errorPageText" th:text="${nick}"></div>
+        <div class="errorPageText" th:text="#{page.error.streamNotFound.title}"></div>
+        <img class="errorPageBlock" src="/404/owl.jpg">
+    </div>
+</div>
+</body>
+</html>

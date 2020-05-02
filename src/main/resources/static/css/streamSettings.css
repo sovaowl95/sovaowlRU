@@ -1,0 +1,144 @@
+.wrapBody {
+    width: 75%;
+    margin: 15px auto;
+    font-size: 24px;
+}
+
+.block {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    height: 50px;
+}
+
+.secondBlock {
+    flex-direction: column;
+    height: unset;
+}
+
+.block a {
+    margin: 5px;
+}
+
+.blockHeader {
+    text-align: center;
+    margin: 5px;
+}
+
+.block img {
+    width: 20px;
+    height: 20px;
+    margin: 5px;
+}
+
+.input {
+    width: 500px;
+    height: 45px;
+    font-size: 18px;
+    color: black;
+    border: 1px solid #bebebe;
+    border-radius: 11px;
+    outline: none;
+    box-shadow: 0 5px 3px 3px #282828;
+    margin: 5px;
+    padding: 5px;
+
+    text-align: center;
+}
+
+.input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px darkgrey;
+}
+
+.input, .success {
+    display: none;
+}
+
+.centered {
+    margin: 5px auto;
+    text-align: center;
+}
+
+.show {
+    display: block !important;
+}
+
+
+.streamOptions {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid white;
+    background-color: #353535;
+}
+
+/*.img {*/
+/*width: 20px;*/
+/*height: 20px;*/
+/*margin: 5px;*/
+/*}*/
+
+
+.inline {
+    display: inline;
+}
+
+.wrapSpammerStopStart {
+    display: flex;
+    justify-content: center;
+}
+
+.spammerStopStart {
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.spammerStopStart:hover {
+    background: #4d4d4d;
+}
+
+.spammerStopStart div, .spammerStopStart img {
+    display: inline;
+    vertical-align: middle;
+}
+
+
+.row {
+    color: white;
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.row a {
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 10px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.row a:hover {
+    background-color: grey;
+}
+
+.labelWrap {
+    text-align: center;
+}
+
+.flexColumn {
+    flex-direction: column !important;
+}
+
+.notifications-vk-link{
+    color: royalblue;
+}
+.notifications-vk-link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

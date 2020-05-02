@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="discord">
+    <!--DISCORD-->
+    <div class="modal streamOptions">
+        <div class="modalLeft"><img src="/img/discord.png"></div>
+        <div class="modalCenter" th:text="#{web.const.discord}"></div>
+        <div class="modalRight"
+             th:classappend="${stream.getDiscordNotification()==null}?'apiDisconnected':'apiConnected'"
+             th:onclick="${stream.getDiscordNotification()==null}?'linkDiscordServer()':'unlinkDiscordServer()'">
+            <div th:text="${stream.getDiscordNotification()}==null?#{pages.streamSettings.connect}:#{pages.streamSettings.remove}"></div>
+        </div>
+    </div>
+    <th:block th:if="${stream.getDiscordNotification()}!=null">
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.discord}"></div>
+            <div class="block">
+                <select id="discordNotificationInput" class="input show">
+                    <th:block th:if="${stream.getDiscordNotification().getChannel().isEmpty()}">
+                        <option class="input show"></option>
+                    </th:block>
+                    <th:block th:if="${stream.getDiscordNotification().getChannel().isEmpty() == false}">
+                        <option class="input show"
+                                th:text="${@discordNotificationUtil.getCurrentTextChannel(stream)}"></option>
+                    </th:block>
+                    <th:block th:each="var: ${@discordNotificationUtil.getAllTextChannels(stream)}">
+                        <option class="input show" th:text="${var.getName()}"></option>
+                    </th:block>
+                </select>
+                <img id="discordNotificationSuccess" class="img success show"
+                     src="/img/success.png"
+                     onclick="confirmChangeDiscordNotification(this.parentNode)">
+            </div>
+        </div>
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.discordText}"></div>
+            <div class="block">
+                <img id="discordTextImg" src="/img/edit.png"
+                     onclick="changeDiscordText(this.parentNode)">
+                <input id="discordTextInput" class="input" th:value="${stream.getDiscordNotification().getText()}">
+                <div id="discordTextDiv" th:text="${stream.getDiscordNotification().getText()}"></div>
+                <img id="discordTextSuccess" class="img success" src="/img/success.png"
+                     onclick="confirmChangeDiscordText(this.parentNode)">
+            </div>
+            <th:block th:include="fragments/keyCodeDescription::keyCodeDescBody"/>
+        </div>
+    </th:block>
+</th:block>
+</html>

@@ -1,0 +1,24 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{page.error.notFound.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/error/style.css}">
+
+    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id="body">
+    <div class="errorPageBlock">
+        <div class="errorPageText" th:text="#{page.error.notFound.title}"></div>
+        <img alt="404" class="errorPageBlock" src="/404/owl.jpg">
+    </div>
+</div>
+</body>
+</html>

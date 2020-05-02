@@ -1,0 +1,31 @@
+.feedbackWrap {
+    width: 70%;
+    margin: 15px auto;
+    font-size: 24px;
+}
+
+.feedbackWrap div, .feedbackWrap textarea, .feedbackWrap input, .feedbackWrap button{
+    margin: 15px auto;
+    font-size: 24px;
+}
+
+button{
+    display: block;
+    border: 1px solid white;
+    padding: 15px 25px;
+    background-color: #4d4d4d;
+    cursor: pointer;
+}
+
+input, textarea{
+    color: black;
+    width: 100%;
+    display: block;
+    margin: auto;
+}
+
+textarea{
+    height: 200px;
+    resize: vertical;
+}
+

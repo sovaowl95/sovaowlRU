@@ -1,0 +1,84 @@
+package ru.sovaowltv.service.smiles;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import ru.sovaowltv.model.shop.Rarity;
+import ru.sovaowltv.model.shop.Smile;
+import ru.sovaowltv.model.user.User;
+import ru.sovaowltv.repositories.website.SmilesRepository;
+import ru.sovaowltv.service.user.UserUtil;
+import ru.sovaowltv.service.user.UsersRepositoryHandler;
+
+import java.util.List;
+import java.util.Set;
+
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class WebSiteSmileAbstract extends SmileAbstract {
+    private final SmilesRepository smilesRepository;
+
+    private final UsersRepositoryHandler usersRepositoryHandler;
+    private final UserUtil userUtil;
+
+    public boolean isSmile(String smile) {
+        return smiles.containsKey(smile);
+    }
+
+    public String getSmile(String smile) {
+        return smiles.get(smile);
+    }
+
+    @Override
+    public boolean canUseSmile(String smile) {
+        try {
+            User user =  userUtil.getUser();
+            Set<Smile> smiles = user.getSmiles();
+            usersRepositoryHandler.saveAndFree(user);
+            Smile o = new Smile();
+            o.setName(smile);
+            return smiles.contains(o);
+        } catch (Exception e) {
+            log.warn("can use smile error " + smile, e);
+            return false;
+        }
+    }
+
+    public void initSiteSmiles() {
+        List<Smile> all = smilesRepository.findAll();
+        all.forEach(smile -> smiles.put(smile.getName(), smile.getLink()));
+    }
+
+    public void createNewSmile() {
+        Smile smile;
+        smile = new Smile();
+        smile.setLink("link");
+        smile.setName("smileName");
+        smile.setPrice(0);
+        smile.setRarity(Rarity.COMMON);
+        smilesRepository.save(smile);
+    }
+
+    public void addSmileForEveryone(Smile smile) {
+        usersRepositoryHandler.findAll().forEach(user -> {
+            user.getSmiles().add(smile);
+            usersRepositoryHandler.saveAndFree(user);
+        });
+    }
+
+    @Override
+    public void initSmiles() {
+
+    }
+
+    @Override
+    public void parseSmiles() {
+
+    }
+
+    @Override
+    public void loadSmiles() {
+
+    }
+}

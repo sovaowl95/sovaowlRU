@@ -1,0 +1,140 @@
+#bodyPlayerStreamersSelect {
+    width: 75%;
+    display: flex;
+    margin: 10px auto;
+}
+
+.streamerSelect {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 320px;
+    height: 180px;
+    margin: 5px;
+    border: 1px solid white;
+
+    position: relative;
+
+    flex-grow: 1;
+}
+
+
+.streamerSelect:hover {
+    background-size: 0 !important;
+}
+
+.streamerSelectAdd {
+    flex-grow: 1;
+}
+
+.streamerSelectList {
+    display: flex;
+    justify-content: left;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    position: relative;
+    width: 100%;
+}
+
+
+.streamerSelectAdd {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    cursor: pointer;
+    width: 320px;
+    height: 180px;
+    margin: 5px;
+    border: 1px dashed white;
+    font-size: 100px;
+    color: white;
+}
+
+.streamerSelectAdd div {
+    font-size: 100px;
+}
+
+.streamerSelectLogin {
+    color: white;
+    margin: 5px;
+    font-size: 24px;
+    text-shadow: -1px 0px black, -1px 1px black, -1px -1px black,
+    1px 0px black, 1px 1px black, 1px -1px black,
+    0px 0px black, 0px 1px black, 0px -1px black;
+}
+
+.streamOnline {
+    border: 3px solid green;
+    border-radius: 50%;
+}
+
+.streamOffline {
+    border: 3px solid red;
+    border-radius: 50%;
+}
+
+.streamStatus {
+    display: flex;
+    align-items: baseline;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.streamStatusIcon {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+/*.streamStatusText {*/
+/*    width: 10px;*/
+/*    height: 10px;*/
+/*    background-color: red;*/
+/*    border-radius: 50%;*/
+/*}*/
+
+.streamerSelectGame {
+    color: white;
+    margin: 5px;
+    font-size: 14px;
+    text-shadow: -1px 0px black, -1px 1px black, -1px -1px black,
+    1px 0px black, 1px 1px black, 1px -1px black,
+    0px 0px black, 0px 1px black, 0px -1px black;
+}
+
+.streamerSelectAvatar img {
+    /*margin: 5px;*/
+    width: 50px;
+    height: 50px;
+    /*border: 3px solid white;*/
+    /*border-radius: 50%;*/
+}
+
+.bottomStreamList {
+    display: block;
+    width: 100%;
+    margin: auto 0;
+    position: absolute;
+    bottom: 0;
+    background: #4d4d4d;
+}
+
+.verifiedOrNotWrapper {
+    width: 100%;
+}

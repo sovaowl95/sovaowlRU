@@ -1,0 +1,15 @@
+### IntelliJ IDEA ###
+.idea
+.mvn
+/logs
+*.iws
+*.iml
+*.ipr
+/.mvn/
+/SmilesFromGGParsed.txt
+/SmilesFromGGUnparsed.txt
+/twitchSmilesFromTwitchParsed.txt
+/twitchSmilesFromTwitchUnparsed.txt
+/src/main/resources/launch command
+/target/
+/src/main/resources/ssl/jksCert.jks

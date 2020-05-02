@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
+    hikari:
+      schema: ${db_schema}
+server:
+  port: 443
+  error:
+    include-stacktrace: never
+logging:
+  level:
+    ru.sovaowltv.contoller.website: debug
+    ru.sovaowltv.service.io: debug
+    ru.sovaowltv.service.user.UsersRepositoryHandler: debug

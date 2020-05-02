@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.shop.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/friends.css}">
+    <script th:src="@{/js/friends.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div th:text="#{web.const.soon}"></div>
+</body>
+</html>

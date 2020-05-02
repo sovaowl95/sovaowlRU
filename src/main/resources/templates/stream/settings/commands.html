@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="commands">
+    <div class="content" style="display: none">
+        <th:block th:each="command: ${stream.getCommandSet()}">
+            <div class="labelWrap modal flexColumn">
+                <div style="display: none" th:text="${command.getId()}"></div>
+                <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.enabled}"/>
+                <label class="switch centered">
+                    <input type="checkbox" th:checked="${command.isEnabled()}">
+                    <span class="slider round"></span>
+                </label>
+                <label>
+                    <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.keyword}"/>
+                    <input class="input show centered" type="text" th:value="${command.getKeyWord()}"></label>
+                <label>
+                    <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.alias}"/>
+                    <input class="input show centered" type="text"
+                           th:value="${#strings.listJoin(command.getAlias(), ' ')}"></label>
+                <label>
+                    <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.action}"/>
+                    <input class="input show centered" type="text" th:value="${command.getAction()}"></label>
+
+
+                <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.isForPublic}"/>
+                <label class="switch centered">
+                    <input type="checkbox" th:checked="${command.isForPublicShown()}">
+                    <span class="slider round"></span>
+                </label>
+                <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.isNeedArgs}"/>
+                <label class="switch centered">
+                    <input type="checkbox" th:checked="${command.isNeedArgs()}">
+                    <span class="slider round"></span>
+                </label>
+                <label>
+                    <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.argsCount}"/>
+                    <input class="input show centered" type="number" th:value="${command.getArgsCount()}">
+                </label>
+
+                <label>
+                    <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.cooldown}"/>
+                    <input class="input show centered" type="number" th:value="${command.getCooldown()}">
+                </label>
+                <label>
+                    <th:block class="blockHeader" th:text="#{pages.streamSettings.commands.cost}"/>
+                    <input class="input show centered" type="number" th:value="${command.getCost()}">
+                </label>
+                <div onclick="saveCommand(this)" th:text="#{pages.streamSettings.commands.save}"></div>
+                <div onclick="deleteCommand(this)" th:text="#{pages.streamSettings.commands.delete}"></div>
+            </div>
+        </th:block>
+        <div onclick="createNewCommand()">create new command</div>
+    </div>
+</th:block>
+</html>

@@ -1,0 +1,6 @@
+google_clientId: ${google_clientId}
+google_clientSecret: ${google_clientSecret}
+google_redirectUri: https://sovaowl.ru/api/auth/google
+google_keysLink: https://www.googleapis.com/oauth2/v3/certs
+
+google_RefreshTokenLink: https://www.googleapis.com/oauth2/v4/token

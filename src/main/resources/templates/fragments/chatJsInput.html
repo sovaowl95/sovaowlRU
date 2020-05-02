@@ -1,0 +1,99 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="jsInput">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const disconnectMessage = [[#{pages.chat.message.js.disconnectMessage}]];
+        const connectMessage = [[#{pages.chat.message.js.connectMessage}]];
+
+        const messageDeleted = [[#{pages.chat.message.js.deleted}]];
+        const messageDeletedHide = [[#{pages.chat.message.js.deletedHide}]];
+
+        const bannedWord = [[#{pages.chat.message.moderator.js.bannedWord}]];
+        const unBannedWord = [[#{pages.chat.message.moderator.js.unBannedWord}]];
+
+        const timeoutWord = [[#{pages.chat.message.moderator.js.timeoutWord}]];
+        const unTimeoutWord = [[#{pages.chat.message.moderator.js.unTimeoutWord}]];
+
+        const youMutedFromThisChannelFor = [[#{pages.chat.message.youTimeout}]];
+        const youTimeoutTimeUnit = [[#{pages.chat.message.youTimeoutTimeUnit}]];
+
+        const clearWord = [[#{pages.chat.message.moderator.js.clearWord}]];
+        const forWordZa = [[#{pages.chat.message.moderator.js.forWord.za}]];
+        const forWordNa = [[#{pages.chat.message.moderator.js.forWord.na}]];
+        const timeUnitSec = [[#{pages.chat.message.moderator.js.timeUnitSec}]];
+        const timeUnitMin = [[#{pages.chat.message.moderator.js.timeUnitMin}]];
+        const chatClearedBy = [[#{pages.chat.message.moderator.js.chatClearedBy}]];
+
+        const addedInModerList = [[#{pages.chat.message.moderator.js.addedInModerList}]];
+        const removedFromModerList = [[#{pages.chat.message.moderator.js.removedFromModerList}]];
+
+        const nickName = [[#{pages.chat.message.donation.js.anonymous}]];
+        const supportedForSum = [[#{pages.chat.message.donation.js.forSum}]];
+
+        const rankUpJS_THYMELEAF = [[#{pages.chat.message.levelUp.js.rankUp}]];
+        const levelJS_THYMELEAF = [[#{pages.chat.message.levelUp.js.level}]];
+
+        const rarity = [[#{web.const.rarity.name}]];
+        const ANCIENT = [[#{web.const.rarity.ANCIENT}]];
+        const LEGENDARY = [[#{web.const.rarity.LEGENDARY}]];
+        const EPIC = [[#{web.const.rarity.EPIC}]];
+        const RARE = [[#{web.const.rarity.RARE}]];
+        const COMMON = [[#{web.const.rarity.COMMON}]];
+
+        const caravanJoin = [[#{pages.chat.caravan.caravanJoin}]];
+        const caravanErrAlreadyInJoin = [[#{pages.chat.caravan.caravanErrAlreadyInJoin}]];
+        const caravanErrNotEnoughMoney = [[#{pages.chat.caravan.caravanErrNotEnoughMoney}]];
+        const caravanErrStatusJoin = [[#{pages.chat.caravan.caravanErrStatusJoin}]];
+        const caravanErrStatusJoinAnon = [[#{pages.chat.caravan.caravanErrStatusJoinAnon}]];
+        const caravanStart = [[#{pages.chat.caravan.start}]];
+        const caravanEnd = [[#{pages.chat.caravan.end}]];
+        const caravanReward = [[#{pages.chat.caravan.reward}]];
+        const caravanReceived = [[#{pages.chat.caravan.received}]];
+        const caravanPrice = [[#{pages.chat.caravan.price}]];
+        const caravanPriceToJoin = [[#{pages.chat.caravan.priceToJoin}]];
+        const robCommand = [[#{pages.chat.caravan.robWord}]];
+        const caravanItemNameAdultMagazine = [[#{caravan.item.name.adultMagazine}]];
+        const caravanItemNameAlcoholMashine = [[#{caravan.item.name.alcoholMashine}]];
+        const caravanItemNameBugOfPotatoes = [[#{caravan.item.name.bugOfPotatoes}]];
+        const caravanItemNameCake = [[#{caravan.item.name.cake}]];
+        const caravanItemNameCookie = [[#{caravan.item.name.cookie}]];
+        const caravanItemNameDildo = [[#{caravan.item.name.dildo}]];
+        const caravanItemNameGoldBar = [[#{caravan.item.name.goldBar}]];
+        const caravanItemNameGoodTeammates = [[#{caravan.item.name.goodTeammates}]];
+        const caravanItemNameGreenShield = [[#{caravan.item.name.greenShield}]];
+        const caravanItemNameKeyFromTheHeartOfAnOwl = [[#{caravan.item.name.keyFromTheHeartOfAnOwl}]];
+        const caravanItemNameKitten = [[#{caravan.item.name.kitten}]];
+        const caravanItemNameMedkit = [[#{caravan.item.name.medkit}]];
+        const caravanItemNameRubberWoman = [[#{caravan.item.name.rubberWoman}]];
+        const caravanItemNameSocks = [[#{caravan.item.name.socks}]];
+        const caravanItemNameTrash = [[#{caravan.item.name.trash}]];
+
+        const caravanItemNameStyle = [[#{caravan.item.style}]];
+        const caravanItemNameSmile = [[#{caravan.item.smile}]];
+        const caravanItemNameDuplicate = [[#{caravan.item.duplicate}]];
+        const caravanItemNamePremium = [[#{caravan.item.premium}]];
+
+        const slotNotEnoughMoney = [[#{slot.NotEnoughMoney}]];
+        const slotStartSlotAndGet = [[#{slot.startSlotAndGet}]];
+        const slotWin = [[#{slot.win}]];
+        const slotLose = [[#{slot.lose}]];
+        const slotACE = [[#{slot.ace}]];
+        const slotBet = [[#{slot.bet}]];
+        const slotSpin= [[#{slot.spin}]];
+        const slotSpinning= [[#{slot.spinning}]];
+
+        const coinsKeyword = [[#{web.const.coins}]];
+
+        const premiumExpiredMessage = [[#{web.const.premium.expiredMessage}]];
+        const premiumKeyWordDays = [[#{web.const.premium.days}]];
+        const premiumKeyWordHours = [[#{web.const.premium.hour}]];
+        const premiumKeyWordMinutes = [[#{web.const.premium.min}]];
+
+        const addSmile =[[#{pages.chat.smiles.add}]];
+        const closeAddSmile =[[#{pages.chat.smiles.close}]];
+        const addSmileAlreadyHave =[[#{pages.chat.smiles.error.alreadyHave}]];
+        const addSmileNotFound =[[#{pages.chat.smiles.error.notfound}]];
+        /*]]>*/
+    </script>
+</th:block>
+</html>

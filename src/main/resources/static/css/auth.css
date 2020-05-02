@@ -1,0 +1,31 @@
+.authWrap{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.auth{
+    display: block;
+    text-align: center;
+}
+
+.auth img{
+    width: 35px;
+    height: 35px;
+    vertical-align: middle;
+}
+
+.auth > div:hover{
+    background-color: #3d3d3d;
+    color: white;
+    border: 1px solid white;
+    margin: 4px;
+    transform: scale(1.25);
+}
+
+.auth > div{
+    display: inline-block;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}

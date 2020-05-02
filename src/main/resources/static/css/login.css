@@ -1,0 +1,283 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    white-space: normal;
+    word-wrap: break-word;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}
+
+body {
+    font-size: 22px;
+    font-weight: 600;
+    background: #222222;
+    background-size: cover;
+}
+
+#loginForm, #regForm {
+    position: relative;
+    /*display: flex;*/
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 560px;
+    background-color: #313131;
+    margin: auto;
+    border-radius: 35px;
+    color: #ffffff;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-weight: lighter;
+
+}
+
+#wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+#regForm {
+    display: block;
+}
+
+#loginForm {
+    display: none;
+}
+
+.formTitle {
+    margin: auto auto;
+    text-align: center;
+    font-size: 30px;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    line-height: 30px;
+    padding: 35px 0;
+}
+
+.formHelp {
+    margin: 10px;
+    text-align: center;
+    color: #b4b4b4;
+}
+
+.button {
+    display: block;
+    margin-top: 20px;
+    width: 100%;
+    background-color: #3d3d3d;
+    height: 65px;
+    line-height: 35px;
+    text-align: center;
+    vertical-align: middle;
+    border: #ffffff solid 1px;
+    border-left: 0;
+    border-right: 0;
+    font-size: 30px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    cursor: pointer;
+}
+
+.buttonHelper {
+    margin: 20px auto;
+    width: 100%;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#loginForm .buttonHelper {
+    justify-content: space-around;
+}
+
+input {
+    width: 500px;
+    height: 45px;
+    border: 1px solid #bebebe;
+    background-color: #ffffff;
+    border-radius: 11px;
+    margin: auto auto 10px;
+    display: block;
+    right: 0;
+    left: 0;
+    box-shadow: 0 5px 3px 3px #282828;
+    padding: 0 5px;
+    font-size: 18px;
+    color: black;
+
+    text-align: center;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px darkgrey;
+}
+
+input[type=text] {
+    background: #ffffff url("/img/login_avatar.png") no-repeat 5px center;
+    background-size: 25px 25px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+input[type=password] {
+    background: #ffffff url("/img/login_password.png") no-repeat 5px center;
+    background-size: 25px 25px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+input[type=email] {
+    background: #ffffff url("/img/email.png") no-repeat 5px center;
+    background-size: 25px 25px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+
+input[type=checkbox] {
+
+}
+
+input[type=radio] {
+    display: inline-block;
+    border-width: 0;
+    box-shadow: unset;
+    margin: 0;
+}
+
+.gender {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+    width: calc(100% - 100px);
+    margin: auto;
+}
+
+.innerGender label {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.innerGender > label > input {
+    width: auto;
+    margin-right: 10px;
+}
+
+.innerGender > label > input:checked + span, .innerGender > label > input:checked + span > a {
+    text-decoration: underline;
+    text-decoration-color: #5D9BFB;
+    color: #5D9BFB;
+}
+
+.err {
+    color: red;
+    display: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+.success {
+    color: lightgreen;
+    display: none;
+    text-align: center;
+    font-size: 14px;
+}
+
+.radio {
+    margin: 16px 0;
+    display: block;
+    cursor: pointer;
+}
+
+.radio input {
+    display: none;
+}
+
+.radio input + span {
+    line-height: 22px;
+    height: 22px;
+    padding-left: 22px;
+    display: block;
+    position: relative;
+}
+
+.radio input + span:not(:empty) {
+    padding-left: 30px;
+}
+
+.radio input + span:before, .radio input + span:after {
+    content: "";
+    width: 22px;
+    height: 22px;
+    display: block;
+    left: 0;
+    top: 0;
+    position: absolute;
+    border: 1px solid;
+    border-radius: 15px !important;
+}
+
+.radio input[type=checkbox] + span:before, .radio input[type=checkbox] + span:after {
+    border-radius: 0;
+}
+
+.radio input + span:before {
+    background: white;
+}
+
+.radio input[type=checkbox] + span:before {
+    background: white;
+    transition: background 0.2s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2), -webkit-transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2);
+}
+
+
+/*NOT CHECKED? INNER RADIUS*/
+.radio input + span:after {
+    background: #313131;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4), -webkit-transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+}
+
+/*OUTER RING RADIUS*/
+.radio:hover input + span:before {
+    -webkit-transform: scale(0.92);
+    transform: scale(0.92);
+}
+
+
+/*INNER RING RADIUS*/
+.radio:hover input + span:after {
+    -webkit-transform: scale(0.31);
+    transform: scale(0.31);
+}
+
+
+/*INNER RING WHEN CHECKED*/
+.radio:hover input:checked + span:after {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+
+.radio input:checked + span:before {
+    -webkit-transform: scale(1.04);
+    transform: scale(1.04);
+    background-color: white;
+}
+
+
+.radio input:checked + span:after {
+    -webkit-transform: scale(0.7);
+    transform: scale(0.7);
+    border-radius: 50%;
+    background: #5D9BFB;
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}

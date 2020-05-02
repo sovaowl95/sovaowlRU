@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:fragment="libs">
+        <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
+        <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+        <script th:src="@{/js/lib/sockjs.js}"></script>
+        <script th:src="@{/js/lib/stomp.js}"></script>
+        <script th:src="@{/js/lib/stomp.umd.js}"></script>
+        <script th:src="@{/js/lib/jquery-3.4.1.min.js}"></script>
+        <script th:src="@{/js/requestUtil.js}"></script>
+    </th:block>
+    <th:block th:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+        <link rel="stylesheet" th:href="@{/css/color.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/chat.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/chatStyles.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/smilesPopUp.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/donationPopUp.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/optionsPopUp.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/message.css}">
+        <link rel="stylesheet" th:href="@{/css/chat/caravan.css}">
+        <link rel="stylesheet" th:href="@{/css/streamPage.css}">
+        <link rel="stylesheet" th:href="@{/css/slider.css}">
+        <link rel="stylesheet" th:href="@{/css/tooltip.css}">
+        <link rel="stylesheet" th:href="@{/css/slot/slot.css}">
+    </th:block>
+    <th:block th:fragment="js">
+        <script th:src="@{/js/chat/chat.js}"></script>
+        <script th:src="@{/js/chat/messages.js}"></script>
+        <script th:src="@{/js/chat/settingsChat.js}"></script>
+        <script th:src="@{/js/chat/time.js}"></script>
+        <script th:src="@{/js/chat/caravan.js}"></script>
+        <script th:src="@{/js/slot/slot.js}"></script>
+    </th:block>
+</head>
+</html>

@@ -1,0 +1,17 @@
+.promo-block {
+    margin: 5px 5px 15px;
+    border: 1px solid #8080804a;
+}
+
+.promo-title {
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 24px;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.promo-text {
+    margin-left: 5px;
+    padding: 5px;
+}

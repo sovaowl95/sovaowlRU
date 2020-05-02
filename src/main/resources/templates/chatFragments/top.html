@@ -1,0 +1,14 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bodyChatTop">
+    <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+    <div id="bodyChatTop" th:if="${stream.getChatDailyInfo()}!=null">
+        <div id="bodyChatTopClose" onclick="bodyChatTopClose()" style="color: red;">&#10006;</div>
+        <img id="bodyChatTopOpen" onclick="bodyChatTopOpen()" src="/img/info.png" alt="open">
+        <div id="bodyChatTopText" th:text="${stream.getChatDailyInfo()}"></div>
+        <div id="bodyChatTopTextBefore"></div>
+    </div>
+</th:block>
+</body>
+</html>
+

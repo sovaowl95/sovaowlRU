@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="keyCodeDescBody">
+    <details style="text-align: end; cursor: pointer">
+        <div class="block secondBlock">
+            <div th:text="#{pages.streamSettings.set.discordDesc.user}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.links}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.streamName}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.streamGame}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.n}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.sovaowl}+ '' + ${stream.getUser().getNickname()}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.twitch}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.gg}"></div>
+            <div th:text="#{pages.streamSettings.set.discordDesc.youtube}"></div>
+        </div>
+    </details>
+</th:block>
+</html>

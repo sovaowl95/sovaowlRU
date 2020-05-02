@@ -1,0 +1,192 @@
+.roadmapPage {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.roadmapPageWrap {
+    height: 370px;
+    /*min-height: 150px;*/
+    /*height: auto;*/
+    /*max-height: 370px;*/
+    width: 100%;
+    border-bottom: 1px solid #f2f8ff;
+    margin: 15px auto;
+}
+
+.roadmapBlock {
+    display: inline-block;
+    width: 300px;
+    margin: 10px;
+}
+
+.roadmapBlock_ADV {
+    display: block;
+    width: 75%;
+    margin: 10px auto;
+}
+
+.roadmapBlock2 {
+    background-color: #353535;
+    padding: 5px;
+    border: 1px solid white;
+    border-top: 0;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+}
+
+.roadmapBlock2:hover {
+    background-color: grey;
+}
+
+.roadmapBlock2Img {
+    width: 28px;
+    height: 28px;
+    margin: 5px;
+    cursor: pointer;
+}
+
+.roadmapBlock2Wrap {
+    display: block;
+    width: 300px;
+    min-height: 29px;
+    height: auto;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.roadmapBlock2Wrap_ADV {
+    display: inline-block;
+    width: 100%;
+    min-height: 60px;
+    height: auto;
+    max-height: 300px;
+    overflow: auto;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.ADVISED {
+    background-color: #555d9c;
+}
+
+.ADVISEDBODY {
+    border: 1px solid #555d9c;
+    border-top: 0;
+}
+
+.IN_PROGRESS {
+    background-color: saddlebrown;
+}
+
+.IN_PROGRESSBODY {
+    border: 1px solid saddlebrown;
+    border-top: 0;
+}
+
+.SOON {
+    background-color: green;
+}
+
+.SOONBODY {
+    border: 1px solid green;
+    border-top: 0;
+}
+
+.QUARTER {
+    background-color: #a67a7b;
+}
+
+.QUARTERBODY {
+    border: 1px solid #a67a7b;
+    border-top: 0;
+}
+
+.HALF_YEAR {
+    background-color: darkkhaki;
+}
+
+.HALF_YEARBODY {
+    border: 1px solid darkkhaki;
+    border-top: 0;
+}
+
+.YEAR {
+    background-color: #115b63;
+}
+
+.YEARBODY {
+    border: 1px solid #115b63;
+    border-top: 0;
+}
+
+.COMPLETE {
+    background-color: brown;
+}
+
+.COMPLETEBODY {
+    border: 1px solid brown;
+    border-top: 0;
+}
+
+.rbId, .rbNick, .rbStatus, .rbDescription, .rbDate {
+    display: none;
+}
+
+.closeBlock {
+    height: 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+.modal {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: auto;
+    padding-top: 100px;
+    z-index: 1;
+}
+
+.modalBody {
+    position: relative;
+    margin: auto;
+    width: 600px;
+    /*height: 600px;*/
+    max-width: 90%;
+    max-height: 90%;
+    background: #222222;
+    border: 1px solid white;
+    border-radius: 10px 10px 0 0;
+}
+
+.modalBody div {
+    padding: 5px;
+    font-size: calc(12px + .5vw);
+}
+
+.modalBodySub {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popRating {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}

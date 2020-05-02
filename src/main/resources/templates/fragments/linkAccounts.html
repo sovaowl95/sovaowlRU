@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="linkHeader">
+    <link rel="stylesheet" th:href="@{/css/linkAccounts.css}">
+    <script th:src="@{/js/linkAccounts.js}"></script>
+    <script th:src="@{/js/auth.js}"></script>
+</head>
+<body th:fragment="linkBodyBody">
+<div class="linkBodyWrap">
+    <div class="modal">
+        <div class="modalLeft"><img alt="twitch" src="/authicons/twitch.ico"></div>
+        <div class="modalCenter" th:text="#{web.const.twitch}"></div>
+        <div class="modalRight" th:classappend="${user.getUserTwitch()==null}?'apiDisconnected':'apiConnected'"
+             th:onclick="(${user.getUserTwitch()!=null}?'dis':'') + 'connect(\''+#{web.const.twitch}+'\')'">
+            <div th:text="${user.getUserTwitch()}==null?#{pages.streamSettings.connect}:#{pages.streamSettings.remove}"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modalLeft"><img alt="google" src="/authicons/google.png"></div>
+        <div class="modalCenter" th:text="#{web.const.google}"></div>
+        <div class="modalRight" th:classappend="${user.getUserGoogle()==null}?'apiDisconnected':'apiConnected'"
+             th:onclick="(${user.getUserGoogle()!=null}?'dis':'')+ 'connect(\''+#{web.const.google}+'\')'">
+            <div th:text="${user.getUserGoogle()}==null?#{pages.streamSettings.connect}:#{pages.streamSettings.remove}"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modalLeft"><img alt="gg" src="/authicons/gg.svg"></div>
+        <div class="modalCenter" th:text="#{web.const.gg}"></div>
+        <div class="modalRight" th:classappend="${user.getUserGG()==null}?'apiDisconnected':'apiConnected'"
+             th:onclick="(${user.getUserGG()!=null}?'dis':'')+ 'connect(\''+#{web.const.gg}+'\')'">
+            <div th:text="${user.getUserGG()}==null?#{pages.streamSettings.connect}:#{pages.streamSettings.remove}"></div>
+        </div>
+    </div>
+    <div class="modal">
+        <div class="modalLeft"><img alt="vk" src="/authicons/vk.png"></div>
+        <div class="modalCenter" th:text="#{web.const.vk}"></div>
+        <div class="modalRight" th:classappend="${user.getUserVK()==null}?'apiDisconnected':'apiConnected'"
+             th:onclick="${user.getUserVK()==null}?'authVK()':''">
+            <div th:text="${user.getUserVK()}==null?#{pages.streamSettings.connect}:#{pages.streamSettings.remove}"></div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var twitch = [[#{web.const.twitch}]];
+    var google = [[#{web.const.google}]];
+    var gg = [[#{web.const.gg}]];
+    var vk = [[#{web.const.vk}]];
+    /*]]>*/
+</script>
+</body>
+</html>

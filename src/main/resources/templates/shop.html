@@ -1,0 +1,164 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.shop.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/shop.css}">
+    <link rel="stylesheet" th:href="@{/css/color.css}">
+    <link rel="stylesheet" th:href="@{/css/chat/chatStyles.css}">
+    <link rel="stylesheet" th:href="@{/css/chat/message.css}">
+    <script th:src="@{/js/shop.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <th:block th:include="pay::payHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div class="shopPage">
+    <div class="row">
+        <a href="#" onclick="show(1)" style="border-bottom: 3px solid white">
+            <div th:utext="'<img class=\'rowImg\' src=\'/img/money-bag.png\'>' + '' + #{pages.shop.coins}"></div>
+        </a>
+        <a href="#" onclick="show(2)">
+            <div th:utext="'<img class=\'rowImg\' src=\'/img/premium.png\'>' + '' + #{pages.shop.premium}"></div>
+        </a>
+        <a href="#" onclick="show(3)">
+            <div th:utext="'<img class=\'rowImg\' src=\'/img/rank.png\'>' + '' + #{pages.shop.rank}"></div>
+        </a>
+        <a href="#" onclick="show(4)">
+            <div th:utext="'<img class=\'rowImg\' src=\'/img/smiles.png\'>' + '' + #{pages.shop.smiles}"></div>
+        </a>
+        <a href="#" onclick="show(5)">
+            <div th:utext="'<img class=\'rowImg\' src=\'/img/text.png\'>' + '' + #{pages.shop.styles}"></div>
+        </a>
+    </div>
+    <div class="userInfoDiv" style="display: flex" th:if="${user != null}">
+        <div th:utext="#{pages.shop.yourcurrentstats.a} + ' ' +'<img class=\'rowImg\' src=\'/img/money-bag.png\'>'+ '' + ${user.getCoins()} + ' ' +   #{pages.shop.yourcurrentstats.b} + '<img class=\'rowImg\' src=\'/img/rank.png\'>'+ '' + ${user.getLevel()}"></div>
+    </div>
+    <div class="content coins" style="display: block">
+        <th:block th:include="pay::payBlock"/>
+    </div>
+    <div class="content premium">
+        <div class="wrapBody">
+            <div class="out top" th:text="#{pages.shop.product.name.prem}"></div>
+            <div class="category">
+                <div class="categoryDescription">
+                    <ul>
+                        <li th:text="#{pages.shop.product.premium.zero}"></li>
+                        <li th:text="#{pages.shop.product.premium.a}"></li>
+                        <li th:text="#{pages.shop.product.premium.b}"></li>
+                        <li th:text="#{pages.shop.product.premium.c}"></li>
+                        <li th:text="#{pages.shop.product.premium.d}"></li>
+                        <li th:text="#{pages.shop.product.premium.e}"></li>
+                        <li th:text="#{pages.shop.product.premium.f}"></li>
+                        <li th:text="#{pages.shop.product.premium.g}"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="out bottom" th:if="${user != null}">
+                <div class="left" th:text="${premiumPrice}+' '+#{pages.shop.currency}"></div>
+                <div th:unless="${user.isPremiumUser()}" class="right"
+                     th:utext="'<img src=\'/img/shopping-cart.png\'>'+#{pages.shop.product.buy}"
+                     onclick="buyPremium()"></div>
+                <div th:if="${user.isPremiumUser()}" class="right"
+                     th:utext="'<img src=\'/img/success.png\'>'"></div>
+            </div>
+        </div>
+    </div>
+    <div class="content rank">
+        <div class="levelWrap">
+            <div class="levelWrap">
+                <img alt="rank" src="img/rank.png">
+                <div th:if="${user != null}" th:text="#{pages.profile.level} + ' ' + ${user.getLevel()}"></div>
+            </div>
+            <div style="width: 50px"></div>
+            <div class="levelWrap">
+                <img alt="progress" src="img/progress-chart.png">
+                <div th:if="${user != null}"
+                     th:text="#{pages.profile.exp}+' '+${user.getExp()}+'/'+(${levelExpMultiplier} * ${user.getLevel()})"></div>
+            </div>
+        </div>
+        <div class="wrapBody" th:if="${user != null}">
+            <div class="out top"
+                 th:text="${1+user.getLevel()} + ' ' + #{pages.shop.product.rank.name} +' ('+ (${user.getLevel()} * ${levelExpMultiplier} - ${user.getExp()}) + ' ' + #{pages.shop.product.rank.exp} + ')'"></div>
+            <div class="out bottom">
+                <div class="left" th:text="${levelPrice}+' '+#{pages.shop.currency}"></div>
+                <div class="right"
+                     th:utext="'<img src=\'/img/shopping-cart.png\'>'+#{pages.shop.product.buy}"
+                     onclick="buyLevel()"></div>
+            </div>
+        </div>
+        <div></div>
+    </div>
+    <div class="content smiles">
+        <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+        <th:block th:each="order: ${rarityOrder}">
+            <th:block th:each="smile:${smiles}">
+                <!--/*@thymesVar id="smile" type="ru.sovaowltv.model.shop.Smile"*/-->
+                <div th:if="${smile.getRarity().name()} == ${order.name()}" class="wrapBody smilesWrapBody"
+                     th:classappend="${smile.getRarity().name()}" th:id="${smile.getId()}">
+                    <div class="out top" th:text="${smile.getName()}"></div>
+                    <div class="out top" th:text="${smile.getRarity()}"></div>
+                    <div class="category">
+                        <div class="categoryDescription">
+                            <div class="smile">
+                                <img alt="smile" src="#" th:src="'/smiles/'+${smile.getLink()}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="out bottom" th:if="${user != null}">
+                        <div class="left" th:text="${smile.getPrice()} +' ' + #{pages.shop.currency}"></div>
+                        <div th:unless="${user.getSmiles().contains(smile)}" class="right"
+                             th:utext="'<img src=\'/img/shopping-cart.png\'>' + #{pages.shop.product.buy}"
+                             th:onclick="'buySmile('+${smile.getId()}+')'"></div>
+                        <div th:if="${user.getSmiles().contains(smile)}" class="right"
+                             th:utext="'<img src=\'/img/success.png\'>'"></div>
+                    </div>
+                </div>
+            </th:block>
+            <div></div>
+        </th:block>
+    </div>
+    <div class="content text">
+        <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+        <th:block th:each="order:${rarityOrder}">
+            <th:block th:each="style:${styles}">
+                <!--/*@thymesVar id="style" type="ru.sovaowltv.model.shop.Style"*/-->
+                <!--/*@thymesVar id="name" type="java.lang.String"*/-->
+                <div th:if="${style.getRarity().name()} == ${order.name()}" class="wrapBody stylesWrapBody"
+                     th:classappend="${style.getRarity().name()} +' '+ ${style.getId()}">
+                    <div class="out top" th:text="${style.getName()}"></div>
+                    <div class="out top" th:text="${style.getRarity()}"></div>
+                    <div class="category">
+                        <div class="categoryDescriptionChat">
+                            <div class="chatBackground" th:if="${user != null}">
+                                <div th:text="${user.getNickname()} + ':' +  #{pages.shop.style.text}"
+                                     th:class="${style.getName()}"></div>
+                            </div>
+                            <div class="chatBackground" th:if="${user == null}">
+                                <div th:text="'NICKNAME' + ':' +  #{pages.shop.style.text}"
+                                     th:class="${style.getName()}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="out bottom">
+                        <th:block th:if="${user != null}">
+                            <div class="left" th:if="${user != null}"
+                                 th:text="${style.getPrice()} +' ' + #{pages.shop.currency}"></div>
+                            <div th:unless="${user.getStyles().contains(style)}" class="right"
+                                 th:utext="'<img src=\'img/shopping-cart.png\'>' + #{pages.shop.product.buy}"
+                                 th:onclick="'buyStyle('+${style.getId()}+')'"></div>
+                            <div th:if="${user.getStyles().contains(style)}" class="right"
+                                 th:utext="'<img src=\'img/success.png\'>'"></div>
+                        </th:block>
+                    </div>
+                </div>
+            </th:block>
+            <div></div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

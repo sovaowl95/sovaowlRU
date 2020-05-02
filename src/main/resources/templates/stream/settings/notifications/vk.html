@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="vk">
+    <div class="modal streamOptions">
+        <div class="modalLeft"><img alt="vk" src="/img/vk.png"></div>
+        <div class="modalCenter" th:text="#{web.const.vk}"></div>
+        <div class="modalRight"
+             th:classappend="${stream.getVkNotification()==null}?'apiDisconnected':'apiConnected'"
+             th:onclick="${stream.getVkNotification()==null}?'linkVKServer()':'unlinkVKServer()'">
+            <div th:text="${stream.getVkNotification()}==null?#{pages.streamSettings.connect}:#{pages.streamSettings.remove}"></div>
+        </div>
+    </div>
+    <th:block th:if="${stream.getVkNotification()}!=null">
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.vk}"></div>
+            <div class="block" style="height: unset">
+                <div id="vkNotificationInput" class="show" style="text-align: center;">
+                    <label>
+                        <th:block th:text="#{pages.streamSettings.set.groupId}"/>
+                        <input id="vkNotificationInput-1" class="input show"
+                               th:value="${stream.getVkNotification().getGroupId()}">
+                    </label>
+                    <label>
+                        <div class="notifications-vk-link"
+                             th:text="#{pages.streamSettings.set.key.getKey}"
+                             onclick="getVKKey()"></div>
+                        <input id="vkNotificationInput-2" class="input show"
+                               th:value="${stream.getVkNotification().getKey()}">
+                    </label>
+                    <img id="vkNotificationSuccess" class="img success show" alt="accept"
+                         src="/img/success.png" style="margin-left: auto; margin-right: auto"
+                         onclick="confirmChangeVKNotification(this.parentNode)">
+                </div>
+            </div>
+        </div>
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.vk.text}"></div>
+            <div class="block">
+                <img id="vkTextImg" src="/img/edit.png" alt="edit"
+                     onclick="changeVKText(this.parentNode)">
+                <input id="vkTextInput" class="input" th:value="${stream.getVkNotification().getText()}">
+                <div id="VKTextDiv" th:text="${stream.getVkNotification().getText()}"></div>
+                <img id="VKTextSuccess" class="img success" src="/img/success.png" alt="accept"
+                     onclick="confirmChangeVKText(this.parentNode)">
+            </div>
+            <th:block th:include="fragments/keyCodeDescription::keyCodeDescBody"/>
+        </div>
+    </th:block>
+</th:block>
+</html>

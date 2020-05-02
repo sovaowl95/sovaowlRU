@@ -1,0 +1,31 @@
+.command {
+    border: 1px solid gray;
+    margin-bottom: 10px;
+}
+
+.command-header {
+    margin: 5px;
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid gray;
+}
+
+.command-body {
+    margin: 5px;
+    padding: 5px;
+}
+
+.command-body-block code {
+    padding: 2px 4px;
+    border-radius: 4px;
+    background: #666a6a;
+}
+
+.command-body-block {
+    margin-bottom: 5px;
+}
+
+.command-body-block span {
+    margin: 5px;
+    padding: 5px;
+}

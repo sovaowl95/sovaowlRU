@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.commands.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+
+    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/info.css}">
+    <link rel="stylesheet" th:href="@{/css/command.css}">
+    <link rel="stylesheet" th:href="@{/css/shop.css}">
+
+    <script th:src="@{/js/info.js}"></script>
+    <script th:src="@{/js/commands.js}"></script>
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/><div id="body">
+    <div id="infoPage">
+        <div class="row">
+            <a href="#" onclick="show(1)" style="border: none;">
+                <div>
+                    <img alt="spectator" class="rowImg" src="/img/spectator.png">
+                    <div style="display: inline" th:text="#{pages.commands.header.users}"></div>
+                </div>
+            </a>
+            <a href="#" onclick="show(2)" style="border: none;">
+                <div>
+                    <img alt="moderator" class="rowImg" src="/img/moderator.png">
+                    <div style="display: inline" th:text="#{pages.commands.header.moderator}"></div>
+                </div>
+            </a>
+            <a href="#" onclick="show(3)" style="border: none;">
+                <div>
+                    <img alt="moderator" class="rowImg" src="/img/streamer.png">
+                    <div style="display: inline" th:text="#{pages.commands.header.streamer}"></div>
+                </div>
+            </a>
+        </div>
+        <div class="content" th:each="list:${commandsList}">
+            <div class="command" th:each="command:${list}">
+                <div class="command-header" th:utext="#{'pages.commands.text.' + ${command} + '.name'}"></div>
+
+                <div class="command-body">
+                    <div class="command-body-block">
+                        <span th:text="#{pages.commands.header.example}"></span>
+                        <code th:utext="#{'pages.commands.text.' + ${command} + '.example'}"></code>
+                    </div>
+                    <div class="command-body-block">
+                        <span th:text="#{pages.commands.header.description}"></span>
+                        <span th:utext="#{'pages.commands.text.' + ${command} + '.description'}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

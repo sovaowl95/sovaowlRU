@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="chatHead">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <title th:text="${stream.getUser().getNickname()}"></title>
+
+    <th:block th:include="fragments/headerPartsChat::libs"/>
+    <th:block th:include="fragments/headerPartsChat::css"/>
+    <th:block th:include="fragments/headerPartsChat::js"/>
+
+    <link rel="stylesheet" th:href="@{/css/chat/chatPublic.css}">
+</head>
+<body>
+<style>
+    body {
+        background-color: transparent;
+    }
+    .message {
+        background-color: transparent;
+    }
+</style>
+<th:block th:fragment="chatBody">
+    <div id="bodyChatWrap">
+        <div id="bodyChatMain"></div>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var isPublicChat = true;
+        var isGuest = true;
+        var chatScrollVisibility = "hidden";
+        var userName = [[${stream.getUser().getNickname()}]];
+        var streamerName = [[${stream.getUser().getNickname()}]];
+        var showMessageTime = false;
+        var smileSize = 28;
+        var fontSize = 16;
+        /*]]>*/
+    </script>
+    <th:block th:include="fragments/chatJsInput::jsInput"/>
+</th:block>
+</body>
+</html>

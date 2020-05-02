@@ -1,0 +1,277 @@
+.payPage {
+    width: 75%;
+    margin: 15px auto;
+    font-size: 24px;
+
+    padding: 10px 0;
+    /*background-color: #353535;*/
+    border-radius: 5px;
+}
+
+.payPage div, .wrapPay div {
+    /*padding-bottom: 10px;*/
+    /*margin: 5px;*/
+}
+
+.currency {
+    display: inline-block;
+    position: absolute;
+    margin-left: -22px;
+    color: black;
+    height: 45px;
+    line-height: 45px;
+    font-size: 18px;
+    /*margin: auto auto 10px;*/
+}
+
+input, select {
+    display: inline-block;
+    width: 200px;
+    height: 45px;
+
+    background: #ffffff no-repeat 5px center;
+
+    padding-left: 35px;
+    padding-right: 35px;
+
+    border: 1px solid #bebebe;
+    border-radius: 11px;
+    box-shadow: 0 5px 3px 3px #282828;
+
+    font-size: 18px;
+    color: black;
+    text-align: center;
+}
+
+#inputCurrency {
+    padding: 0;
+    width: 65px;
+}
+
+option {
+    color: black;
+}
+
+input:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px darkgrey;
+}
+
+input[type=number] {
+    background: #ffffff url("/img/money-bag.png") no-repeat 5px center;
+    background-size: 25px 25px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/*input:focus {*/
+/*outline: none;*/
+/*box-shadow: 0 0 0 3px darkgrey;*/
+/*}*/
+
+textarea {
+    width: 80%;
+    height: 150px;
+    resize: none;
+    color: black;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.qiwiDiv {
+    cursor: pointer;
+    width: 75%;
+    height: 50px;
+    line-height: 50px;
+    background: #222222;
+    border: 1px solid white;
+    text-align: center;
+    margin: auto;
+    border-radius: 25px;
+    padding-bottom: 10px;
+}
+
+.qiwiDiv:hover {
+    background-color: #353535;
+}
+
+/*.titleWrap {*/
+/*display: flex;*/
+/*justify-content: center;*/
+/*}*/
+
+/*.firstQiwi {*/
+/*width: auto;*/
+/*height: 48px;*/
+
+/*background-color: white;*/
+
+/*padding-left: 48px;*/
+/*border-radius: 48px 0 0 48px;*/
+/*}*/
+
+/*.secondQiwi{*/
+/*width: auto;*/
+/*height: 48px;*/
+
+/*background-color: white;*/
+
+/*padding-right: 48px;*/
+/*padding-left: 48px;*/
+/*border-radius: 0 48px 48px 0;*/
+/*}*/
+
+.titleWrap {
+    display: flex;
+    flex-wrap: wrap;
+    /*padding-bottom: 10px;*/
+}
+
+.firstQiwi {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 5px 10px;
+    background-color: white;
+
+    border-radius: 48px 48px 0 0
+}
+
+.secondQiwi {
+    display: block;
+    width: 100%;
+    height: 48px;
+    padding: 5px 10px;
+    background-color: white;
+}
+
+.center {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.formWrap {
+    background-color: white;
+    border-radius: 0 0 48px 48px;
+    padding-bottom: 10px;
+}
+
+.radio {
+    margin: 16px 0;
+    display: block;
+    cursor: pointer;
+}
+
+.radio input {
+    display: none;
+}
+
+.radio input + span {
+    line-height: 22px;
+    height: 22px;
+    padding-left: 22px;
+    display: block;
+    position: relative;
+}
+
+.radio input + span:not(:empty) {
+    padding-left: 30px;
+}
+
+.radio input + span:before, .radio input + span:after {
+    content: "";
+    width: 22px;
+    height: 22px;
+    display: block;
+    border-radius: 50%;
+    left: 0;
+    top: 0;
+    position: absolute;
+}
+
+.radio input[type=checkbox] + span:before, .radio input[type=checkbox] + span:after {
+    border-radius: 0;
+}
+
+.radio input + span:before {
+    /*background: #D1D7E3;*/
+    /*background: white;*/
+    background: #222222;
+}
+
+.radio input[type=checkbox] + span:before {
+    /*background: #D1D7E3;*/
+    /*background: white;*/
+    background: #222222;
+    /*transition: background 0.2s ease, -webkit-transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2);*/
+    /*transition: background 0.2s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2);*/
+    transition: background 0.2s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2), -webkit-transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 2);
+}
+
+/*NOT CHECKED? INNER RADIUS*/
+.radio input + span:after {
+    /*background: #5D9BFB;*/
+    /*background: #313131;*/
+    background: white;
+    /*background: transparent;*/
+    /*-webkit-transform: scale(0.9);*/
+    /*transform: scale(0.9);*/
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    /*transition: -webkit-transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4);*/
+    /*transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4);*/
+    transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4), -webkit-transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.4);
+}
+
+/*OUTER RING RADIUS*/
+.radio:hover input + span:before {
+    -webkit-transform: scale(0.92);
+    transform: scale(0.92);
+}
+
+/*INNER RING RADIUS*/
+.radio:hover input + span:after {
+    -webkit-transform: scale(0.31);
+    transform: scale(0.31);
+}
+
+/*INNER RING WHEN CHECKED*/
+.radio:hover input:checked + span:after {
+    /*-webkit-transform: scale(0.7);*/
+    /*transform: scale(0.7);*/
+    -webkit-transform: scale(0);
+    transform: scale(0);
+}
+
+.radio input:checked + span:before {
+    -webkit-transform: scale(1.04);
+    transform: scale(1.04);
+    background: #5D9BFB;
+}
+
+.radio input:checked + span:after {
+    /*-webkit-transform: scale(0.4);*/
+    /*transform: scale(0.4);*/
+    -webkit-transform: scale(0);
+    transform: scale(0);
+    transition: -webkit-transform 0.03s ease;
+    /*transition: transform 0.3s ease;*/
+    transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.radioDiv {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+    width: calc(100% - 100px);
+    margin: auto;
+}
+
+span {
+    color: #000;
+}

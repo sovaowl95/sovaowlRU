@@ -1,0 +1,12 @@
+twitch_clientId: ${twitch_clientId}
+twitch_clientSecret: ${twitch_clientSecret}
+twitch_redirectUri: https://sovaowl.ru/api/auth/twitch
+twitch_keysLink: https://id.twitch.tv/oauth2/keys
+twitch_iss: https://id.twitch.tv/oauth2
+
+twitch_wssip: wss://irc-ws.chat.twitch.tv
+twitch_wssport: 443
+twitch_smilesLink: https://api.twitch.tv/kraken/chat/emoticons
+
+twitch_SmilesUnparsed: twitchSmilesFromTwitchUnparsed.txt
+twitch_SmilesParsed: twitchSmilesFromTwitchParsed.txt

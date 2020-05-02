@@ -1,0 +1,55 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.pay.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <th:block th:fragment="payHeader">
+        <link rel="stylesheet" th:href="@{/css/pay.css}">
+        <script th:src="@{/js/pay.js}"></script>
+    </th:block>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div class="payPage">
+    <th:block th:fragment="payBlock">
+        <div class="wrapPay">
+            <div class="titleWrap">
+                <img class='firstQiwi' src="/payments/QIWI_Kassa.svg">
+                <img class='secondQiwi' src="/payments/icons.svg">
+            </div>
+            <div class="formWrap">
+                <div class="center">
+                    <span th:text="'1 rub = '+#{pages.shop.currencyPrice} +' ' +#{pages.shop.currency}"></span>
+                </div>
+                <div class="center">
+                    <input id="inputValue" value="50" type="number" min="0" max="10000">
+                    <select id="inputCurrency">
+                        <option value="RUB">RUB</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+                </div>
+                <div class="center">
+                    <input style="display: none;" id="inputFor" type="text" th:if="${donateFor}!=null"
+                           th:value="${donateFor.getId()}">
+                </div>
+                <div class="center">
+                    <textarea id="inputText" th:placeholder="#{pages.pay.textarea}"></textarea>
+                </div>
+                <div class="radioDiv">
+                    <label class="radio">
+                        <input id="inputAnonymously" type="checkbox" th:checked="false">
+                        <span th:text="#{pages.pay.anonymously}"></span>
+                    </label>
+                </div>
+                <div class="qiwiDiv" th:text="#{pages.pay.fill}" onclick="replenish()"></div>
+            </div>
+        </div>
+    </th:block>
+</div>
+</body>
+</html>

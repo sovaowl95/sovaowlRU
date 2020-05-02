@@ -1,0 +1,75 @@
+<div th:fragment="topMenuHeader" xmlns:th="http://www.thymeleaf.org">
+    <link rel="stylesheet" th:href="@{/css/topMenu.css}">
+    <script th:src="@{/js/topMenu.js}"></script>
+    <th:block th:include="fragments/flags :: flagsHeader"/>
+</div>
+<div th:fragment="landingTopMenu" xmlns:th="http://www.thymeleaf.org">
+    <div id="header">
+        <div id="topHeaderTimeline"
+             th:if="${@constants.getAdminTopMenuInfo() != null && @constants.getAdminTopMenuInfo().isBlank()==false} ">
+            <div th:utext="${@constants.getAdminTopMenuInfo()}"></div>
+            <div id="topHeaderTimelineClose" onclick="bodyChatTopCloseA()">✖</div>
+            <div id="bodyChatTopTextBeforeA"></div>
+        </div>
+        <div id="header_wrap">
+            <div class="showPopup">
+                <img alt="toggle Menu" src="/img/menu.png" onclick="toggleMenu()">
+            </div>
+            <img alt="owl" class="headerLogo" src="/img/owl.png" onclick="window.location='/'">
+            <img alt="monitor" class="headerLogo" src="/img/monitor.png" onclick="window.location='/'">
+            <div id="header_1">
+                <div class="header_item"><a href="/" th:text="#{menu.header.menu.translate}"></a></div>
+                <div class="header_item"><a href="/shop" th:text="#{menu.header.menu.shop}"></a></div>
+                <div class="header_item"><a href="/roadmap" th:text="#{menu.header.menu.roadmap}"></a></div>
+                <div class="header_item"><a href="/info" th:text="#{menu.header.menu.info}"></a></div>
+                <div class="header_item"><a href="/contacts" th:text="#{menu.header.menu.contacts}"></a></div>
+            </div>
+            <div id="header_2">
+                <div th:replace="fragments/flags :: flagsBody"></div>
+                <!--USER NOT NULL-->
+                <div class="header_item2" id="profileDropDownHeader" th:if="${user != null}">
+                    <div class="profileDropDownHeaderItem" id="profileDropDownNickname"
+                         th:text="${user.getNickname()}"></div>
+                    <div class="profileDropDownHeaderItem" id="profileDropDownAvatar">
+                        <img alt="avatar" src="#" th:src="'/avatars/' + ${user.getUserAvatar()}"/>
+                    </div>
+                    <div class="profileDropDownHeaderItem" id="profileDropDownToggle">&#9660;</div>
+                </div>
+                <!--USER NULL-->
+                <div class="header_item" th:unless="${user != null}">
+                    <a href="/login" th:text="#{menu.header.menu.login}"></a>
+                </div>
+            </div>
+        </div>
+        <!--todo: front переделать все размеры из процентов в vh vw-->
+        <div id="profileDropDown" th:if="${user != null}">
+            <div id="profileDropDownBody">
+                <div class="profileDropDownHeaderItem" id="profileDropDownMoney">
+                    <img alt="moneyBag" src="/img/money-bag.png">
+                    <div id="userMoney" th:text="${#numbers.formatInteger(user.getCoins(), 0, 'POINT')}"></div>
+                    <a href="/pay" target="_blank" style="height: 20px;"><img alt="plus" src="/img/plus.png"></a>
+                </div>
+                <div class="profileDropDownBodyItem" th:if="${userHaveStream}!=null"><a
+                        th:href="'/' + ${user.getNickname()}"
+                        th:text="#{menu.profile.dropdown.myStream}"></a></div>
+                <div class="profileDropDownBodyItem" th:if="${userHaveStream}!=null"><a href="/stream/settings"
+                                                                                        th:text="#{menu.profile.dropdown.myStreamSettings}"></a>
+                </div>
+                <div class="profileDropDownBodyItem"><a th:href="'/profile/' + ${user.getNickname()}"
+                                                        th:text="#{menu.profile.dropdown.profile}"></a></div>
+                <div class="profileDropDownBodyItem"><a href="/inventory"
+                                                        th:text="#{menu.profile.dropdown.inventory}"></a></div>
+                <div class="profileDropDownBodyItem"><a href="/profile/settings"
+                                                        th:text="#{menu.profile.dropdown.settings}"></a></div>
+                <div class="profileDropDownBodyItem"><a href="/friends" th:text="#{menu.profile.dropdown.friends}"></a>
+                </div>
+                <div class="profileDropDownBodyItem"><a href="/pay" target="_blank"
+                                                        th:text="#{menu.profile.dropdown.topUpAccount}"></a>
+                </div>
+                <div class="profileDropDownBodyItem"><a href="#" onclick="doLogout()"
+                                                        th:text="#{menu.profile.dropdown.quit}"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

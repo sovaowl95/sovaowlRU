@@ -1,0 +1,3 @@
+discord_ClientId: ${discord_ClientId}
+discord_ClientSecret: ${discord_ClientSecret}
+discord_BotToken: ${discord_BotToken}

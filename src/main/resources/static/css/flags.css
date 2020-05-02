@@ -1,0 +1,25 @@
+.flags {
+    display: flex;
+    flex-direction: row;
+    /*flex-wrap: wrap;*/
+    justify-content: center;
+    align-items: center;
+}
+
+.flags img {
+    width: 48px;
+    height: 48px;
+    padding: 5%;
+    margin: 0 10px;
+}
+
+.flagActive img{
+    background: lightgreen;
+    border-radius: 50%;
+}
+
+.flags > div > img:hover{
+    cursor: pointer;
+    transform: scale(1.25);
+}
+

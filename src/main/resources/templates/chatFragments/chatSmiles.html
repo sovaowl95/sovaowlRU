@@ -1,0 +1,79 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bodyChatSmilesPopUpBlock">
+    <div id="bodyChatSmilesPopUpBlock">
+        <th:block th:if="${user} != null">
+            <div id="bodyChatSmilesList1">
+                <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+                <!--/*@thymesVar id="smile" type="ru.sovaowltv.model.shop.Smile"*/-->
+                <!--/*@thymesVar id="smiles" type="java.util.List"*/-->
+                <th:block th:each="order: ${rarityOrder}">
+                    <div class="bodyChatTitle" th:text="${order.name()}" th:classappend="${order.name()}"></div>
+                    <div class="bodyChatSmilesWrapStyles">
+                        <th:block th:each="smile:${smiles}">
+                            <div class="tooltip" th:classappend="${order.name()} + ' ' + 'bodyChatSmilesStyle'"
+                                 th:if="${order.name()}==${smile.getRarity().name()}">
+
+                                <th:block th:if="${user.getSmiles().contains(smile)}">
+                                    <img class="smile smileFromWebsite" src="#" alt="smile"
+                                         th:src="'/smiles/'+${smile.getLink()}" th:title="${smile.getName()}">
+                                    <span class="tooltiptext" th:text="${smile.getName()}"></span>
+                                </th:block>
+
+                                <th:block th:unless="${user.getSmiles().contains(smile)}">
+                                    <img class="smile smileNotBought" src="/img/lock3.png" alt="locked">
+                                    <img class="smile" src="#" alt="smile"
+                                         th:src="'/smiles/'+${smile.getLink()}" th:title="${smile.getName()}">
+                                    <div class="tooltiptext">
+                                        <span style="display: none" class="tooltiptext"
+                                              th:text="${smile.getName()}"></span>
+                                        <img class="smile" alt="smile"
+                                             src="#" th:src="'/smiles/'+${smile.getLink()}"
+                                             th:title="${smile.getName()}">
+                                        <div class="left" th:text="${smile.getPrice()}"></div>
+                                        <div class="link" th:text="#{pages.chat.smiles.buy}"
+                                             th:onclick="'buySmile('+${smile.getId()}+', this)'"></div>
+                                    </div>
+                                </th:block>
+                            </div>
+                        </th:block>
+                    </div>
+                </th:block>
+            </div>
+
+            <div id="bodyChatSmilesList2" style="display: none">
+                <!--/*@thymesVar id="smile" type="ru.sovaowltv.model.chat.SavedSmile"*/-->
+                <div class="bodyChatSmilesWrapStyles">
+                    <th:block th:each="savedSmile:${user.getUserSettings().getSavedSmiles()}">
+                        <div class="tooltip COMMON bodyChatSmilesStyle">
+                            <th:block th:if="${savedSmile.getService() == 'twitch'}">
+                                <img src="#" alt="smile"
+                                     class="smile smileFromWebsite savedSmileFromWebsite"
+                                     th:alt="${savedSmile.getSmileName()}"
+                                     th:src="'https://static-cdn.jtvnw.net/emoticons/v1/'+${savedSmile.getSmileCode()} + '/3.0'"/>
+                                <span class="tooltiptext" th:text="${savedSmile.getSmileName()}"></span>
+                            </th:block>
+                            <th:block th:if="${savedSmile.getService() == 'gg'}">
+                                <img src="#" alt="smile"
+                                     class="smile smileFromWebsite savedSmileFromWebsite"
+                                     th:alt="${savedSmile.getSmileName()}"
+                                     th:src="'https:' + ${savedSmile.getSmileCode().replace('%','/')}"/>
+                                <span class="tooltiptext" th:text="${savedSmile.getSmileName()}"></span>
+                            </th:block>
+                        </div>
+                    </th:block>
+                    <div class="tooltip COMMON bodyChatSmilesStyle">
+                        <img id="addSmilesImgButton" alt="plus" class="smile" src="/img/plus.png" onclick="smiles()"/>
+                    </div>
+                </div>
+            </div>
+            <div class="bodyChatSmilesPopUpBottom">
+                <img alt="website" src="/img/owl.png" onclick="changeSmileTab('web')"/>
+                <img alt="save" src="/img/save.png" onclick="changeSmileTab('save')"/>
+            </div>
+        </th:block>
+    </div>
+</th:block>
+</body>
+</html>
+

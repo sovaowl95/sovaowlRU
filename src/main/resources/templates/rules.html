@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{loginForm.pageName}">Вход на сайт</title>
+    <link rel="icon" type="image/png" th:href="@{ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{login.css}">
+    <link rel="stylesheet" th:href="@{dropStyle.css}">
+    <th:block th:include="fragments/flags :: flagsHeader"/>
+    <th:block th:include="fragments/auth :: authHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<div>
+    <div>1. Приложение не несет ответственность за ваши действия.</div>
+    <div>2. Приложение не несет ответственность в случае утери токенов</div>
+    <div>3. Приложение не гарантирует работоспособность 24\7</div>
+</div>
+</body>
+</html>

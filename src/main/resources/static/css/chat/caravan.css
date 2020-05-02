@@ -1,0 +1,9 @@
+.grayCaravan {
+    filter: grayscale(100%);
+    cursor: unset;
+}
+
+
+.grayCaravanTitle{
+    cursor: unset;
+}

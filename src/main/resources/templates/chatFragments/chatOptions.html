@@ -1,0 +1,110 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bodyChatOptionsPopUpBlock">
+    <div id="bodyChatOptionsPopUpBlock">
+        <div id="bodyChatOptionsList">
+            <th:block th:if="${user} != null">
+                <div class='bodyChatOptionsStyleHeader'>
+                    <h1 th:text="#{pages.chat.options.chooseStyle}"></h1>
+                </div>
+                <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+                <!--/*@thymesVar id="style" type="ru.sovaowltv.model.shop.Style"*/-->
+                <th:block th:each="order: ${rarityOrder}">
+                    <div class="bodyChatTitle" th:text="${order.name()}" th:classappend="${order.name()}"></div>
+
+                    <div class="bodyChatOptionsStyleWrapStyles">
+                        <th:block th:each="style:${styles}">
+                            <th:block th:if="${style.getRarity().name()} == ${order.name()}">
+                                <div class='link bodyChatOptionsStyle' th:classappend="${order.name()}"
+                                     th:onclick="${user.getStyles().contains(style)}?'changeStyle(this)':'buyStyle(' + ${style.getId()} + ', this)'">
+                                    <img th:unless="${user.getStyles().contains(style)}" class="smile smileNotBought"
+                                         src="/img/lock3.png" alt="locked">
+                                    <div th:class="${style.getName()}" th:classappend="oneOfStyle"
+                                         th:style="${user.getUserSettings().getStyleId() == style.getId()}?'border-bottom: 1px solid;':''"
+                                         th:text="${style.getName()}">
+                                    </div>
+                                </div>
+                            </th:block>
+                        </th:block>
+                    </div>
+                </th:block>
+            </th:block>
+
+            <hr>
+
+            <!--CHOOSE PREMIUM TEXT-->
+            <div th:if="${user != null} and ${user.isPremiumUser()}">
+                <div class="bodyChatOptionsStyleHeader">
+                    <h1 th:text="#{pages.chat.options.premiumText}"></h1>
+                </div>
+                <div class="bodyChatOptionsPremChoose">
+                    <div>
+                        <label class="switch centered">
+                            <input type="checkbox" th:checked="${user.getUserSettings().isPremiumChat()}"
+                                   onclick='premText(this);'>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <!--CHOOSE SHOW TIME-->
+            <div class="bodyChatOptionsStyleHeader">
+                <h1 th:text="#{pages.chat.options.showTime}"></h1>
+            </div>
+            <div class="bodyChatOptionsShowMessageTimeChoose">
+                <label class="switch centered">
+                    <input type="checkbox"
+                           th:checked="${user} != null ? ${user.getUserSettings().isShowTime()}:'false'"
+                           onclick='showMessageTimeFunc(this);'>
+                    <span class="slider round"></span>
+                </label>
+            </div>
+            <hr>
+
+            <!--CHOOSE SMILE SIZE-->
+            <div class="bodyChatOptionsStyleHeader">
+                <h1 th:text="#{pages.chat.options.smilesSize}"></h1>
+            </div>
+            <div class="smileTestWrapper">
+                <div class="bodyChatOptionsSmilesSize">
+                    <input id="smileSizeValue" th:type="number"
+                           th:value="${user} == null ? '28' :${user.getUserSettings().getSmileSize()}">
+                </div>
+                <div class="wrapperButtons">
+                    <button onclick="changeSmilesSize()"
+                            th:text="#{pages.chat.options.smilesSize.ok}"></button>
+                    <button onclick="restoreSmilesSize()"
+                            th:text="#{pages.chat.options.smilesSize.restore}"></button>
+                </div>
+                <div style="text-align: center;">
+                    <img alt="testSmile" id="smileSizeValueTest" class="smile" src="/smiles/AyaLucio.png" style="margin: 5px">
+                </div>
+            </div>
+
+            <hr>
+
+            <!--CHOOSE TEXT SIZE-->
+            <div class="bodyChatOptionsStyleHeader">
+                <h1 th:text="#{pages.chat.options.textSize}"></h1>
+            </div>
+            <div class="smileTestWrapper">
+                <div class="bodyChatOptionsSmilesSize">
+                    <input id="textSizeValue" th:type="number"
+                           th:value="${user} != null ?${user.getUserSettings().getTextSize()} : '16'">
+                </div>
+                <div class="wrapperButtons">
+                    <button onclick="changeTextSize()"
+                            th:text="#{pages.chat.options.textSize.ok}"></button>
+                    <button onclick="restoreTextSize()"
+                            th:text="#{pages.chat.options.textSize.restore}"></button>
+                </div>
+            </div>
+            <div style="height: 5px; width: 100%"></div>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
+

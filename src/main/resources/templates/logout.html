@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{loginForm.pageName}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <script th:src="@{/js/logout.js}"></script>
+    <th:block th:include="fragments/flags :: flagsHeader"/>
+    <th:block th:include="fragments/auth :: authHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+    <meta th:name="secTokenState" th:content="${secTokenState}">
+</head>
+<body>
+<div id="wrap">
+    <div id="regForm">
+        <div class="formTitle" th:text="#{logoutForm.form.name}"></div>
+        <div th:replace="fragments/flags :: flagsBody"></div>
+        <div class="button" onclick="window.location='/'" th:text="#{logoutForm.form.main}"></div>
+        <div class="button" onclick="doLogout()" th:text="#{logoutForm.form.name}"></div>
+        <div class="buttonHelper"></div>
+    </div>
+</div>
+</body>
+</html>

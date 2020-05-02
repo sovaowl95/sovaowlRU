@@ -1,0 +1,57 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{loginForm.pageName}">Вход на сайт</title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <script th:src="@{/js/authLogin.js}"></script>
+    <th:block th:include="fragments/flags :: flagsHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+    <meta th:name="secTokenState" th:content="${secTokenState}">
+</head>
+<body>
+<div id="wrap">
+    <div id="regForm">
+        <div class="formTitle" th:text="#{regForm.FormName} + ' ' + ${from}"></div>
+        <div th:replace="fragments/flags::flagsBody"></div>
+        <div class="formHelp" th:text="#{regForm.label.loginoauth}"></div>
+        <input type="text" th:placeholder="#{regForm.placeholder.login}" th:value="${preferedNick}!=null?${preferedNick}:''">
+        <p class="err" id="reg_failed_login1" th:text="#{regForm.err.wrongLogin1}"></p>
+        <p class="err" id="reg_failed_login2" th:text="#{regForm.err.wrongLogin3}"></p>
+        <th:block th:if="${needEmail} == true">
+            <div class="formHelp" th:text="#{regForm.label.email}">Email:</div>
+            <input id="emailInputField" type="email" th:placeholder="#{regForm.placeholder.email}" placeholder="Email">
+            <p class="err" id="reg_failed_email1" th:text="#{regForm.err.wrongEmail1}">Неверный формат почты</p>
+            <p class="err" id="reg_failed_email2" th:text="#{regForm.err.wrongEmail2}">Недопустимый или уже используемый
+                email</p>
+        </th:block>
+        <div class="gender">
+            <div class="formHelp" th:text="#{regForm.label.gender}"></div>
+            <div class="innerGender">
+                <label class="radio"><input type="radio" name="gender" value="male"><span
+                        th:text="#{regForm.placeholder.male}"></span></label>
+            </div>
+            <div class="innerGender">
+                <label class="radio"><input type="radio" name="gender" value="female"><span
+                        th:text="#{regForm.placeholder.female}"></span></label>
+            </div>
+        </div>
+        <p class="err" id="reg_failed_gender2" th:text="#{regForm.err.wrongGender2}"></p>
+        <div class="gender innerGender">
+            <label class="radio"><input type="checkbox" name="agreeWithRules"><span
+                    th:utext="#{regForm.placeholder.agreeWithRules}"></span></label>
+        </div>
+        <p class="err" id="reg_failed_rules2" th:text="#{regForm.err.wrongRules2}"></p>
+        <div class="button" onclick="doReg()" th:text="#{regForm.registration}"></div>
+        <div class="buttonHelper"></div>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var link = [[${link}]];
+    /*]]>*/
+</script>
+</body>
+</html>

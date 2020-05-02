@@ -1,0 +1,64 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="chatHead">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <title th:text="${stream.getUser().getNickname()} + ' ' + #{pages.chat.title}"></title>
+
+    <th:block th:include="fragments/headerPartsChat::libs"/>
+    <th:block th:include="fragments/headerPartsChat::css"/>
+    <th:block th:include="fragments/headerPartsChat::js"/>
+
+    <script th:src="@{/js/chat/buyOnFlight.js}"></script>
+    <script th:src="@{/js/chat/smiles.js}"></script>
+
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+    <th:block th:include="pay::payHeader"/>
+</head>
+<body style="height: calc(100vh - 10px)">
+<th:block th:fragment="chatBody">
+    <th:block th:include="chatFragments/top::bodyChatTop"/>
+
+    <div id="bodyChatWrap">
+        <div id="bodyChatMain"></div>
+    </div>
+
+    <th:block th:include="chatFragments/streamerName::bodyChatStreamerNicknameBlock"/>
+
+    <div id="bodyChatDonationPopUpBlock">
+        <th:block th:include="pay::payBlock"/>
+    </div>
+
+    <th:block th:include="chatFragments/chatSmiles::bodyChatSmilesPopUpBlock"/>
+    <th:block th:include="chatFragments/chatOptions::bodyChatOptionsPopUpBlock"/>
+    <th:block th:include="chatFragments/input::bodyChatBottomInput"/>
+
+    <script th:inline="javascript" th:if="${user != null}">
+        /*<![CDATA[*/
+        var isPublicChat = false;
+        var isGuest = false;
+        var chatScrollVisibility = "auto";
+        var userName = [[${user.getNickname()}]];
+        var streamerName = [[${stream.getUser().getNickname()}]];
+        var showMessageTime = [[${user.getUserSettings().isShowTime()}]];
+        let smileSize = [[${user.getUserSettings().getSmileSize()}]];
+        let fontSize = [[${user.getUserSettings().getTextSize()}]];
+        /*]]>*/
+    </script>
+    <script th:inline="javascript" th:unless="${user != null}">
+        /*<![CDATA[*/
+        var isPublicChat = true;
+        var isGuest = true;
+        var chatScrollVisibility = "auto";
+        var userName = [[${stream.getUser().getNickname()}]];
+        var streamerName = [[${stream.getUser().getNickname()}]];
+        var showMessageTime = false;
+        let smileSize = 28;
+        let fontSize = 16;
+        /*]]>*/
+    </script>
+
+    <th:block th:include="fragments/chatJsInput::jsInput"/>
+</th:block>
+</body>
+</html>

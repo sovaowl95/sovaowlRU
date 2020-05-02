@@ -1,0 +1,12 @@
+.container{
+    width: 75%;
+    height: calc(100vh - 60px);
+
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-content: center;
+    align-items: center;
+    margin: auto;
+}

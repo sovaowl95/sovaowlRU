@@ -1,0 +1,393 @@
+/*!*---CHAT---*!*/
+#bodyChat {
+    background-color: #222222;
+    height: 100%;
+    max-width: 25%;
+    /*max-width: 300px;*/
+    flex-grow: 1;
+    flex-basis: 25%;
+    position: relative;
+}
+
+#bodyChatTop {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    z-index: 2;
+    color: white;
+}
+
+#bodyChatTopClose, #bodyChatTopOpen {
+    display: block;
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    z-index: 4;
+    width: 20px;
+    height: 20px;
+    background-color: #222222;
+}
+
+
+#bodyChatTopClose {
+    background-color: #353535;
+}
+
+#bodyChatTopOpen {
+    display: none;
+    background: unset;
+}
+
+#bodyChatTopText {
+    display: block;
+    padding: 5px 30px 5px 5px;
+    background: #353535;
+    width: 100%;
+    margin: 0 5px 5px 0;
+}
+
+#bodyChatTopTextBefore {
+    width: 50%;
+    border-bottom: 2px solid #ffffff;
+    margin-top: -7px;
+}
+
+
+/*chatPublic.css*/
+#bodyChatWrap {
+    height: calc(100% - 65px);
+    position: relative;
+    padding-right: 5px;
+    overflow: scroll;
+}
+
+#bodyChatMain {
+
+}
+
+#bodyChatScrollNewMessages, #bodyChatScrollEnableScroll {
+    height: 25px;
+    width: 100%;
+    position: absolute;
+    bottom: 45px;
+    display: none;
+    background-color: rgba(77, 77, 77, 0.75);
+    text-align: center;
+    cursor: pointer;
+    z-index: 1;
+    color: white;
+    line-height: 25px;
+}
+
+#bodyChatStreamerNicknameBlock {
+    display: flex;
+    justify-content: space-between;
+}
+
+#bodyChatBottomInput {
+    position: relative;
+    border-top: 1px solid #d0cecd;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #303030;
+    height: 55px;
+    overflow: hidden;
+    width: 100%;
+}
+
+#textareaIDWrap {
+    position: absolute;
+    max-width: calc(100% - 30px - 21px - 21px - 21px - 10px); /*21px - картинки 30px - margin 10px - собственный margin*/
+    flex-basis: calc(100% - 30px - 21px - 21px - 21px - 10px); /*21px - картинки 30px - margin 10px - собственный margin*/
+    min-width: calc(100% - 30px - 21px - 21px - 21px - 10px);
+    height: 50px;
+    background-color: #303030;
+    color: white;
+    /*padding: 5px;*/
+    left: 5px;
+    top: 2px;
+    right: 5px;
+    bottom: 3px;
+    overflow: scroll;
+    z-index: 0;
+}
+
+#textareaID {
+    height: 50px;
+    background-color: #303030;
+    color: white;
+
+    padding: 5px;
+}
+
+#textareaIDWrap:focus-within {
+    outline: none;
+}
+
+#textareaID:focus {
+    outline: none;
+}
+
+#textareaID:empty:before {
+    position: relative;
+    content: attr(data-text);
+    color: #5a5a5a;
+    /*font-size: 12px;*/
+}
+
+#textareaID img {
+    display: inline !important;
+    max-width: 30px;
+    max-height: 30px;
+}
+
+#bodyChatInputSmiles {
+    margin-right: 10px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+#bodyChatInputOptions {
+    margin-right: 10px;
+    cursor: pointer;
+
+}
+
+#bodyChatInputSend {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#bodyChatBottomInput img {
+    display: block;
+    width: 21px;
+    height: 21px;
+}
+
+#streamerName {
+    float: left;
+    color: white;
+    cursor: pointer;
+}
+
+#streamerDonate {
+    margin-right: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+#streamerArrow {
+    float: left;
+    background: url('/img/arrow.png') no-repeat center;
+    background-size: 20px 15px;
+    width: 35px;
+    height: 20px;
+}
+
+.imageFromUser {
+    display: block;
+    margin: auto;
+    width: auto;
+    height: auto;
+    max-height: 30vh;
+    max-width: 90%;
+    cursor: pointer;
+}
+
+.ytFromUser {
+    display: block;
+    margin: auto;
+    width: auto;
+    height: auto;
+    max-height: 30vh;
+    max-width: 90%;
+}
+
+.coubFromUser {
+    display: block;
+    margin: auto;
+    width: auto;
+    height: auto;
+    max-height: 30vh;
+    max-width: 90%;
+}
+
+.videoFromUser {
+    display: block;
+    margin: auto;
+    width: auto;
+    height: auto;
+    max-height: 30vh;
+    max-width: 90%;
+}
+
+.popUpFullScreen {
+    display: block;
+    position: fixed;
+    width: auto;
+    max-height: 90%;
+    /*height: 700px;*/
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 999;
+}
+
+.shtora {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: #222222;
+    opacity: 0.9;
+    z-index: 998;
+}
+
+.systemMessage {
+    padding: 5px;
+    color: #caf7ff;
+}
+
+.commandMessage {
+    padding: 5px;
+    color: #00dada;
+}
+
+.caravanMessage {
+    padding: 5px;
+    color: #ffb300;
+}
+
+.errMessage {
+    padding: 5px;
+    color: #ff5463;
+}
+
+.goodMessage {
+    padding: 5px;
+    color: lightgreen;
+}
+
+.systemSpamInfo {
+    padding: 5px;
+    color: #f7fda3;
+}
+
+
+.premiumExpiredIn {
+    padding: 5px;
+    color: #ff8400;
+}
+
+.donationMessage {
+    padding: 5px;
+    color: #000000;
+
+    /*background-color: #b0b8aa;*/
+    background-color: #efefcc;
+    margin: 10px auto;
+
+    width: 95%;
+}
+
+.donationMessage {
+    position: relative;
+    /*margin: 300px auto 0;*/
+    /*width: 500px;*/
+    /*height: 250px;*/
+    background: linear-gradient(0deg, #000, #272727);
+}
+
+.donationMessage:before, .donationMessage:after {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094,
+    #0000ff, #00ff00, #ffff00, #ff0000);
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: steam 20s linear infinite;
+}
+
+@keyframes steam {
+    0% {
+        background-position: 0 0;
+    }
+    50% {
+        background-position: 400% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+}
+
+.donationMessage:after {
+    filter: blur(50px);
+}
+
+.donationMessage > .textMessage {
+    color: white;
+    text-align: center;
+}
+
+.donationMessageBag {
+    display: block;
+    height: 25px;
+    width: auto;
+    vertical-align: bottom;
+    margin: 5px auto;
+}
+
+#bodyChatBottomInputTimeout {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    background-color: #222222;
+    height: 100%;
+    z-index: 999;
+}
+
+.spanTime {
+    color: #caf7ff;
+}
+
+.spanTime2 {
+    color: white;
+}
+
+
+.wrapperButtons {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.wrapperButtons button {
+    background-color: #363636;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    border: 0 solid #ffffff;
+    border-bottom-width: 1px;
+    margin: 5px 10px;
+}
+
+.premiumImg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: top
+}

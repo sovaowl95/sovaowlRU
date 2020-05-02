@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.profile.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/feedback.css}">
+    <script th:src="@{/js/feedback.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<th:block th:fragment="feedback">
+    <div class="feedbackWrap">
+        <h1 th:text="#{pages.feedback.header}"></h1>
+        <div th:text="#{pages.feedback.theme}"></div>
+        <input type="text" size="45">
+        <div th:text="#{pages.feedback.text}"></div>
+        <textarea cols="45"></textarea>
+        <button onclick="send()" th:text="#{pages.feedback.button}"></button>
+    </div>
+</th:block>
+</body>
+</html>

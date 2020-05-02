@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.info.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/news.css}">
+    <script th:src="@{/js/updatePage.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id="updatePage">
+    <th:block th:each="newsEl:${news}">
+        <div class="updateBlock"
+             th:if="${newsEl.publicated} OR (${user != null and #sets.contains(user.roles, T(ru.sovaowltv.model.user.Role).ADMIN)})">
+            <hr>
+            <div class="updateTitle" th:text="${newsEl.getTitle()}">UPDATE v2.0</div>
+            <hr>
+            <div class="updateDate"
+                 th:text="${newsEl.getTime().getDayOfMonth() + '.'+newsEl.getTime().getMonthValue() +'.'+newsEl.getTime().getYear()}">
+            </div>
+            <th:block th:each="element:${newsEl.getElements()}">
+                <div class="updateCategory"
+                     th:text="#{'pages.news.enum.name.'+${element.getCategory().name()}}"></div>
+                <th:block th:each="text:${element.text}">
+                    <div class="updateItem" th:text="${text}"></div>
+                </th:block>
+            </th:block>
+        </div>
+    </th:block>
+</div>
+</body>
+</html>

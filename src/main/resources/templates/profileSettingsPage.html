@@ -1,0 +1,41 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.profileSettings.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/profileSettingsPage.css}">
+    <link rel="stylesheet" th:href="@{/css/tooltip.css}">
+    <script th:src="@{/js/profileSettingsPage.js}"></script>
+    <script th:src="@{/js/requestUtil.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <th:block th:include="fragments/linkAccounts :: linkHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+    <meta th:name="secTokenState" th:content="${secTokenState}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div class="profileSettingsPage">
+    <th:block th:include="fragments/linkAccounts::linkBodyBody"/>
+
+    <div class="block">
+        <div class="blockHeader" th:text="#{icons.header}"></div>
+        <div style="display: flex; margin-top: 10px;">
+            <div th:id="${ach.name()}"
+                 th:class="'tooltip ' + ${@iconsUtil.doesUserHaveIcon(user, ach)?'selected':'selectable'}"
+                 onclick="toggleIcon(this)" th:each="ach:${user.getAchievements()}">
+                <img alt="img-link" th:src="${ach.getImgLink()}" src="#">
+                <span class="tooltiptext"
+                      th:utext="#{'achievements.'+${ach.name()} + '.name'}+ '<hr>' + #{'achievements.'+${ach.name()} + '.description'}"></span>
+            </div>
+        </div>
+        <br>
+        <div class="buttonWrap" th:if="${!user.getIcons().isEmpty()}">
+            <div class="button" onclick="revalidateSelectedIcons()" th:text="#{icons.button.revalidate}"></div>
+            <div class="button" onclick="clearSelectedIcons()" th:text="#{icons.button.clear}"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

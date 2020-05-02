@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="bodyChatBottomInput">
+    <div id="bodyChatBottomInput">
+        <th:block th:if="${user != null}">
+            <div id="textareaIDWrap">
+                <div id="textareaID" th:data-text="#{pages.chat.textarea.placeholder}" contenteditable="true"></div>
+            </div>
+        </th:block>
+        <th:block th:if="${user == null}">
+            <div style="margin: auto" th:text="#{pages.chat.textarea.anon}"></div>
+        </th:block>
+        <div id="bodyChatInputSmiles">
+            <img alt="smiles" src="/img/smiles.png"/>
+        </div>
+        <div id="bodyChatInputOptions">
+            <img alt="gear" src="/img/gear.png"/>
+        </div>
+        <div id="bodyChatInputSend">
+            <img alt="send" src="/img/play.png"/>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>
+

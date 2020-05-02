@@ -1,0 +1,12 @@
+gg_clientId: ${gg_clientId}
+gg_clientSecret: ${gg_clientSecret}
+gg_redirectUri: https://sovaowl.ru/api/auth/gg
+
+gg_keysLink: https://api2.goodgame.ru/oauth
+
+gg_wssip: wss://chat-1.goodgame.ru/chat2/
+gg_wssport: 8081
+
+gg_SmilesLink: https://api2.goodgame.ru/smiles
+gg_SmilesUnparsed: SmilesFromGGUnparsed.txt
+gg_SmilesParsed: SmilesFromGGParsed.txt

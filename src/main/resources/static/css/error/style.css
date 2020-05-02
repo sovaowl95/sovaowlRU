@@ -1,0 +1,10 @@
+.errorPageBlock {
+    display: block;
+    margin: auto;
+}
+
+.errorPageText {
+    font-size: calc(36px + .5vw);
+    text-align: center;
+    margin: 15px;
+}

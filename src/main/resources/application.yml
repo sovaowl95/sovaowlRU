@@ -1,0 +1,70 @@
+spring:
+  datasource:
+    url: ${db_url}
+    username: ${db_username}
+    password: ${db_password}
+    continue-on-error: true
+    hikari:
+      schema: ${db_schema}
+  http:
+    encoding:
+      force: true
+      enabled: true
+      charset: utf-8
+  jpa:
+    show-sql: false
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  mvc:
+    locale-resolver: accept_header
+  messages:
+    basename: locales.messages
+    encoding: UTF-8
+  resources:
+    cache:
+      cachecontrol:
+        no-store: false
+        must-revalidate: true
+        no-cache: false
+        cache-public: true
+        max-age: 0
+        no-transform: true
+    chain:
+      cache: true
+      strategy:
+        content:
+          enabled: true
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+server:
+  error:
+    include-stacktrace: never
+  port: 443
+  ssl:
+    enabled: true
+    key-alias: ${cert_alias}
+    key-store: ${cert_path}
+    key-store-password: ${cert_password}
+  servlet:
+    session:
+      timeout: 30d
+      cookie:
+        http-only: true
+        secure: true
+logging:
+  level:
+    web: debug
+    root: info
+    o.apache: debug
+    org.hibernate: info
+    org.springframework.web: DEBUG
+    ru.sovaowltv: debug
+    ru.sovaowltv.contoller.website: debug
+    ru.sovaowltv.service.io: debug
+    ru.sovaowltv.service.user.UsersRepositoryHandler: debug
+  file:
+    name: logs/log.log

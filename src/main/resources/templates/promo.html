@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.info.redirection.promo}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/info.css}">
+    <link rel="stylesheet" th:href="@{/css/promo.css}">
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id="infoPage">
+    <div>
+        <div class="promo-text" th:text="#{pages.promo.text.intro.a}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.intro.b}"></div>
+        <div class="promo-text"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.intro.c}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.intro.d}"></div>
+    </div>
+    <div class="promo-block">
+        <div class="promo-title" th:text="#{pages.promo.text.dev.title}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.dev.step1}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.dev.step2}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.dev.step3}"></div>
+    </div>
+    <div class="promo-block">
+        <div class="promo-title" th:text="#{pages.promo.text.already.title}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.already.a}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.already.b}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.already.c}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.already.d}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.already.e}"></div>
+        <div class="promo-text" th:text="#{pages.promo.text.already.f}"></div>
+    </div>
+    <div class="promo-block">
+        <div class="promo-title" th:text="#{pages.promo.text.bug.title}"></div>
+        <div class="promo-text" th:utext="#{pages.promo.text.bug.text}"></div>
+    </div>
+    <div class="promo-block">
+        <div class="promo-title" th:text="#{pages.promo.text.partOfProject.title}"></div>
+        <div class="promo-text" th:utext="#{pages.promo.text.partOfProject.text}"></div>
+    </div>
+</div>
+</body>
+</html>

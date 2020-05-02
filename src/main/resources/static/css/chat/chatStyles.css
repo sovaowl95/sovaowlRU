@@ -1,0 +1,100 @@
+/*ANCIENT*/
+.Neon {
+    color: rgba(255, 255, 255, 1);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+
+    text-shadow: 0 0 5px rgb(250, 0, 255),
+    0 0 10px rgb(255, 0, 0);
+}
+
+.Rust {
+    /*background: url(https://assets2.razerzone.com/images/overwatch-landing/ce1763642875fa9baf40236130a584c7-overwatch-landing-header-bg.jpg);*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: center;*/
+    /*background-size: cover;*/
+    color: rgba(255, 255, 255, 1);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+
+    text-shadow: 0 0 5px rgb(255, 131, 60),
+    0 0 5px rgb(95, 25, 17),
+    0 0 5px rgb(136, 98, 39);
+}
+
+/*LEGENDARY*/
+
+.rainbow {
+    background: linear-gradient(60deg, #e05252 0%, #99e052 25%, #52e0e0 50%, #9952e0 75%, #e05252 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
+.flower {
+    color: #fff;
+    background: url(https://st3.depositphotos.com/1855397/18449/i/1600/depositphotos_184492990-stock-photo-saturated-colorful-bright-background-macro.jpg) no-repeat center center;
+    background-size: cover;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    font-weight: 900;
+}
+
+.flame {
+    color: white;
+    text-shadow: -3px 3px 5px #ff0000,
+    3px 0 5px #ff8700,
+    3px -3px 5px #ffbe00;
+}
+
+/*EPIC*/
+.eightBit {
+    color: rgba(255, 255, 0, 1);
+    text-shadow: 2px 2px 2px rgba(255, 0, 0, 1);
+}
+
+.brokenRainbow {
+    color: white;
+    background: rgba(255, 0, 0, 1);
+    background: -moz-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(255, 234, 0, 0.75) 27%, rgba(74, 253, 0, 0.53) 51%, rgba(51, 255, 0, 0.52) 54%, rgba(38, 0, 255, 0.42) 82%, rgba(255, 38, 0, 0.35) 100%);
+    background: -webkit-gradient(
+            linear, left top, right top,
+            color-stop(0%, rgba(255, 0, 0, 1)),
+            color-stop(27%, rgba(255, 234, 0, 0.75)),
+            color-stop(51%, rgba(74, 253, 0, 0.53)),
+            color-stop(54%, rgba(51, 255, 0, 0.52)),
+            color-stop(82%, rgba(38, 0, 255, 0.42)),
+            color-stop(100%, rgba(255, 38, 0, 0.35))
+    );
+    background: -webkit-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(255, 234, 0, 0.75) 27%, rgba(74, 253, 0, 0.53) 51%, rgba(51, 255, 0, 0.52) 54%, rgba(38, 0, 255, 0.42) 82%, rgba(255, 38, 0, 0.35) 100%);
+    background: -o-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(255, 234, 0, 0.75) 27%, rgba(74, 253, 0, 0.53) 51%, rgba(51, 255, 0, 0.52) 54%, rgba(38, 0, 255, 0.42) 82%, rgba(255, 38, 0, 0.35) 100%);
+    background: -ms-linear-gradient(left, rgba(255, 0, 0, 1) 0%, rgba(255, 234, 0, 0.75) 27%, rgba(74, 253, 0, 0.53) 51%, rgba(51, 255, 0, 0.52) 54%, rgba(38, 0, 255, 0.42) 82%, rgba(255, 38, 0, 0.35) 100%);
+    background: linear-gradient(to right, rgba(255, 0, 0, 1) 0%, rgba(255, 234, 0, 0.75) 27%, rgba(74, 253, 0, 0.53) 51%, rgba(51, 255, 0, 0.52) 54%, rgba(38, 0, 255, 0.42) 82%, rgba(255, 38, 0, 0.35) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0000', endColorstr='#ff2600', GradientType=1);
+}
+
+/*RARE*/
+.orange {
+    color: orange;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.lightGreen {
+    color: #7cb737;
+}
+
+/*COMMON*/
+.blue {
+    color: dodgerblue;
+}
+
+.pink {
+    color: pink;
+}
+
+.white {
+    color: white;
+}

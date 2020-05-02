@@ -1,0 +1,68 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.info.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/info.css}">
+    <link rel="stylesheet" th:href="@{/css/shop.css}">
+    <script th:src="@{/js/info.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+</head>
+
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id="infoPage">
+    <div>
+        <div class="info-header-additional">
+            <a href="/updates" th:text="#{pages.info.redirection.updates}"></a>
+            <a href="/commands" th:text="#{pages.info.redirection.commands}"></a>
+            <a href="/promo" th:text="#{pages.info.redirection.promo}"></a>
+        </div>
+        <div style="height: 10px"></div>
+        <hr>
+        <div th:text="#{pages.info.text.a}"></div>
+        <img alt="facepalm" id="facepalm" th:src="@{/info/facepalm.jpg}" src="/info/facepalm.jpg">
+        <hr>
+        <div th:text="#{pages.info.text.b1}+' '+${user != null? user.getNickname(): 'Guest'}+#{pages.info.text.b2}"></div>
+        <div th:utext="#{pages.info.text.c}"></div>
+        <div th:utext="#{pages.info.text.d}"></div>
+    </div>
+
+    <div class="row">
+        <a href="#" onclick="show(1)" style="border: none;">
+            <div>
+                <img class="rowImg" src="/img/streamer.png">
+                <div style="display: inline" th:text="#{pages.info.text.streamer}"></div>
+            </div>
+        </a>
+        <a href="#" onclick="show(2)" style="border: none;">
+            <div>
+                <img class="rowImg" src="/img/spectator.png">
+                <div style="display: inline" th:text="#{pages.info.text.spectator}"></div>
+            </div>
+        </a>
+    </div>
+
+    <div class="content">
+        <ul>
+            <li th:text="#{pages.info.text.streamer.a}"></li>
+            <li th:text="#{pages.info.text.streamer.b}"></li>
+            <li th:text="#{pages.info.text.streamer.c}"></li>
+            <li th:text="#{pages.info.text.streamer.d}"></li>
+            <li th:text="#{pages.info.text.streamer.e}"></li>
+            <li th:text="#{pages.info.text.streamer.f}"></li>
+            <li th:text="#{pages.info.text.streamer.g}"></li>
+        </ul>
+    </div>
+    <div class="content">
+        <ul>
+            <li th:text="#{pages.info.text.spectator.a}"></li>
+            <li th:text="#{pages.info.text.spectator.b}"></li>
+            <li th:text="#{pages.info.text.spectator.c}"></li>
+            <li th:text="#{pages.info.text.spectator.d}"></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

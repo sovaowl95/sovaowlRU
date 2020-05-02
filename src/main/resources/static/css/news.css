@@ -1,0 +1,44 @@
+#updatePage {
+    width: 75%;
+    margin: 15px auto;
+    font-size: 24px;
+    text-indent: 1.5em;
+}
+
+.updateBlock {
+
+}
+
+.updateTitle, .updateDate, .updateCategory{
+    font-size: 36px;
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.updateTitle {
+    display: inline-block;
+}
+
+.updateDate {
+    display: inline-block;
+}
+
+.updateList {
+
+}
+
+.updateCategory {
+    margin-top: 10px;
+}
+
+.updateItem {
+    display: list-item;
+    list-style-type: disc;
+    font-size: 16px;
+}
+
+hr{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

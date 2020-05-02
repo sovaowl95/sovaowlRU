@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="websiteStreamSettings">
+    <div class="content" style="display: none">
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.chatDailyInfo}"></div>
+            <div class="block">
+                <img id="streamChatDailyInfoImg" src="/img/edit.png"
+                     onclick="changeChatDailyInfo(this.parentNode)">
+                <input id="streamChatDailyInfoInput" class="input" th:value="${stream.getChatDailyInfo()}">
+                <div id="streamChatDailyInfoDiv" th:text="${stream.getChatDailyInfo()}"></div>
+                <img id="streamChatDailyInfoSuccess" class="img success" src="/img/success.png"
+                     onclick="confirmChangeChatDailyInfo(this.parentNode)">
+            </div>
+        </div>
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.name}"></div>
+            <div class="block">
+                <img id="streamNameImg" src="/img/edit.png"
+                     onclick="changeStreamName(this.parentNode)">
+                <input id="streamNameInput" class="input" th:value="${stream.getStreamName()}">
+                <div id="streamNameDiv" th:text="${stream.getStreamName()}"></div>
+                <img id="streamNameSuccess" class="img success" src="/img/success.png"
+                     onclick="confirmChangeStreamName(this.parentNode)">
+            </div>
+        </div>
+        <div class="streamOptions">
+            <div class="blockHeader" th:text="#{pages.streamSettings.set.game}"></div>
+            <div class="block">
+                <img id="streamGameImg" src="/img/edit.png"
+                     onclick="changeStreamGame(this.parentNode)">
+                <input id="streamGameInput" class="input" th:value="${stream.getGame()}">
+                <div id="streamGameDiv" th:text="${stream.getGame()}"></div>
+                <img id="streamGameSuccess" class="img success" src="/img/success.png"
+                     onclick="confirmChangeStreamGame(this.parentNode)">
+            </div>
+        </div>
+    </div>
+</th:block>
+</html>

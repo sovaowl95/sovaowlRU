@@ -1,0 +1,222 @@
+#body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: calc(100% - 60px - 10px);
+    width: 100%;
+    flex-grow: 1;
+}
+
+#bodyPlayer {
+    height: 100%;
+    flex-grow: 3;
+}
+
+#bodyPlayerTop {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    margin: auto 10px;
+}
+
+#bodyPlayerTopRight, #bodyPlayerTopLeft {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+#bodyPlayerTopRight div, #bodyPlayerTopLeft div {
+    display: flex;
+    align-items: center;
+    margin: 0 5px;
+    padding: 10px;
+    background-color: #4d4d4d;
+    height: 25px;
+    cursor: pointer;
+}
+
+#bodyPlayerMiddle {
+    position: relative;
+    height: calc(100% - 55px - 30px);
+}
+
+#bodyPlayerMiddle iframe {
+    display: none;
+    width: 100%;
+    height: 100%;
+}
+
+#playerSelector {
+    display: none;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 30px;
+    transform: scale(1);
+    transition: all .2s ease-out;
+    z-index: 10;
+    /*outline: 1px solid red;*/
+}
+
+
+#playerSelector:hover {
+    margin-top: 15px;
+    transform: scale(2.5);
+    transition: all .2s ease-in-out;
+    /*outline: 1px solid red;*/
+}
+
+#playerSelector img {
+    max-height: calc(100% - 10px);
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+#playerSelector img:hover {
+    border: 1px solid grey;
+    border-radius: 5px;
+    background-color: #3d3d3d;
+}
+
+#playerSelectorSecond {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    transform: scale(1);
+    transition: all .2s ease-out;
+    z-index: 10;
+}
+
+#playerSelectorSecond img:hover {
+    margin-top: 15px;
+    transform: scale(1.2);
+    transition: all .2s ease-in-out;
+}
+
+#playerSelectorSecond img {
+    width: 35%;
+    margin: 25px;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all .2s ease-out;
+}
+
+
+#bodyPlayerBottom {
+    background-color: #222222;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    flex-direction: row;
+    height: 55px;
+
+    margin: auto 25px;
+}
+
+/*---PLAYER_RIGHT---*/
+#bodyPlayerBottomRight {
+    display: block;
+    margin: auto 0 auto auto;
+}
+
+#bodyPlayerBottomRight div {
+    display: inline-block;
+    cursor: pointer;
+}
+
+#bodyPlayerBottomRight div img {
+    display: block;
+    height: 28px;
+    width: 28px;
+}
+
+/*#bodyPlayerBottomRightCinema {*/
+/*cursor: pointer;*/
+/*}*/
+
+/*#bodyPlayerBottomRightCinema img {*/
+/*display: block;*/
+/*height: 28px;*/
+/*width: 28px;*/
+/*}*/
+
+/*---PLAYER_LEFT---*/
+#bodyPlayerBottomLeft {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#bodyPlayerBottomLeftDescription {
+    display: block;
+    margin-left: 10px;
+    color: #ffffff;
+}
+
+#bodyPlayerBottomLeftAvatar {
+    display: block;
+}
+
+#bodyPlayerBottomLeftAvatar img {
+    display: block;
+    height: 28px;
+    width: 28px;
+    border: 1px solid white;
+    border-radius: 50%;
+}
+
+/*#bodyPlayerBottomLeftStream, #bodyPlayerBottomLeftNick {*/
+/*    text-overflow: ellipsis;*/
+/*}*/
+
+#bodyPlayerTop {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    margin: auto 10px;
+}
+
+#bodyPlayerTopLeft {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    width: 33%;
+}
+
+#playerSelector {
+    display: none;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    height: 30px;
+    transform: scale(1);
+    transition: all .2s ease-out;
+    z-index: 10;
+    /*outline: 1px solid red;*/
+    width: 33%;
+}
+
+#playerSelector:hover {
+    transform: scale(2);
+}
+
+#bodyPlayerTopRight {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    width: 33%;
+}

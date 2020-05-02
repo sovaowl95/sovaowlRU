@@ -1,0 +1,47 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.streamList.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/streamList.css}">
+    <script th:src="@{/js/streamList.js}"></script>
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id='bodyPlayerStreamersSelect'>
+    <div class='streamerSelectList'>
+        <th:block th:if="${userHaveStream}==null">
+            <div class='streamerSelect' style='font-size: 100px;' onclick="createStream()">
+                <div>+</div>
+                <div style='font-size: 20px;' th:text="#{pages.streamList.addStream}"></div>
+            </div>
+        </th:block>
+        <th:block th:each="oneStream:${streamList}">
+            <a th:href="'/' + __${oneStream.getUser().getNickname()}__">
+                <div class="streamerSelect"
+                     th:style="${oneStream.getUser().getUserTwitch() == null}
+                             ?'':'background-image:url(https://static-cdn.jtvnw.net/previews-ttv/live_user_'
+                             + ${oneStream.getUser().getUserTwitch().getNick().toLowerCase()}
+                             + '-480x270.jpg); background-size: 100%; background-repeat: no-repeat;'">
+                    <div class="streamStatus">
+                        <div class="streamStatusIcon" th:classappend="${oneStream.isLive()?'green':'red'}"></div>
+                    </div>
+                    <div class='streamerSelectLogin' th:text="${oneStream.getUser().getNickname()}"></div>
+                    <div class='streamerSelectGame' th:text="${oneStream.getGame()}"></div>
+                    <div class='streamerSelectAvatar'
+                         th:utext="'<img src=\'/avatars/'+${oneStream.getUser().getUserAvatar()==null?'/def.png':oneStream.getUser().getUserAvatar()}+'\'>'"
+                         th:classappend="${oneStream.isLive()}?'streamOnline':'streamOffline'"></div>
+                </div>
+            </a>
+        </th:block>
+    </div>
+</div>
+<div class="bottomStreamList">
+    <a href="/rules">RULES</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,3 @@
+vk_clientId: ${vk_clientId}
+vk_clientSecret: ${vk_clientSecret}
+vk_redirectUri=https://sovaowl.ru/api/auth/vk

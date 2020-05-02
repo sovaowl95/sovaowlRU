@@ -1,0 +1,88 @@
+.linkBodyWrap {
+
+}
+
+.modal {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid white;
+    background-color: #353535;
+    padding: 5px;
+}
+
+.modalLeft, .modalCenter, .modalRight {
+    margin: 5px;
+}
+
+.modalLeft {
+    display: flex;
+    justify-content: center;
+    width: 150px;
+}
+
+.modalLeft img {
+    height: 64px;
+    width: 64px;
+}
+
+.modalCenter, .modalRight {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modalRight {
+    height: 64px;
+    width: 150px;
+    border: 1px solid white;
+    background-color: #222222;
+    cursor: pointer;
+    text-align: center;
+}
+
+.modalRight:hover {
+    background-color: #4d4d4d;
+}
+
+.apiConnected:hover{
+    border: 1px solid red;
+}
+
+.apiConnected:hover div{
+    color: red;
+}
+
+.apiDisconnected:hover{
+    border: 1px solid lightgreen;
+}
+
+.apiDisconnected:hover div{
+    color: lightgreen;
+}
+
+/*.modal div {*/
+/*margin: 5px;*/
+/*}*/
+
+/*.modal div img {*/
+/*height: 64px;*/
+/*width: 64px;*/
+/*}*/
+
+/*.modalHeader {*/
+/*display: flex;*/
+/*align-items: center;*/
+/*}*/
+
+/*.modalClick {*/
+/*display: flex;*/
+/*align-items: center;*/
+/*cursor: pointer;*/
+/*text-decoration: underline;*/
+/*}*/
+
+/*.modalClick div{*/
+/*display: flex;*/
+/*align-items: center;*/
+/*}*/

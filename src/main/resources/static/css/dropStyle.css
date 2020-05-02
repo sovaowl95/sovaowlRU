@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    white-space: normal;
+    word-wrap: break-word;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    color: white;
+}
+
+body {
+    background-color: #222222;
+    height: 100vh;
+    /*overflow-y: hidden;*/
+    /*overflow-x: hidden;*/
+}
+
+details{
+    cursor: pointer;
+}

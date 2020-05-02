@@ -1,0 +1,8 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="notifications">
+    <div class="content" style="display: none">
+        <th:block th:include="stream/settings/notifications/discord :: discord"/>
+        <th:block th:include="stream/settings/notifications/vk :: vk"/>
+    </div>
+</th:block>
+</html>

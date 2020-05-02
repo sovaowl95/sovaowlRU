@@ -1,0 +1,42 @@
+
+.ANCIENT{
+    background: linear-gradient(180deg, #b9334c 0%, #000000 100%);
+}
+
+.LEGENDARY{
+    background: linear-gradient(180deg, #a47f2e 0%, #000000 100%);
+}
+
+.EPIC{
+    background: linear-gradient(180deg, #8d46bb 0%, #000000 100%);
+}
+
+.RARE{
+    background: linear-gradient(180deg, #5f89d5 0%, #000000 100%);
+}
+
+.COMMON{
+    background: linear-gradient(180deg, #666a6a 0%, #000000 100%);
+}
+
+
+
+.ANCIENTBorder{
+    border: 1px solid #b9334c;
+}
+
+.LEGENDARYBorder{
+    border: 1px solid #a47f2e;
+}
+
+.EPICBorder{
+    border: 1px solid #8d46bb;
+}
+
+.RAREBorder{
+    border: 1px solid #5f89d5;
+}
+
+.COMMONBorder{
+    border: 1px solid #666a6a;
+}

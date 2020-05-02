@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css?family=Sancreek');
+
+#slotHTML a {
+    color: #283593;
+    text-decoration: none;
+}
+
+#slotHTML h3 {
+    margin-top: 12px;
+}
+
+#slotHTML * {
+    margin: 0;
+}
+
+#slotHTML body {
+    background-color: #424242;
+    font-family: 'Sancreek', sans-serif;
+}
+
+#slotHTML main {
+    border-radius: 5px;
+    background-color: #EF5350;
+    margin-top: 30px;
+    padding: 20px 15px;
+    margin-left: calc((100% - 580px) / 2);
+    /*width: 550px;*/
+    width: 100%;
+}
+
+section#status {
+    /*margin-bottom: 25px;*/
+    /*padding-top: 5px;*/
+    /*padding-bottom: 5px;*/
+    /*border-radius: 5px;*/
+    padding: 5px;
+    text-align: center;
+    background-color: #37474F;
+    color: #FFFFFF;
+    /*font-size: 25px;*/
+    font-family: 'Sancreek', sans-serif;
+}
+
+section#Slots {
+    width: 100%;
+    border-radius: 15px;
+    /*background-color: #FAFAFA;*/
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+section#Gira {
+    /*margin-top: 25px;*/
+    /*padding-top: 25px;*/
+    /*padding-bottom: 15px;*/
+    padding: 5px;
+    /*border-radius: 5px;*/
+    text-align: center;
+    background-color: #AB47BC;
+    color: #FFFFFF;
+    /*font-size: 25px;*/
+    font-family: 'Sancreek', sans-serif;
+    cursor: pointer;
+}
+
+section#Gira:hover {
+    background-color: #BA68C8;
+
+}
+
+section#options {
+    margin-top: 20px;
+    padding-top: 5px;
+    border-radius: 5px;
+    background-color: #C62828;
+    color: #FFFFFF;
+}
+
+.option {
+    padding-left: 5px;
+}
+
+section#info {
+    background-color: #616161;
+    padding-left: 12px;
+    padding-bottom: 12px;
+    border-radius: 5px;
+    overflow: hidden;
+    animation-duration: 1s;
+    color: #BDBDBD;
+    margin-top: 50px;
+    margin-left: 30%;
+    margin-right: 30%;
+    display: none;
+}
+
+#slot1, #slot2, #slot3 {
+    display: block;
+    margin: auto;
+    /*width: auto;*/
+    height: auto;
+    max-height: 30vh;
+    max-width: 30%;
+    width: 30%;
+    text-align: center;
+}
+
+
+.innerSpinNum {
+    font-size: 100px;
+    font-family: 'Sancreek', sans-serif;
+}

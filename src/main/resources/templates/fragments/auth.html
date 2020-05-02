@@ -1,0 +1,36 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="authHeader">
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+    <script th:src="@{/js/auth.js}"></script>
+</head>
+<body>
+<th:block th:fragment="authBody">
+    <div class="authWrap">
+        <div class="auth">
+            <div class="authGoogle" onclick="authGoogle()">
+                <img th:src="@{/authicons/google.png}" alt="google" src="/authicons/google.png">
+            </div>
+            <div class="authTwitch" onclick="authTwitch()">
+                <img th:src="@{/authicons/twitch.ico}" alt="twitch" src="/authicons/twitch.ico">
+            </div>
+            <div class="authGG" onclick="authGG()">
+                <img th:src="@{/authicons/gg.svg}" alt="gg" src="/authicons/gg.svg">
+            </div>
+            <div class="authVK" onclick="authVK()">
+                <img th:src="@{/authicons/vk.png}" alt="vk" src="/authicons/vk.png">
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const discordClientId = [[${@environment.getProperty('discord_ClientId')}]];
+        const twitchClientId = [[${@environment.getProperty('twitch_clientId')}]];
+        const vkClientId = [[${@environment.getProperty('vk_clientId')}]];
+        const googleClientId = [[${@environment.getProperty('google_clientId')}]];
+        const ggclientId = [[${@environment.getProperty('gg_clientId')}]];
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>
+

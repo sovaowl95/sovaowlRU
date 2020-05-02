@@ -1,0 +1,147 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.admin.title}"></title>
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <script th:src="@{/js/admin.js}"></script>
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+</head>
+
+<!--//todo: ANOTHER API SERVICE-->
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<div id="wrapAdmin">
+
+    <div class="menuItem" onclick="readFeedback()" th:text="'new messages:' + ${newMessages}"></div>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.twitchSmiles}"></summary>
+        <div class="menuItem" onclick="reloadTwitchSmiles()" th:text="#{pages.admin.reloadSmiles.twitch}"></div>
+        <div class="menuItem" onclick="loadSmilesFromTwitch()"
+             th:text="#{pages.admin.loadSmilesFromWebsite.twitch}"></div>
+        <div class="menuItem" onclick="parseTwitchSmiles()" th:text="#{pages.admin.parseSmiles.twitch}"></div>
+        <div class="menuItem" onclick="initTwitchSmiles()" th:text="#{pages.admin.initSmiles.twitch}"></div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.ggSmiles}"></summary>
+        <div class="menuItem" onclick="reloadGGSmiles()" th:text="#{pages.admin.reloadSmiles.gg}"></div>
+        <div class="menuItem" onclick="loadSmilesFromGG()" th:text="#{pages.admin.loadSmilesFromWebsite.gg}"></div>
+        <div class="menuItem" onclick="parseGGSmiles()" th:text="#{pages.admin.parseSmiles.gg}"></div>
+        <div class="menuItem" onclick="initGGSmiles()" th:text="#{pages.admin.initSmiles.gg}"></div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.ytSmiles}"></summary>
+        <div class="menuItem" onclick="reloadYTSmiles()" th:text="#{pages.admin.reloadSmiles.yt}"></div>
+        <div class="menuItem" onclick="loadSmilesFromYT()" th:text="#{pages.admin.loadSmilesFromWebsite.yt}"></div>
+        <div class="menuItem" onclick="parseYTSmiles()" th:text="#{pages.admin.parseSmiles.yt}"></div>
+        <div class="menuItem" onclick="initYTSmiles()" th:text="#{pages.admin.initSmiles.yt}"></div>
+    </details>
+
+    <hr>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.caravan}"></summary>
+        <div class="menuItem" onclick="enableCaravan()" th:text="#{pages.admin.caravan.enable}"></div>
+        <div class="menuItem" onclick="disableCaravan()" th:text="#{pages.admin.caravan.disable}"></div>
+        <div class="menuItem" onclick="nextStepCaravan()" th:text="#{pages.admin.caravan.nextStep}"></div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.users}"></summary>
+        <div class="menuItem" onclick="clearUserMap()" th:text="#{pages.admin.users.clearUserMap}"></div>
+        <div class="menuItem" onclick="saveUserMap()" th:text="#{pages.admin.users.saveUserMap}"></div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.smiles}"></summary>
+        <div class="wrapDaily">
+            <input id="addNewIcon" type="text">
+            <button class="button" onclick="addNewSmile()" th:text="#{pages.admin.smiles.addNew}"></button>
+
+            <hr>
+
+            <input id="addSmileForEveryone" type="text">
+            <button class="button" onclick="addSmileForEveryone()"
+                    th:text="#{pages.admin.smiles.giveSmileForEveryone}"></button>
+        </div>
+    </details>
+
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.styles}"></summary>
+        <div class="menuItem" onclick="addNewStyle()" th:text="#{pages.admin.styles.addNew}"></div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.icons}"></summary>
+        <div class="wrapDaily">
+            <input id="addNewIconToUser" type="text">
+            <button class="button" onclick="addNewIconToUser()" th:text="#{pages.admin.smiles.addNew}"></button>
+        </div>
+    </details>
+
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.achievements}"></summary>
+        <div class="wrapDaily">
+            <input id="addAchievementToUser" type="text">
+            <input id="addAchievementToUserName" type="text">
+            <button class="button" onclick="addAchievementToUser()" th:text="#{pages.admin.smiles.addNew}"></button>
+        </div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.premiums}"></summary>
+        <div class="wrapDaily">
+            <div class="menuItem" onclick="revalidatePremiums()"
+                 th:text="#{pages.admin.premium.revalidatePremiums}"></div>
+
+            <hr>
+
+            <input id="addPremiumToUser" type="text">
+            <button class="button" onclick="addPremiumToUser()"
+                    th:text="#{pages.admin.premium.addPremiumToUser}"></button>
+
+            <hr>
+
+            <input id="giftPremiumForEveryoneForDays" type="text">
+            <button class="button" onclick="giftPremiumForEveryoneForDays()"
+                    th:text="#{pages.admin.premium.giftPremiumForEveryoneForDays}"></button>
+        </div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.news}"></summary>
+        <div class="wrapDaily">
+            <div class="menuItem" onclick="addNews()" th:text="#{pages.admin.news.addNews}"></div>
+
+            <input id="addSubNews" type="text">
+            <button class="button" onclick="addSubNews()"
+                    th:text="#{pages.admin.news.addSubNews}"></button>
+
+            <input id="addTextToSub" type="text">
+            <button class="button" onclick="addTextToSub()"
+                    th:text="#{pages.admin.news.addTextToSub}"></button>
+        </div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.others}"></summary>
+        <div class="wrapDaily">
+            <label>Admin daily<input id="daily" type="text" th:value="${@constants.getAdminTopMenuInfo()}"></label>
+            <button class="button" onclick="setAdminText()">SET ADMIN TEXT</button>
+        </div>
+    </details>
+
+    <details>
+        <summary th:text="#{pages.admin.details.summary.logs}"></summary>
+        <div class="menuItem" onclick="window.location='/admin/logs/last'" th:text="#{pages.admin.details.summary.logs.last}"></div>
+        <div class="menuItem" onclick="window.location='/admin/logs/tree'" th:text="#{pages.admin.details.summary.logs.tree}"></div>
+    </details>
+</div>

@@ -1,0 +1,241 @@
+/*---HEADER---*/
+#header {
+    /*height: 60px;*/
+    height: auto;
+    border-bottom: 1px solid #d0cecd;
+    color: #ffffff;
+    background-color: #222222;
+    font-size: calc(12px + .5vw);
+}
+
+.showPopup {
+    display: none;
+}
+
+.showPopup img {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+}
+
+#header_wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0 50px;
+}
+
+#header_1, #header_2 {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 59px;
+    line-height: 59px;
+}
+
+#header_1 {
+    margin-left: 10px;
+}
+
+#header_2 {
+    justify-content: flex-end;
+}
+
+.header_item, .header_item2 {
+    display: inline-block;
+    cursor: pointer;
+    /*padding-right: 15px;*/
+    /*padding-left: 15px;*/
+}
+
+.header_item a {
+    height: 100%;
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    white-space: nowrap;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.header_item:hover, .header_item2:hover {
+    background-color: #353535;
+}
+
+.header_item2 {
+    position: relative;
+    display: flex;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.profileDropDownHeaderItem {
+    margin: auto 10px;
+}
+
+#profileDropDownAvatar {
+    height: 48px;
+    width: 48px;
+}
+
+#profileDropDownAvatar img {
+    width: 48px;
+    height: 48px;
+    border: 3px solid green;
+    border-radius: 50%;
+}
+
+#profileDropDownMoney {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+    color: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+#profileDropDownMoney img {
+    width: 20px;
+    height: 20px;
+    margin: 0 10px;
+}
+
+#profileDropDownHeader:hover {
+    background-color: #353535;
+}
+
+/*---ВЫПАДАЮЩИЙ СПИСОК---*/
+#profileDropDown {
+    position: absolute;
+    /*display: flex;*/
+    display: none;
+    flex-direction: column;
+    justify-content: flex-end;
+    right: 50px;
+    left: auto;
+    width: 250px;
+    height: auto;
+    background-color: #353535;
+    z-index: 3;
+    margin-top: 1px;
+}
+
+#profileDropDownBody {
+    position: relative;
+    /*background-color: white;*/
+}
+
+.profileDropDownBodyItem {
+    display: block;
+    text-align: center;
+    position: relative;
+    background: #4d4d4d;
+    /*padding: 5px;*/
+    border: 1px solid #353535;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.profileDropDownBodyItem:hover {
+    background-color: #353535;
+}
+
+.profileDropDownBodyItem a {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    width: 100%;
+    padding: 5px;
+}
+
+.profileDropDownBodyItem:not(:last-child):after {
+    display: none;
+    content: "";
+    background: #252525;
+    position: absolute;
+    bottom: 0;
+    height: 1px;
+    width: 75%;
+}
+
+.headerLogo {
+    height: 48px;
+    width: 48px;
+    margin: auto;
+    cursor: pointer;
+}
+
+#topHeaderTimeline {
+    position: absolute;
+    width: 100%;
+    height: 30px;
+    background-color: #4d4d4d;
+    text-align: center;
+    line-height: 30px;
+    z-index: 1;
+}
+
+#topHeaderTimelineClose {
+    position: absolute;
+    right: 5px;
+    top: 0;
+    color: red;
+    display: block;
+}
+
+#bodyChatTopTextBeforeA {
+    width: 50%;
+    border-bottom: 2px solid #ffffff;
+    margin-top: -2px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .showPopup {
+        display: flex;
+        align-items: center;
+    }
+
+    .headerLogo {
+        display: none !important;
+    }
+
+    #header_wrap {
+        flex-wrap: wrap !important;
+        height: 59px !important;
+    }
+
+    #header_1 {
+        display: none;
+        flex-direction: column;
+
+        height: auto !important;
+        line-height: unset !important;
+
+        position: absolute;
+        left: 40px;
+        top: 60px;
+        z-index: 999;
+        background: #353535;
+    }
+
+    #header_1 .header_item {
+        background: #4d4d4d;
+        width: 100% !important;
+
+        text-align: center;
+        border: 1px solid #353535;
+        cursor: pointer;
+    }
+
+    .header_item {
+        height: 30px !important;
+        line-height: 30px !important;
+    }
+
+    .header_item:hover {
+        background-color: #353535 !important;
+    }
+}

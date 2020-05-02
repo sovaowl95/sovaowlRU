@@ -1,0 +1,50 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-size: 22px;font-weight: 600;background: transparent;background-size: cover; margin: 25px">
+<a th:href="@{https://{site}/profile/email/verification/{userId}/{code}(code=${user.getEmailVerification()}, userId=${user.getId()}, site='sovaowl.ru')}" th:text="#{email.orClick}"></a>
+<div id="wrap" style="display: flex;flex-direction: column;justify-content: center;height: 100%;">
+    <div id="regForm"
+         style="display: block;position: relative;top: 0;bottom: 0;left: 0;right: 0;width: auto;background-color: #313131;margin: auto;border-radius: 35px;color: #ffffff;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;font-weight: lighter;">
+        <div class="formTitle"
+             style=" margin: auto auto;text-align: center;font-size: 30px;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;line-height: 30px;padding: 35px 0;"
+             th:text="#{email.verification.title}"></div>
+        <div class="flags"
+             style="display: block; text-align: center"
+             th:fragment="flagsBody">
+            <div th:class="${#locale.language == 'ru'?'flagActive':''}"
+                 th:attr="style=${#locale.language == 'ru'?'display:inline-block; width:68px; height:48px;':'display:inline-block; width:68px; height:48px;'}">
+                <img th:src="@{https://{site}/flags/russia.png(site='sovaowl.ru')}"
+                     style="width: 48px;height: 48px;padding: 5%;margin: 0 10px;"
+                     th:attrappend="style=${#locale.language == 'ru'?'background: lightgreen; border-radius:50%;':''}">
+                <a th:href="@{https://{site}/profile/email/verification/{userId}/{code}(code=${user.getEmailVerification()}, userId=${user.getId()}, site='sovaowl.ru', lang='ru', check='true')}"
+                   style="color: white">RU</a>
+            </div>
+            <div th:class="${#locale.language == ''?'flagActive':''}"
+                 th:attr="style=${#locale.language == ''?'display:inline-block; width:68px; height:48px;':'display:inline-block; width:68px; height:48px;'}">
+                <img th:src="@{https://{site}/flags/united-kingdom.png(site='sovaowl.ru')}"
+                     style="width: 48px;height: 48px;padding: 5%;margin: 0 10px;"
+                     th:attrappend="style=${#locale.language == ''?'background: lightgreen; border-radius:50%;':''}">
+                <a th:href="@{https://{site}/profile/email/verification/{userId}/{code}(code=${user.getEmailVerification()}, userId=${user.getId()}, site='sovaowl.ru', lang='en', check='true')}"
+                   style="color: white">EN</a>
+            </div>
+        </div>
+        <div class="formTitle"
+             style="margin: auto auto;text-align: center;font-size: 30px;font-family: Helvetica Neue, Helvetica, Arial, sans-serif;line-height: 30px;padding: 35px 0;"
+             th:text="${user.getNickname()}"></div>
+        <div class="formHelp" style=" margin: 10px; text-align: center;color: #b4b4b4;"
+             th:text="#{email.verification.text}"></div>
+        <span class="button"
+              style="color:white;display: block; margin-top: 20px; width: 100%; background-color: #3d3d3d; line-height: 35px; text-align: center;vertical-align: middle;border: #ffffff solid 1px;border-left: 0;border-right: 0;font-size: 30px;padding-top: 15px;padding-bottom: 15px;cursor: pointer;"
+              th:text="${user.getEmailVerification()}"></span>
+        <a class="button"
+           style="color:white;display: block; margin-top: 20px; width: 100%; background-color: #3d3d3d; line-height: 35px; text-align: center;vertical-align: middle;border: #ffffff solid 1px;border-left: 0;border-right: 0;font-size: 30px;padding-top: 15px;padding-bottom: 15px;cursor: pointer;"
+           th:href="@{https://{site}/profile/email/verification/{userId}/{code}(code=${user.getEmailVerification()}, userId=${user.getId()}, site='sovaowl.ru')}"
+           th:text="#{email.verification.button}"></a>
+        <div style=" height: 10px; margin: 20px auto;width: 100%; display: inline-flex; flex-direction: row; flex-wrap: nowrap; justify-content: center; cursor: pointer;"
+             class="buttonHelper"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+.wrapAdmin {
+    width: 75%;
+    margin: 15px auto;
+    font-size: 24px;
+}
+
+.menuItem {
+    margin: 15px;
+    cursor: pointer;
+}
+
+.wrapDaily {
+    width: 75%;
+    margin: 10px auto;
+    text-align: center;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
