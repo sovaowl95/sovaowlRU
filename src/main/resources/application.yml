@@ -3,7 +3,6 @@ spring:
     url: ${db_url}
     username: ${db_username}
     password: ${db_password}
-    continue-on-error: true
     hikari:
       schema: ${db_schema}
   http:
@@ -44,11 +43,6 @@ server:
   error:
     include-stacktrace: never
   port: 443
-  ssl:
-    enabled: true
-    key-alias: ${cert_alias}
-    key-store: ${cert_path}
-    key-store-password: ${cert_password}
   servlet:
     session:
       timeout: 30d

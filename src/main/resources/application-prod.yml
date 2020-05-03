@@ -1,0 +1,19 @@
+server:
+  ssl:
+    enabled: true
+    key-alias: ${cert_alias}
+    key-store: ${cert_path}
+    key-store-password: ${cert_password}
+logging:
+  level:
+    web: debug
+    root: info
+    o.apache: debug
+    org.hibernate: info
+    org.springframework.web: DEBUG
+    ru.sovaowltv: debug
+    ru.sovaowltv.contoller.website: debug
+    ru.sovaowltv.service.io: debug
+    ru.sovaowltv.service.user.UsersRepositoryHandler: debug
+  file:
+    name: logs/log.log
