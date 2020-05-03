@@ -50,6 +50,7 @@ SS
 ## обязательные: 
  - db_* - postgres 11.5
  - jdk 11 (любая версия. на проде https://aws.amazon.com/ru/corretto/ jdk11)
+ - apache maven (3.6.3) https://maven.apache.org/install.html#
  - SS (указывает, что запуск производится вручную. нужно для деплоя на амаозон)
  - -Xms500m (ограничивает память приложения 500мб)
 
@@ -72,10 +73,19 @@ SS
 ```
 
 ### пример запуска:
+ - собрать проект
 ```bash
-SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
+mvn clean
+mvn package
 ```
 
+ - jar будет лежать в папке target
+```bash
+cd target
+
+java -jar sovaowltv-1.0-SNAPSHOT SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
+```
+ - если проект запускается через idea, то необходимо строку выше добавить в **PROGRAM ARGUMENTS**
 #
 для некоторых параметров понадобиться завести ряд аккаунтов. 
 можно игнорировать их и(или) закомментировать ненужный для разработки код
