@@ -67,11 +67,11 @@ SS
 ## софт:
  - jdk 11 (любая версия. на проде https://aws.amazon.com/ru/corretto/ jdk11)
  - apache maven (3.6.3) https://maven.apache.org/install.html#
- - среда разработки (я пользуюсь intellij idea с рядом плагинов: )
+ - среда разработки (я пользуюсь intellij idea с рядом плагинов)
 
 ### запуск без SSL
 ```
-1. в package ru.sovaowltv.config; закомментировать класс полностью.
+1. в package ru.sovaowltv.config; закомментировать класс SslConfiguration (полностью).
 сайт будет доступен по ссылке: http://localhost/
 ```
 
