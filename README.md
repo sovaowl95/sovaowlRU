@@ -1,10 +1,10 @@
 # Репозиторий
-- код должен разрабатывать в отдельной ветке 
-- код должен быть выложен в виде pull request
+- код должен разрабатывать в **ОТДЕЛЬНОЙ ВЕТКЕ** 
+- код должен быть выложен в виде PR(pull request)
 - код должен быть покрыт тестами(целевое покрытие 75%)
 - код должен быть "чистым" (как минимум: sonarLint)
 - в рамках одной ветки должна решаться одна проблема.
-- рекомендуемый размер PR(pull request) < 20 файлов 
+- рекомендуемый размер PR < 20 файлов 
 - "сливать" PR без ревью **ЗАПРЕЩЕНО** (увы, бесплатная версия накладывает ряд ограничений. 
 публичным репозиторий делать не хочется)
 - PR должен содержать ссылку на задачу. Пример: 000 https://github.com/sovaowl95/sovaowlRU/projects/2#card-37446562
@@ -12,7 +12,7 @@
 # Задачи
  - брать задачи можно на доске https://github.com/sovaowl95/sovaowlRU/projects/2
  - после того, как взяли задачу, необходимо её перенести в колонку **In progress**
- - после того, как взяли задачу, необходимо сообщить об этом в telegram канал
+ - после того, как взяли задачу, необходимо сообщить об этом в telegram канал https://t.me/joinchat/NJYQJRjA4ayN0gvQejdbPg
  - после того, как взяли задачу, необходимо добавить расчетное время выполнения задачи
  - если в процессе разработки обнаружились новые проблемы, необходимо добавить задачу на доску в столбец **To do**
 
@@ -47,6 +47,22 @@ SS
  --vk_clientSecret=
 ```
 
+## обязательные: 
+ - db_* - postgres 11.5
+ - cert_* - https://www.baeldung.com/spring-boot-https-self-signed-certificate
+
+## необязательные:
+ - discord_* - https://discordapp.com/developers/applications
+ - spring.mail.* - https://admin.yandex.ru/mail/register/organizations
+ - gg_ - https://github.com/GoodGame/API/blob/master/Streams/v2/authentication.md
+ - google_* - https://console.developers.google.com/apis/dashboard
+ - qiwi_* - https://qiwi.com/p2p-admin/transfers/api
+ - twitch_* - https://dev.twitch.tv/console подать заявку
+ - vk_* - https://vk.com/apps?act=manage (standalone приложение)
+##### значения этих параметров можно задать равными единице!
+##### java -jar sovaowl.jar --vk_clientSecret=1 --vk_clientId=1 ...
+
+#
 для некоторых параметров понадобиться завести ряд аккаунтов. 
 можно игнорировать их и(или) закомментировать ненужный для разработки код
 
