@@ -50,6 +50,8 @@ SS
 ## обязательные: 
  - db_* - postgres 11.5
  - cert_* - https://www.baeldung.com/spring-boot-https-self-signed-certificate
+ - SS (указывает, что запуск производится вручную. нужно для деплоя на амаозон)
+ - -Xms500m (ограничивает память приложения 500мб)
 
 ## необязательные:
  - discord_* - https://discordapp.com/developers/applications
