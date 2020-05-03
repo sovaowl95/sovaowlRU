@@ -10,7 +10,7 @@
 - PR должен содержать ссылку на задачу. Пример: 000 https://github.com/sovaowl95/sovaowlRU/projects/2#card-37446562
 
 # Задачи
- - брать задачи можно на доске https://github.com/sovaowl95/sovaowlRU/projects/2
+ - брать задачи можно на досках https://github.com/sovaowl95/sovaowlRU/projects/2 https://github.com/sovaowl95/sovaowlRU/projects/3
  - после того, как взяли задачу, необходимо её перенести в колонку **In progress**
  - после того, как взяли задачу, необходимо сообщить об этом в telegram канал https://t.me/joinchat/NJYQJRjA4ayN0gvQejdbPg
  - после того, как взяли задачу, необходимо добавить расчетное время выполнения задачи
