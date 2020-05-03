@@ -66,6 +66,11 @@ SS
 ##### значения этих параметров можно задать равными единице!
 ##### java -jar sovaowl.jar --vk_clientSecret=1 --vk_clientId=1 ...
 
+## софт:
+ - jdk 11 (любая версия. на проде https://aws.amazon.com/ru/corretto/ jdk11)
+ - apache maven (3.6.3) https://maven.apache.org/install.html#
+ - среда разработки (я пользуюсь intellij idea с рядом плагинов: )
+
 ### запуск без SSL
 ```
 1. в package ru.sovaowltv.config; закомментировать класс полностью.

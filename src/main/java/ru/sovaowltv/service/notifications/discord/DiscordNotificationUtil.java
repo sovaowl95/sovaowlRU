@@ -2,11 +2,11 @@ package ru.sovaowltv.service.notifications.discord;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.core.JDA;
-import net.dv8tion.jda.core.JDABuilder;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,8 @@ public class DiscordNotificationUtil extends ListenerAdapter {
 
     public boolean launch() {
         try {
-            jda = new JDABuilder(discordToken)
-                    .addEventListener(this)
+            jda = JDABuilder.createDefault(discordToken)
+                    .addEventListeners(this)
                     .build();
             jda.setAutoReconnect(true);
             connected = true;
