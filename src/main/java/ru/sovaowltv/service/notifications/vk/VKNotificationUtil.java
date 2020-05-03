@@ -2,7 +2,7 @@ package ru.sovaowltv.service.notifications.vk;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.apinotification.NotificationFor;
 import ru.sovaowltv.model.apinotification.VKNotification;

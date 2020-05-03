@@ -10,7 +10,7 @@
 - PR должен содержать ссылку на задачу. Пример: 000 https://github.com/sovaowl95/sovaowlRU/projects/2#card-37446562
 
 # Задачи
- - брать задачи можно на доске https://github.com/sovaowl95/sovaowlRU/projects/2
+ - брать задачи можно на досках https://github.com/sovaowl95/sovaowlRU/projects/2 https://github.com/sovaowl95/sovaowlRU/projects/3
  - после того, как взяли задачу, необходимо её перенести в колонку **In progress**
  - после того, как взяли задачу, необходимо сообщить об этом в telegram канал https://t.me/joinchat/NJYQJRjA4ayN0gvQejdbPg
  - после того, как взяли задачу, необходимо добавить расчетное время выполнения задачи
@@ -64,6 +64,11 @@ SS
 ##### значения этих параметров можно задать равными единице!
 ##### java -jar sovaowl.jar --vk_clientSecret=1 --vk_clientId=1 ...
 
+## софт:
+ - jdk 11 (любая версия. на проде https://aws.amazon.com/ru/corretto/ jdk11)
+ - apache maven (3.6.3) https://maven.apache.org/install.html#
+ - среда разработки (я пользуюсь intellij idea с рядом плагинов: )
+
 ### запуск без SSL
 ```
 1. в package ru.sovaowltv.config; закомментировать класс полностью.
@@ -71,10 +76,19 @@ SS
 ```
 
 ### пример запуска:
+ - собрать проект
 ```bash
-SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
+mvn clean
+mvn package
 ```
 
+ - jar будет лежать в папке target
+```bash
+cd target
+
+java -jar sovaowltv-1.0-SNAPSHOT SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
+```
+ - если проект запускается через idea, то необходимо строку выше добавить в **PROGRAM ARGUMENTS**
 #
 для некоторых параметров понадобиться завести ряд аккаунтов. 
 можно игнорировать их и(или) закомментировать ненужный для разработки код
