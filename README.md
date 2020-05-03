@@ -49,11 +49,11 @@ SS
 
 ## обязательные: 
  - db_* - postgres 11.5
- - cert_* - https://www.baeldung.com/spring-boot-https-self-signed-certificate
  - SS (указывает, что запуск производится вручную. нужно для деплоя на амаозон)
  - -Xms500m (ограничивает память приложения 500мб)
 
 ## необязательные:
+ - cert_* - https://www.baeldung.com/spring-boot-https-self-signed-certificate
  - discord_* - https://discordapp.com/developers/applications
  - spring.mail.* - https://admin.yandex.ru/mail/register/organizations
  - gg_ - https://github.com/GoodGame/API/blob/master/Streams/v2/authentication.md
@@ -63,6 +63,17 @@ SS
  - vk_* - https://vk.com/apps?act=manage (standalone приложение)
 ##### значения этих параметров можно задать равными единице!
 ##### java -jar sovaowl.jar --vk_clientSecret=1 --vk_clientId=1 ...
+
+### запуск без SSL
+```
+1. в package ru.sovaowltv.config; закомментировать класс полностью.
+сайт будет доступен по ссылке: http://localhost/
+```
+
+### приммер запуска:
+```bash
+SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
+```
 
 #
 для некоторых параметров понадобиться завести ряд аккаунтов. 
