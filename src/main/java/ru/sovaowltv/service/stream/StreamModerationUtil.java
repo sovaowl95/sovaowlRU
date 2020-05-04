@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.sovaowltv.model.chat.Smiles;
 import ru.sovaowltv.model.stream.Stream;
@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 @PropertySource("classpath:constants.yml")
 //todo: ANOTHER API SERVICE

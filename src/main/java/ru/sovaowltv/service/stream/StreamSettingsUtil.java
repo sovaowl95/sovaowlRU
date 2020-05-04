@@ -3,7 +3,7 @@ package ru.sovaowltv.service.stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.repositories.website.DiscordNotificationRepository;
@@ -14,7 +14,7 @@ import ru.sovaowltv.service.unclassified.HtmlTagsClear;
 
 import java.util.Map;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @PropertySource("classpath:constants.yml")
 public class StreamSettingsUtil {

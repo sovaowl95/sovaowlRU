@@ -7,11 +7,12 @@
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
     <th:block th:include="fragments/linkAccounts :: linkHeader"/>
 
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+
     <link rel="stylesheet" th:href="@{/css/slider.css}">
     <link rel="stylesheet" th:href="@{/css/streamSettings.css}">
     <script th:src="@{/js/streamSettings.js}"></script>
     <script th:src="@{/js/commandsSettings.js}"></script>
+    <script th:src="@{/js/requestUtil.js}"></script>
 
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
@@ -21,11 +22,10 @@
 <body>
 <th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div class="wrapBody">
-    <div class="block ">
-        <a th:href="'/'+${stream.getUser().getNickname()}" th:text="#{pages.streamSettings.openStream}"></a>
+    <div class="block">
+        <a href="#" th:text="#{pages.streamSettings.openStream}" th:href="'/'+${stream.getUser().getNickname()}"></a>
         <a href="#" th:text="#{pages.streamSettings.deleteStream}" onclick="doDeleteStream()"></a>
     </div>
-
     <div class="row">
         <a href="#" onclick="show(1)" style="border-bottom: 3px solid white">
             <div th:utext=" '' + #{pages.streamSettings.row.platforms}"></div>

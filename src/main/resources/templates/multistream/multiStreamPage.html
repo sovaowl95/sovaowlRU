@@ -1,0 +1,109 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
+    <!--    <title th:text="${stream.getUser().getNickname()}"></title>-->
+
+    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/streamPage.css}">
+
+    <script th:src="@{/js/streamPage.js}"></script>
+
+    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+
+    <th:block th:each="stream,iterStat: ${streams}" th:if="${iterStat.index} < 1">
+        <th:block th:include="fragments/chat :: chatHead"/>
+    </th:block>
+
+
+    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
+    <meta th:name="_csrf_value" th:content="${_csrf.token}">
+</head>
+<body>
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
+<!--/*@thymesVar id="streams" type="java.util.Set<ru.sovaowltv.model.stream.Stream>"*/-->
+<!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+<div id="body">
+    <div id="bodyPlayer">
+        <div id="bodyPlayerTop">
+            <div id="bodyPlayerTopLeft">
+            </div>
+            <div id="playerSelector">
+                <th:block th:each="stream: ${streams}">
+                    <img th:if="${stream.getUser().getUserTwitch()!=null}" alt="twitch"
+                         src="/authicons/Twitch_Purple_RGB.svg" onclick="showTwitchPlayer(this);">
+                    <img th:if="${stream.getUser().getUserGG()!=null}" alt="gg"
+                         src="/authicons/gg.svg" onclick="showGGPlayer(this);">
+                    <img th:if="${stream.getUser().getUserGoogle()!=null}" alt="youtube"
+                         src="/authicons/yt.svg" onclick="showYTPlayer(this);">
+                </th:block>
+            </div>
+            <div id="bodyPlayerTopRight">
+            </div>
+        </div>
+        <div id="bodyPlayerMiddle">
+            <th:block th:each="stream: ${streams}">
+                <iframe id="playerTwitch" th:if="${stream.getUser().getUserTwitch()!=null}"
+                        th:src="'https://player.twitch.tv/?autoplay=false&channel='+${stream.getUser().getUserTwitch().getNick()}"
+                        frameborder="0" allowfullscreen scrolling="no">
+                </iframe>
+                <iframe id="playerGG" th:if="${stream.getUser().getUserGG()!=null}"
+                        frameborder="0" allowfullscreen
+                        th:src="'https://goodgame.ru/player?' + ${stream.getUser().getUserGG().getChannelId()}">
+                </iframe>
+                <iframe id="playerYT" th:if="${stream.getUser().getUserGoogle()!=null}"
+                        th:src="'https://www.youtube.com/embed/'+${stream.getUser().getUserGoogle().getVideoId()}"
+                        frameborder="0" allowfullscreen>
+                </iframe>
+            </th:block>
+            <div id="playerSelectorSecond">
+                <th:block th:each="stream:${streams}">
+                    <span th:text="${stream.getUser().getNickname()}"></span>
+                    <th:block th:if="${stream.getUser().getUserTwitch()!=null}">
+                        <img src="/authicons/Twitch_Purple_RGB.svg" alt="twitch"
+                             onclick="showTwitchPlayer(this); delStartSelector();">
+                        <!--                        <span>twitch</span>-->
+                    </th:block>
+                    <th:block th:if="${stream.getUser().getUserGG()!=null}">
+                        <img src="/authicons/gg.svg" alt="goodgame"
+                             onclick="showGGPlayer(this);  delStartSelector();">
+                        <span>gg</span>
+                    </th:block>
+                    <th:block th:if="${stream.getUser().getUserGoogle()!=null}">
+                        <img src="/authicons/yt.svg" alt="google"
+                             onclick="showYTPlayer(this);  delStartSelector();">
+                        <span>yt</span>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+        <div id="bodyPlayerBottom">
+<!--            <div id="bodyPlayerBottomLeft">-->
+<!--                <div id="bodyPlayerBottomLeftAvatar"-->
+<!--                     th:utext="'<img src=\'/avatars/' + ${stream.getUser().getUserAvatar()} + '\'>'"></div>-->
+<!--                <div id="bodyPlayerBottomLeftDescription">-->
+<!--                    <div id="bodyPlayerBottomLeftStream" th:text="${stream.getStreamName()}"></div>-->
+<!--                    <div id="bodyPlayerBottomLeftNick"-->
+<!--                         th:text="${stream.getUser().getNickname()} + ' - ' + ${stream.getGame()}"></div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div id="bodyPlayerBottomRight">-->
+<!--                <div><img alt="film" src="/img/film.png"/></div>-->
+<!--                <div th:if="${user != null} and ${stream.getUser().getNickname()}==${user.getNickname()}"-->
+<!--                     onclick="openOptions()">-->
+<!--                    <img alt="settings" src="/img/gear.png"/>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
+    <div id="bodyChat">
+        <th:block th:each="stream,iterStat: ${streams}" th:if="${iterStat.index} < 1">
+            <th:block th:include="fragments/chat::chatBody"/>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>

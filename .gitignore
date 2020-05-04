@@ -13,3 +13,4 @@
 /src/main/resources/launch command
 /target/
 /src/main/resources/ssl/jksCert.jks
+/src/main/java/ru/sovaowltv/config/SslConfiguration.java

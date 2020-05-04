@@ -2,7 +2,7 @@ package ru.sovaowltv.service.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.server.ResponseStatusException;
 import ru.sovaowltv.exceptions.TokensNotEqualsException;
@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 
 @Slf4j
-@Component
+@Service
 public class SecurityUtil {
     private final SecureRandom secureRandom = new SecureRandom();
 
@@ -44,7 +44,7 @@ public class SecurityUtil {
             log.debug("TokensNotEqualsException session and state:");
             log.debug(session.getAttribute("secTokenState").toString());
             log.debug(state);
-            throw new TokensNotEqualsException();
+            throw new TokensNotEqualsException("Tokens not equals exception");
         }
     }
 }

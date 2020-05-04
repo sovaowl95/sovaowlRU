@@ -70,22 +70,22 @@ public class StreamUtil {
         return streamOptional.get();
     }
 
-    public void initStreamModelWithUserData(String streamName, Model model) {
-        Stream stream = getStreamByUserNickname(streamName);
+    public void initStreamModelWithUserData(Model model) {
         User user = userUtil.setUserInModelREADONLY(model);
-        model.addAttribute("stream", stream);
-        if (user != null) {
-            model.addAttribute("userStyles", user.getStyles());
-            model.addAttribute("userSmiles", user.getSmiles());
-        } else {
-            model.addAttribute("userStyles", Collections.emptySet());
-            model.addAttribute("userSmiles", Collections.emptySet());
-        }
-        model.addAttribute("rarityOrder", Rarity.values());
-        model.addAttribute("donateFor", stream.getUser());
+        model.addAttribute("userStyles", user != null ? user.getStyles() : Collections.emptySet());
+        model.addAttribute("userSmiles", user != null ? user.getSmiles() : Collections.emptySet());
 
+        model.addAttribute("rarityOrder", Rarity.values());
         model.addAttribute("smiles", shopUtil.getSmilesList());
         model.addAttribute("styles", shopUtil.getStylesList());
+    }
+
+    public void initStreamModelWithUserData(String streamName, Model model) {
+        Stream stream = getStreamByUserNickname(streamName);
+        model.addAttribute("stream", stream);
+        model.addAttribute("donateFor", stream.getUser());
+
+        initStreamModelWithUserData(model);
     }
 
     //todo: ANOTHER API SERVICE
