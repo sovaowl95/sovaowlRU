@@ -17,6 +17,7 @@ import ru.sovaowltv.service.user.UserUtil;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,15 +33,16 @@ public class MultiStreamUtil {
         Optional<MultiStream> multiStreamOptional
                 = multiStreamRepository.findByUserId(userREADONLY.getId());
         if (multiStreamOptional.isPresent()) {
-            throw new MultiStreamAlreadyExistsException("create - multistream already exist. user:" + userREADONLY.getId());
+            throw new MultiStreamAlreadyExistsException("multistream already exist. user:" + userREADONLY.getId());
         }
 
         Optional<Stream> streamOptional = streamRepositoryHandler.getByUserId(userREADONLY.getId());
         if (streamOptional.isEmpty()) {
-            throw new StreamNotFoundException("create - multistream can't find stream by user id:" + userREADONLY.getId());
+            throw new StreamNotFoundException("multistream can't find stream by user id:" + userREADONLY.getId());
         }
 
         MultiStream multiStream = new MultiStream();
+        multiStream.setStream(streamOptional.get());
         multiStream.setStreamSet(Set.of(streamOptional.get()));
         multiStream.setInviteCode(UUID.randomUUID().toString());
         multiStream.setUser(userREADONLY);
@@ -86,14 +88,23 @@ public class MultiStreamUtil {
     }
 
     public void initSettings(Long multiStreamId, Model model) {
-        userUtil.setUserInModelREADONLY(model);
         MultiStream multiStream = getMultiStream(multiStreamId);
         model.addAttribute("multiStream", multiStream);
+
+        userUtil.setUserInModelREADONLY(model);
     }
 
     public void init(Long multiStreamId, Model model) {
         MultiStream multiStream = getMultiStream(multiStreamId);
         model.addAttribute("streams", multiStream.getStreamSet());
+        model.addAttribute("streamsLogins", multiStream.getStreamSet()
+                .stream()
+                .map(stream -> stream.getUser().getLogin())
+                .collect(Collectors.toList())
+        );
+        model.addAttribute("stream", multiStream.getStream());
+        model.addAttribute("msId", multiStream.getId());
+
         streamUtil.initStreamModelWithUserData(model);
     }
 

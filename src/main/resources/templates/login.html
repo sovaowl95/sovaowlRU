@@ -86,5 +86,14 @@
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const discordClientId = [[${@environment.getProperty('discord_ClientId')}]];
+    const twitchClientId = [[${@environment.getProperty('twitch_clientId')}]];
+    const vkClientId = [[${@environment.getProperty('vk_clientId')}]];
+    const googleClientId = [[${@environment.getProperty('google_clientId')}]];
+    const ggclientId = [[${@environment.getProperty('gg_clientId')}]];
+    /*]]>*/
+</script>
 </body>
 </html>

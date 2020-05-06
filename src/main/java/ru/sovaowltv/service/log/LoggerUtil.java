@@ -10,10 +10,9 @@ import java.security.Principal;
 @Slf4j
 public class LoggerUtil {
     public void logMessageFromChat(@DestinationVariable String channel, Principal principal, String messageText) {
-        log.info("");
-        log.info(channel);
-        log.info(principal.getName());
-        log.info(messageText);
-        log.info("");
+        log.info("\n   to:" + channel
+                + "\n from:" + principal.getName()
+                + "\n" + messageText
+        );
     }
 }

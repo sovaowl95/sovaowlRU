@@ -8,8 +8,8 @@ var scrollInput;
 var scrollChat;
 var textArea;
 
-var destinationSub;
-var destinationSend;
+let destinationSubArray = [];
+let destinationSend;
 
 var meModerator = false;
 var connected = false;
@@ -62,148 +62,166 @@ function connect() {
     };
 
     client.onConnect = function () {
+        destinationSubArray = [];
+
         connected = true;
-        destinationSub = '/topic/' + streamerName;
-        destinationSend = '/app/' + streamerName;
         let split = client.webSocket._transport.url.split("/");
         chatSessionId = split[split.length - 2];
 
-        client.subscribe(destinationSub, function (message) {
-            try {
-                let parse = JSON.parse(message.body);
-                console.log(parse);
-                if (parse.type === "message") {
-                    printMessage(parse);
-                } else if (parse.type === "infoBan") {
-                    printSystemMessage('infoFromServer', parse.info);
-                } else if (parse.type === "infoTimeout") {
-                    printSystemMessage('infoFromServer', parse.info);
-                } else if (parse.type === "modAction") {
-                    moderatorActions(parse);
-                } else if (parse.type === "donation") {
-                    printDonationMessage(parse);
-                } else if (parse.type === "rankUp") {
-                    printLvlUpMessage(parse.info);
-                } else if (parse.type === "spam") {
-                    printSpamInfoMessage('systemSpamInfo', parse);
-                } else if (parse.type === "clearAll") {
-                    printClearAllMessage('clearAll', parse.info);
-                } else if (parse.type === "commandAnswerOk") {
-                    printCommandMessage("commandAnswerOk", parse.info, parse.streamId);
-                }
-                /**
-                 * SLOT
-                 */
-                else if (parse.type === "slotRes") {
-                    printSlotMessage("slotRes", parse.info, parse.streamId);
-                }
-                /**
-                 * CARAVAN
-                 * */
-                else if (parse.type === "caravanStart") {
-                    printCaravanStartMessage(parse.info);
-                } else if (parse.type === "caravanEnd") {
-                    printCaravanEndMessage('caravanEnd', caravanEnd);
-                } else if (parse.type === "caravanReward") {
-                    let myObj = JSON.parse(parse.info);
-                    for (let i = 0; i < myObj.length; i++)
-                        printCaravanReward(myObj[i].info);
-                } else {
-                    printSystemMessage('ERROR');
-                    console.log("ERR");
-                    console.log(parse);
-                }
-            } catch (e) {
-                printSystemMessage('ERROR', e);
-                console.log(e);
+        if (typeof streamsLogins !== 'undefined') {
+            for (let i = 0; i < streamsLogins.length; i++) {
+                destinationSubArray.push('/topic/' + streamsLogins[i]);
             }
-        });
+            destinationSubArray.push('/topic/ms/' + msId);
+            destinationSend = '/app/ms/' + msId;
+        } else {
+            destinationSubArray.push('/topic/' + streamerName);
+            destinationSend = '/app/' + streamerName;
+        }
 
-        client.subscribe(destinationSub + '-user' + chatSessionId, function (message) {
-            try {
-                let parse = JSON.parse(message.body);
-                console.log(parse);
-                if (parse.type === "history") {
-                    let parse2 = JSON.parse(parse.info);
-                    if (!isGuest) meModerator = parse2[0].info === "true";
-                    else meModerator = false;
-                    // parse2.splice(0, 1);
+        for (let i = 0; i < destinationSubArray.length; i++) {
+            let destinationSub = destinationSubArray[i];
 
-                    parse2.sort((a, b) => parseInt(a.id) < parseInt(b.id)
-                        ? 1
-                        : (parseInt(b.id) < parseInt(a.id) ? -1 : 0));
-
-                    if (isGuest) {
-                        for (let i = parse2.length - 1; i >= 0; i--) {
-                            printMessage(parse2[i]);
-                        }
-                    } else
-                        for (let i = parse2.length - 2; i >= 0; i--) {
-                            printMessage(parse2[i]);
-                        }
-                } else if (parse.type === "modAction") {
-                    moderatorActions(parse);
-                } else if (parse.type === "infoBan") {
-                    printSystemMessage('infoFromServer', parse.info);
-                } else if (parse.type === "infoSpam") {
-                    printSpamMessage('infoFromServer', parse.info);
-                } else if (parse.type === "infoTimeout") {
-                    printSystemMessage('infoFromServer', parse.info);
-                } else if (parse.type === "errCommand") {
-                    printErrMessage('errCommand', parse.info);
-                } else if (parse.type === "commandAnswerOk") {
-                    printCommandMessage('commandAnswerOk', parse.info);
-                } else if (parse.type === "premiumExpiredIn") {
-                    printPremiumExpiredMessage(parse.info);
-                } else if (parse.type === "help") {
-                    printSystemMessage('help', parse.info);
-                }
-
-                /**
-                 * API PRIVATE
-                 */
-                else if (parse.type === "ACC REJOIN") {
-                    printErrMessage('ACC_REJOIN', parse.info);
-                } else if (parse.type === "ACC REJOIN OK") {
-                    printGoodMessage('ACC_REJOIN_OK', parse.info);
-                } else if (parse.type === "ACC REJOIN ASK") {
-                    printSystemMessage('ACC_REJOIN_ASK', parse.info);
-                } else if (parse.type === "API MOTIVATION") {
-                    printGoodMessage("API MOTIVATION", parse.info);
-                }
-
-                /**
-                 * SLOT PRIVATE
-                 */
-                else if (parse.type === "slotNotEnoughMoney") {
-                    printErrMessage('slotNotEnoughMoney', slotNotEnoughMoney);
-                } else if (parse.type === "slotStart") {
-                    starSpinning();
-                }
-                /**
-                 * CARAVAN PRIVATE
-                 * */
-                else if (parse.type === "caravanJoin") {
-                    printCaravanJoinMessage();
-                } else if (parse.type === "caravanJoinNotEnoughMoney") {
-                    printErrMessage('caravanJoinNotEnoughMoney', caravanErrNotEnoughMoney);
-                } else if (parse.type === 'caravanErrAlreadyInJoin') {
-                    printErrMessage('caravanErrAlreadyInJoin', caravanErrAlreadyInJoin);
-                } else if (parse.type === 'caravanErrStatusJoin') {
-                    printErrMessage('caravanErrStatusJoin', caravanErrStatusJoin);
-                } else if (parse.type === 'caravanErrStatusJoinAnon') {
-                    printErrMessage('caravanErrStatusJoinAnon', caravanErrStatusJoinAnon);
-                } else if (parse.type === "caravanStart") {
-                    printCaravanStartMessage(parse.info);
-                } else {
-                    console.log("ERR");
+            client.subscribe(destinationSub, function (message) {
+                // let temp = destinationSub.split("/");
+                // temp = temp[temp.length - 1];
+                let dst = destinationSub.substring(destinationSub.lastIndexOf('/') + 1);
+                console.log("dst = " + dst);
+                try {
+                    let parse = JSON.parse(message.body);
                     console.log(parse);
+                    if (parse.type === "message") {
+                        printMessage(parse);
+                    } else if (parse.type === "infoBan") {
+                        printSystemMessage('infoFromServer', parse.info);
+                    } else if (parse.type === "infoTimeout") {
+                        printSystemMessage('infoFromServer', parse.info);
+                    } else if (parse.type === "modAction") {
+                        moderatorActions(parse);
+                    } else if (parse.type === "donation") {
+                        printDonationMessage(parse);
+                    } else if (parse.type === "rankUp") {
+                        printLvlUpMessage(parse.info);
+                    } else if (parse.type === "spam") {
+                        printSpamInfoMessage('systemSpamInfo', parse);
+                    } else if (parse.type === "clearAll") {
+                        printClearAllMessage('clearAll', parse.info);
+                    } else if (parse.type === "commandAnswerOk") {
+                        printCommandMessage("commandAnswerOk", parse.info, parse.streamId);
+                    }
+                    /**
+                     * SLOT
+                     */
+                    else if (parse.type === "slotRes") {
+                        printSlotMessage("slotRes", parse.info, parse.streamId);
+                    }
+                    /**
+                     * CARAVAN
+                     * */
+                    else if (parse.type === "caravanStart") {
+                        printCaravanStartMessage(parse.info);
+                    } else if (parse.type === "caravanEnd") {
+                        printCaravanEndMessage('caravanEnd', caravanEnd);
+                    } else if (parse.type === "caravanReward") {
+                        let myObj = JSON.parse(parse.info);
+                        for (let i = 0; i < myObj.length; i++)
+                            printCaravanReward(myObj[i].info);
+                    } else {
+                        printSystemMessage('ERROR');
+                        console.log("ERR");
+                        console.log(parse);
+                    }
+                } catch (e) {
+                    printSystemMessage('ERROR', e);
+                    console.log(e);
                 }
-            } catch (e) {
-                console.log(e);
-                printSystemMessage('ERROR', e);
-            }
-        });
+            });
+            client.subscribe(destinationSub + '-user' + chatSessionId, function (message) {
+                try {
+                    let parse = JSON.parse(message.body);
+                    console.log(parse);
+                    if (parse.type === "history") {
+                        let parse2 = JSON.parse(parse.info);
+                        if (!isGuest) meModerator = parse2[0].info === "true";
+                        else meModerator = false;
+                        // parse2.splice(0, 1);
+
+                        parse2.sort((a, b) => parseInt(a.id) < parseInt(b.id)
+                            ? 1
+                            : (parseInt(b.id) < parseInt(a.id) ? -1 : 0));
+
+                        if (isGuest) {
+                            for (let i = parse2.length - 1; i >= 0; i--) {
+                                printMessage(parse2[i]);
+                            }
+                        } else
+                            for (let i = parse2.length - 2; i >= 0; i--) {
+                                printMessage(parse2[i]);
+                            }
+                    } else if (parse.type === "modAction") {
+                        moderatorActions(parse);
+                    } else if (parse.type === "infoBan") {
+                        printSystemMessage('infoFromServer', parse.info);
+                    } else if (parse.type === "infoSpam") {
+                        printSpamMessage('infoFromServer', parse.info);
+                    } else if (parse.type === "infoTimeout") {
+                        printSystemMessage('infoFromServer', parse.info);
+                    } else if (parse.type === "errCommand") {
+                        printErrMessage('errCommand', parse.info);
+                    } else if (parse.type === "commandAnswerOk") {
+                        printCommandMessage('commandAnswerOk', parse.info);
+                    } else if (parse.type === "premiumExpiredIn") {
+                        printPremiumExpiredMessage(parse.info);
+                    } else if (parse.type === "help") {
+                        printSystemMessage('help', parse.info);
+                    }
+
+                    /**
+                     * API PRIVATE
+                     */
+                    else if (parse.type === "ACC REJOIN") {
+                        printErrMessage('ACC_REJOIN', parse.info);
+                    } else if (parse.type === "ACC REJOIN OK") {
+                        printGoodMessage('ACC_REJOIN_OK', parse.info);
+                    } else if (parse.type === "ACC REJOIN ASK") {
+                        printSystemMessage('ACC_REJOIN_ASK', parse.info);
+                    } else if (parse.type === "API MOTIVATION") {
+                        printGoodMessage("API MOTIVATION", parse.info);
+                    }
+
+                    /**
+                     * SLOT PRIVATE
+                     */
+                    else if (parse.type === "slotNotEnoughMoney") {
+                        printErrMessage('slotNotEnoughMoney', slotNotEnoughMoney);
+                    } else if (parse.type === "slotStart") {
+                        starSpinning();
+                    }
+                    /**
+                     * CARAVAN PRIVATE
+                     * */
+                    else if (parse.type === "caravanJoin") {
+                        printCaravanJoinMessage();
+                    } else if (parse.type === "caravanJoinNotEnoughMoney") {
+                        printErrMessage('caravanJoinNotEnoughMoney', caravanErrNotEnoughMoney);
+                    } else if (parse.type === 'caravanErrAlreadyInJoin') {
+                        printErrMessage('caravanErrAlreadyInJoin', caravanErrAlreadyInJoin);
+                    } else if (parse.type === 'caravanErrStatusJoin') {
+                        printErrMessage('caravanErrStatusJoin', caravanErrStatusJoin);
+                    } else if (parse.type === 'caravanErrStatusJoinAnon') {
+                        printErrMessage('caravanErrStatusJoinAnon', caravanErrStatusJoinAnon);
+                    } else if (parse.type === "caravanStart") {
+                        printCaravanStartMessage(parse.info);
+                    } else {
+                        console.log("ERR");
+                        console.log(parse);
+                    }
+                } catch (e) {
+                    console.log(e);
+                    printSystemMessage('ERROR', e);
+                }
+            });
+        }
 
 
         setTimeout(function () {
@@ -236,6 +254,7 @@ function replaceTags() {
 }
 
 function findNick(str, nick) {
+    if (nick === undefined) return false;
     if (str === undefined) return false;
     str = str.replace(new RegExp('&nbsp;', 'g'), ' ');
     return str.split(" ").some(function (value) {
@@ -315,7 +334,6 @@ function printPremiumExpiredMessage(message) {
     let day = message.day;
     let hour = message.hour % 24;
     let min = message.min % 60;
-    message = "";
     if (day !== 0) {
         message = day + premiumKeyWordDays;
     } else {

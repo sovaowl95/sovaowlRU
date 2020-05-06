@@ -31,12 +31,7 @@
                 <div style="background-color: #222222" th:unless="${stream.getUser()} == ${user}"></div>
             </div>
             <div id="playerSelector">
-                <img th:if="${stream.getUser().getUserTwitch()!=null}" alt="twitch"
-                     src="/authicons/Twitch_Purple_RGB.svg" onclick="showTwitchPlayer(this);">
-                <img th:if="${stream.getUser().getUserGG()!=null}" alt="gg"
-                     src="/authicons/gg.svg" onclick="showGGPlayer(this);">
-                <img th:if="${stream.getUser().getUserGoogle()!=null}" alt="youtube"
-                     src="/authicons/yt.svg" onclick="showYTPlayer(this);">
+                <th:block th:include="/stream/playerSelects::streamPlayersSelector"/>
             </div>
             <div id="bodyPlayerTopRight">
                 <div th:text="#{pages.stream.follow}"></div>
@@ -44,28 +39,9 @@
             </div>
         </div>
         <div id="bodyPlayerMiddle">
-            <iframe id="playerTwitch" th:if="${stream.getUser().getUserTwitch()!=null}"
-                    th:src="'https://player.twitch.tv/?autoplay=false&channel='+${stream.getUser().getUserTwitch().getNick()}"
-                    frameborder="0" allowfullscreen scrolling="no">
-            </iframe>
-            <iframe id="playerGG" th:if="${stream.getUser().getUserGG()!=null}"
-                    frameborder="0" allowfullscreen
-                    th:src="'https://goodgame.ru/player?' + ${stream.getUser().getUserGG().getChannelId()}">
-            </iframe>
-            <iframe id="playerYT" th:if="${stream.getUser().getUserGoogle()!=null}"
-                    th:src="'https://www.youtube.com/embed/'+${stream.getUser().getUserGoogle().getVideoId()}"
-                    frameborder="0" allowfullscreen>
-            </iframe>
+            <th:block th:include="/stream/iframes::streamPlayers"/>
             <div id="playerSelectorSecond">
-                <img th:if="${stream.getUser().getUserTwitch()!=null}"
-                     src="/authicons/Twitch_Purple_RGB.svg" alt="twitch"
-                     onclick="showTwitchPlayer(this); delStartSelector();">
-                <img th:if="${stream.getUser().getUserGG()!=null}"
-                     src="/authicons/gg.svg" alt="goodgame"
-                     onclick="showGGPlayer(this);  delStartSelector();">
-                <img th:if="${stream.getUser().getUserGoogle()!=null}"
-                     src="/authicons/yt.svg" alt="google"
-                     onclick="showYTPlayer(this);  delStartSelector();">
+                <th:block th:include="/stream/playerSelects::streamPlayersSelector"/>
             </div>
         </div>
         <div id="bodyPlayerBottom">

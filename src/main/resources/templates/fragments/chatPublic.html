@@ -9,30 +9,31 @@
     <th:block th:include="fragments/headerPartsChat::js"/>
 
     <link rel="stylesheet" th:href="@{/css/chat/chatPublic.css}">
+    <style>
+        body {
+            background-color: transparent;
+        }
+
+        .message {
+            background-color: transparent;
+        }
+    </style>
 </head>
 <body>
-<style>
-    body {
-        background-color: transparent;
-    }
-    .message {
-        background-color: transparent;
-    }
-</style>
 <th:block th:fragment="chatBody">
     <div id="bodyChatWrap">
         <div id="bodyChatMain"></div>
     </div>
     <script th:inline="javascript">
         /*<![CDATA[*/
-        var isPublicChat = true;
-        var isGuest = true;
-        var chatScrollVisibility = "hidden";
-        var userName = [[${stream.getUser().getNickname()}]];
-        var streamerName = [[${stream.getUser().getNickname()}]];
-        var showMessageTime = false;
-        var smileSize = 28;
-        var fontSize = 16;
+        const isPublicChat = true;
+        const isGuest = true;
+        const chatScrollVisibility = "hidden";
+        const userName = undefined;
+        const streamerName = [[${stream.getUser().getNickname()}]];
+        let showMessageTime = false;
+        let smileSize = 28;
+        let fontSize = 16;
         /*]]>*/
     </script>
     <th:block th:include="fragments/chatJsInput::jsInput"/>

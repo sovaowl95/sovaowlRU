@@ -205,12 +205,16 @@
     transform: scale(1);
     transition: all .2s ease-out;
     z-index: 10;
-    /*outline: 1px solid red;*/
     width: 33%;
 }
 
 #playerSelector:hover {
     transform: scale(2);
+    border: 1px solid white;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top: 0;
+    background-color: #222222;
 }
 
 #bodyPlayerTopRight {

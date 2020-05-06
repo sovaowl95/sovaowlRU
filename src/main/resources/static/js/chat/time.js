@@ -13,7 +13,6 @@ function solveTime(message) {
         message.time = year + '-' + month + '-' + day + 'T' + hour + ':' + minute + ':' + sec + '.' + nano;
     }
     let date = new Date(message.time);
-    console.log(date);
     date = addHours(date);
 
     let hours = date.getHours();

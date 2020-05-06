@@ -38,6 +38,13 @@ public class ChatController {
 
     private final HtmlTagsClear htmlTagsClear;
 
+//    @MessageMapping("ms/{channel}")
+//    @SendTo("/topic/ms/{channel}")
+//    public ChatMessage solveMessageMS(@DestinationVariable String channel, java.security.Principal principal,
+//                                      String messageText, SimpMessageHeaderAccessor ha) {
+//
+//    }
+
     @MessageMapping("/{channel}")
     @SendTo("/topic/{channel}")
     public ChatMessage solveMessage(@DestinationVariable String channel, java.security.Principal principal,
@@ -55,7 +62,8 @@ public class ChatController {
 
             Map<String, Object> map = dataExtractor.extractMapFromString(messageText);
             String messageType = String.valueOf(map.get("type"));
-            if (chatUtil.userNotAllowedSendMessages(channel, principal, messageType, userForCheck)) {
+            if (!chatUtil.userAllowedSendMessages(channel, principal, messageType, userForCheck)) {
+                log.debug("user not allowed send message. channel:{}, principal:{}, messageText{}", channel, principal, messageText);
                 return null;
             }
             switch (messageType) {

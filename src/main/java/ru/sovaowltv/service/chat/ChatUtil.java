@@ -95,14 +95,14 @@ public class ChatUtil {
     @Value("${err}")
     private String error;
 
-    public boolean userNotAllowedSendMessages(String channel, Principal principal, String type, User userForCheck) {
+    public boolean userAllowedSendMessages(String channel, Principal principal, String type, User userForCheck) {
         if (!type.equalsIgnoreCase("history") && !type.equalsIgnoreCase("modAction")) {
             if (!streamModerationUtil.canChatInChannelBan(userForCheck, channel)) {
                 MessageStatus messageStatus = new MessageStatus();
                 messageStatus.setType("infoBan");
                 messageStatus.setInfo(messageSource.getMessage("pages.chat.message.youBanned", null, LocaleContextHolder.getLocale()));
                 messagesUtil.convertAndSendToUser(principal.getName(), channel, messageStatus);
-                return true;
+                return false;
             }
 
             if (!streamModerationUtil.canChatInChannelTimeout(userForCheck, channel)) {
@@ -125,23 +125,23 @@ public class ChatUtil {
                 String lastPart = messageSource.getMessage("pages.chat.message.youTimeoutTimeUnit", null, LocaleContextHolder.getLocale());
                 messageStatus.setInfo(firstPart + " " + time + " " + lastPart);
                 messagesUtil.convertAndSendToUser(principal.getName(), channel, messageStatus);
-                return true;
+                return false;
             }
 
-            if (!antiSpamUtil.lastTimeMessageOk(userForCheck)) {
+            if (!antiSpamUtil.isAntiSpamOk(userForCheck)) {
                 MessageStatus messageStatus = new MessageStatus();
                 messageStatus.setType("infoSpam");
                 messageStatus.setInfo(messageSource.getMessage("pages.chat.message.spam", null, LocaleContextHolder.getLocale())
                         .concat(" <span class='spanTime'>")
-                        .concat(antiSpamUtil.getSpamTime(userForCheck))
+                        .concat(antiSpamUtil.getTimeUntilAntiSpamUnblock(userForCheck))
                         .concat("</span> ")
                         .concat(messageSource.getMessage("pages.chat.message.youTimeoutTimeUnit", null, LocaleContextHolder.getLocale()))
                 );
                 messagesUtil.convertAndSendToUser(principal.getName(), channel, messageStatus);
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     public ChatMessage solveMessageMessage(String channel, Principal principal, Map<String, Object> map, User userForCheck) {

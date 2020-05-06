@@ -1,0 +1,22 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="streamPlayers">
+    <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+    <iframe th:if="${stream.getUser().getUserTwitch()!=null}"
+            th:id="'playerTwitch_' + ${stream.getId()}"
+            th:src="'https://player.twitch.tv/?autoplay=false&channel='+${stream.getUser().getUserTwitch().getNick()}"
+            frameborder="0" allowfullscreen scrolling="no">
+    </iframe>
+    <iframe th:if="${stream.getUser().getUserGG()!=null}"
+            th:id="'playerGG_' + ${stream.getId()}"
+            th:src="'https://goodgame.ru/player?' + ${stream.getUser().getUserGG().getChannelId()}"
+            frameborder="0" allowfullscreen>
+    </iframe>
+    <iframe th:if="${stream.getUser().getUserGoogle()!=null}"
+            th:id="'playerYT_' + ${stream.getId()}"
+            th:src="'https://www.youtube.com/embed/'+${stream.getUser().getUserGoogle().getVideoId()}"
+            frameborder="0" allowfullscreen>
+    </iframe>
+</th:block>
+</body>
+</html>

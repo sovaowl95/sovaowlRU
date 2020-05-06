@@ -54,14 +54,6 @@
     <th:block th:include="stream/settings/commands :: commands"/>
     <th:block th:include="stream/settings/donations :: donations"/>
 
-
-    <div sec:authorize="hasRole('ADMIN')">
-        <div onclick="launchAllChats()">launchAllChats</div>
-        <hr>
-        <div onclick="launchMyTwitchChat()">launchMyTwitchChat</div>
-        <hr>
-        <div onclick="addTwitchChat()">addTwitchChat</div>
-    </div>
 </div>
 
 <script th:inline="javascript">

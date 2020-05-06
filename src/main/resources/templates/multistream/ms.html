@@ -23,7 +23,7 @@
 
         <div th:if="${multiStream != null}">
             <div>COPY THIS FOR INVITE!</div>
-            <div th:text="'/ms/join/' + ${multiStream.getId()} + '/'+ ${multiStream.getInviteCode()}"></div>
+            <div th:text="'https://sovaowl.ru/ms/join/' + ${multiStream.getId()} + '/' + ${multiStream.getInviteCode()}"></div>
         </div>
 
         <div th:if="${multiStream == null}">
