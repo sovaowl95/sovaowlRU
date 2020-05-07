@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.chat.Message;
@@ -96,5 +97,42 @@ public class MessagesUtil {
 
     public void convertAndSend(String channel, Object message) {
         simpMessagingTemplate.convertAndSend("/topic/" + channel, message);
+    }
+
+    public void createAndSendMessageStatus(
+            String type,
+            String key,
+            String userName,
+            String channel
+    ) {
+        MessageStatus messageStatus = new MessageStatus();
+        messageStatus.setType(type);
+        messageStatus.setInfo(messageSource.getMessage(key, null, LocaleContextHolder.getLocale()));
+        convertAndSendToUser(userName, channel, messageStatus);
+    }
+
+    public void createAndSendSimpleMessageStatus(
+            String type,
+            String info,
+            String userName,
+            String channel
+    ) {
+        MessageStatus messageStatus = new MessageStatus();
+        messageStatus.setType(type);
+        messageStatus.setInfo(info);
+        convertAndSendToUser(userName, channel, messageStatus);
+    }
+
+    public void createAndSendMessageStatus(
+            String type,
+            String info,
+            String sessionId,
+            String destination,
+            MessageHeaders messageHeaders
+    ) {
+        MessageStatus messageStatus = new MessageStatus();
+        messageStatus.setType(type);
+        messageStatus.setInfo(info);
+        simpMessagingTemplate.convertAndSendToUser(sessionId, destination, messageStatus, messageHeaders);
     }
 }

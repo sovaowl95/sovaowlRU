@@ -389,7 +389,7 @@ public class YTChat extends ApiForChat {
 
                 Message message = prepareMessage(map, messageId);
 
-                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message, topicTarget);
+                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
                 if (messageValidationStatus == MessageValidationStatus.SPAM)
                     banUser(message.getNick(), "SPAM", message);
                 if (messageValidationStatus != MessageValidationStatus.OK)

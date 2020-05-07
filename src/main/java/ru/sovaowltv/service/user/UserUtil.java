@@ -131,7 +131,7 @@ public class UserUtil {
     public void setAuthContextIfItsEmpty(Principal principal) {
         try {
             Optional<User> userOptional = getUserOptionalFromContext();
-            usersRepositoryHandler.free(userOptional.get());
+            userOptional.ifPresent(usersRepositoryHandler::free);
         } catch (Exception e) {
             setAuthContext(principal.getName());
         }

@@ -51,15 +51,11 @@ public class AntiSpamUtil {
 
         addAndClear(userToTime);
 
-        if (userToTime.times.size() < ALLOWED_MESSAGES) {
-            return true;
-        }
-
-        return false;
+        return userToTime.times.size() < ALLOWED_MESSAGES;
     }
 
 
-    public String getTimeUntilAntiSpamUnblock(User user) {
+    public String getTimeUntilUnblock(User user) {
         long id = user.getId();
         UserToTime userToTime = map.get(id);
 

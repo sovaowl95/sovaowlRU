@@ -6,8 +6,9 @@
 
     <link rel="stylesheet" th:href="@{/css/streamPage.css}">
 
-    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+    <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
+    <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
+
     <link rel="stylesheet" th:href="@{/css/error/style.css}">
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">

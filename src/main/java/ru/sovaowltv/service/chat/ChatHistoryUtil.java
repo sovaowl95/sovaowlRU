@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.MessageHeaders;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -25,11 +24,8 @@ import ru.sovaowltv.service.caravan.CaravanStatus;
 import ru.sovaowltv.service.caravan.CaravanUtil;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamModerationUtil;
-import ru.sovaowltv.service.stream.StreamUtil;
-import ru.sovaowltv.service.user.UsersRepositoryHandler;
 import ru.sovaowltv.service.user.params.UserPremiumUtil;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,9 +35,7 @@ import java.util.List;
 public class ChatHistoryUtil {
     private final MessageRepository messageRepository;
     private final MessageStatusRepository messageStatusRepository;
-    private final UsersRepositoryHandler usersRepositoryHandler;
 
-    private final StreamUtil streamUtil;
     private final CaravanUtil caravanUtil;
     private final StreamModerationUtil streamModerationUtil;
     private final MessagesUtil messagesUtil;
@@ -53,47 +47,51 @@ public class ChatHistoryUtil {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
 
-    public ChatMessage solveHistoryMessage(String channel, Principal principal) {
-        solveHistory(principal.getName(), channel);
+    private static final String HISTORY = "history";
+    private static final String TOPIC = "/topic/";
+
+    public ChatMessage solveHistoryMessage(String channel, User user, Stream stream) {
+        solveHistory(channel, user, stream);
         return null;
     }
 
-    public void solveHistoryMessage(@DestinationVariable String channel, String message, SimpMessageHeaderAccessor ha) {
+    public void solveHistoryMessage(Stream stream, String channel, String message, SimpMessageHeaderAccessor ha) {
         SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.create(SimpMessageType.MESSAGE);
         String sessionId = ha.getSessionId();
         headerAccessor.setSessionId(sessionId);
         headerAccessor.setLeaveMutable(true);
 
         if (isHistoryMessage(message)) {
-            User channelOwnerUser = null;
-            try {
-                channelOwnerUser = usersRepositoryHandler.getUserByNickname(channel);
-                Stream stream = streamUtil.getStreamByUserNickname(channelOwnerUser.getNickname());
-                List<ChatMessage> messages = messageRepository.findTop20ByStreamIdAndTimeAfterAndBannedIsFalseOrderByIdDesc(
-                        stream.getId(), LocalDateTime.now().minusMinutes(30));
-                List<MessageStatus> statusMessages = messageStatusRepository.findByStreamIdAndTimeAfterOrderByIdDesc(
-                        stream.getId(), LocalDateTime.now().minusMinutes(30));
+            List<ChatMessage> messages = messageRepository.findTop20ByStreamIdAndTimeAfterAndBannedIsFalseOrderByIdDesc(
+                    stream.getId(), LocalDateTime.now().minusMinutes(30));
+            List<MessageStatus> statusMessages = messageStatusRepository.findByStreamIdAndTimeAfterOrderByIdDesc(
+                    stream.getId(), LocalDateTime.now().minusMinutes(30));
 
-                messages.addAll(statusMessages);
+            messages.addAll(statusMessages);
+            messagesUtil.createAndSendMessageStatus(
+                    HISTORY,
+                    new Gson().toJson(messages),
+                    sessionId,
+                    TOPIC + channel,
+                    createHeaders(sessionId)
+            );
 
-                MessageStatus messageStatus = new MessageStatus();
-                messageStatus.setType("history");
-                Gson gson = new Gson();
-                messageStatus.setInfo(gson.toJson(messages));
-
-                simpMessagingTemplate.convertAndSendToUser(sessionId, "/topic/" + channel, messageStatus, createHeaders(sessionId));
-                if (caravanUtil.getCaravanStatus() == CaravanStatus.GROUP_UP) {
-                    MessageStatus messageStatus2 = caravanUtil.prepareCaravanStartMessage();
-                    simpMessagingTemplate.convertAndSendToUser(sessionId, "/topic/" + channel, messageStatus2, createHeaders(sessionId));
-                }
-            } finally {
-                usersRepositoryHandler.saveAndFree(channelOwnerUser);
+            if (caravanUtil.getCaravanStatus() == CaravanStatus.GROUP_UP) {
+                MessageStatus messageStatus2 = caravanUtil.prepareCaravanStartMessage();
+                simpMessagingTemplate.convertAndSendToUser(
+                        sessionId,
+                        TOPIC + channel,
+                        messageStatus2,
+                        createHeaders(sessionId)
+                );
             }
         } else {
-            MessageStatus messageStatus = new MessageStatus();
-            messageStatus.setType("caravanErrStatusJoinAnon");
-            messageStatus.setInfo("");
-            simpMessagingTemplate.convertAndSendToUser(sessionId, "/topic/" + channel, messageStatus, createHeaders(sessionId));
+            messagesUtil.createAndSendMessageStatus("caravanErrStatusJoinAnon",
+                    "",
+                    sessionId,
+                    TOPIC + channel,
+                    createHeaders(sessionId)
+            );
         }
     }
 
@@ -108,43 +106,32 @@ public class ChatHistoryUtil {
         return headerAccessor.getMessageHeaders();
     }
 
-    private void solveHistory(String login, String channel) {
-        User userIssuer = null;
-        User channelOwnerUser = null;
-        try {
-            channelOwnerUser = usersRepositoryHandler.getUserByNickname(channel);
-            Stream stream = streamUtil.getStreamByUserNickname(channelOwnerUser.getNickname());
-            List<ChatMessage> messages = messageRepository.findTop20ByStreamIdAndTimeAfterAndBannedIsFalseOrderByIdDesc(stream.getId(), LocalDateTime.now().minusMinutes(30));
-            List<MessageStatus> messages1 = messageStatusRepository.findByStreamIdAndTimeAfterOrderByIdDesc(stream.getId(), LocalDateTime.now().minusMinutes(30));
+    private void solveHistory(String channel, User user, Stream stream) {
+        List<ChatMessage> messages = messageRepository.findTop20ByStreamIdAndTimeAfterAndBannedIsFalseOrderByIdDesc(
+                stream.getId(), LocalDateTime.now().minusMinutes(30));
+        List<MessageStatus> messages1 = messageStatusRepository.findByStreamIdAndTimeAfterOrderByIdDesc(
+                stream.getId(), LocalDateTime.now().minusMinutes(30));
 
-            userIssuer = usersRepositoryHandler.getUserByLogin(login);
+        MessageStatus ms = new MessageStatus();
+        ms.setType(HISTORY);
+        ms.setInfo(String.valueOf(streamModerationUtil.canModerateStream(user, stream)));
 
-            MessageStatus ms = new MessageStatus();
-            ms.setType("history");
-            ms.setInfo(String.valueOf(streamModerationUtil.canModerateStream(userIssuer, stream)));
+        messages.add(0, ms);
+        messages.addAll(messages1);
 
-            messages.add(0, ms);
-            messages.addAll(messages1);
+        MessageStatus messageStatus = new MessageStatus();
+        messageStatus.setType(HISTORY);
+        messageStatus.setInfo(new Gson().toJson(messages));
+        messagesUtil.convertAndSendToUser(user.getLogin(), channel, messageStatus);
 
-            MessageStatus messageStatus = new MessageStatus();
-            messageStatus.setType("history");
-            Gson gson = new Gson();
-            messageStatus.setInfo(gson.toJson(messages));
-            messagesUtil.convertAndSendToUser(login, channel, messageStatus);
-
-            if (caravanUtil.getCaravanStatus() == CaravanStatus.GROUP_UP) {
-                MessageStatus messageStatus2 = caravanUtil.prepareCaravanStartMessage();
-                messagesUtil.convertAndSendToUser(login, channel, messageStatus2);
-            }
-
-            userPremiumUtil.solvePremiumExpiredSoon(login, channel, userIssuer);
-
-            checkAllApiAuthCorrect(userIssuer, channel, channelOwnerUser);
-
-        } finally {
-            usersRepositoryHandler.saveAndFree(userIssuer);
-            usersRepositoryHandler.saveAndFree(channelOwnerUser);
+        if (caravanUtil.getCaravanStatus() == CaravanStatus.GROUP_UP) {
+            MessageStatus messageStatus2 = caravanUtil.prepareCaravanStartMessage();
+            messagesUtil.convertAndSendToUser(user.getLogin(), channel, messageStatus2);
         }
+
+        userPremiumUtil.solvePremiumExpiredSoon(user.getLogin(), channel, user);
+
+        checkAllApiAuthCorrect(user, channel, stream.getUser());
     }
 
 

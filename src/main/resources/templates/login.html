@@ -8,6 +8,7 @@
     <script th:src="@{/js/login.js}"></script>
     <th:block th:include="fragments/flags :: flagsHeader"/>
     <th:block th:include="fragments/auth :: authHeader"/>
+
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
     <meta th:name="secTokenState" th:content="${secTokenState}">

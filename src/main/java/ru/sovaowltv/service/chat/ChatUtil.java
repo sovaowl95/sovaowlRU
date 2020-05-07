@@ -3,12 +3,12 @@ package ru.sovaowltv.service.chat;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -32,15 +32,12 @@ import ru.sovaowltv.service.smiles.TwitchSmiles;
 import ru.sovaowltv.service.smiles.WebSiteSmileAbstract;
 import ru.sovaowltv.service.smiles.YTSmiles;
 import ru.sovaowltv.service.stream.StreamModerationUtil;
-import ru.sovaowltv.service.stream.StreamUtil;
 import ru.sovaowltv.service.stream.moderation.*;
 import ru.sovaowltv.service.unclassified.HtmlTagsClear;
 import ru.sovaowltv.service.user.UserUtil;
-import ru.sovaowltv.service.user.UsersRepositoryHandler;
 import ru.sovaowltv.service.user.params.UserCoinsUtil;
 import ru.sovaowltv.service.user.params.UserExpUtil;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -53,13 +50,9 @@ import java.util.stream.Collectors;
 public class ChatUtil {
     private final MessageRepository messageRepository;
     private final StylesRepository stylesRepository;
-    private final UsersRepositoryHandler usersRepositoryHandler;
 
     private final StreamModerationUtil streamModerationUtil;
     private final UserUtil userUtil;
-    private final TwitchSmiles twitchSmilesUtil;
-    private final GGSmiles ggSmilesUtil;
-    private final YTSmiles ytSmilesUtil;
     private final UserExpUtil userExpUtil;
     private final UserCoinsUtil userCoinsUtil;
     private final CaravanUtil caravanUtil;
@@ -73,10 +66,13 @@ public class ChatUtil {
     private final UnModUtil unModUtil;
     private final PurgeUtil purgeUtil;
     private final ClearUtil clearUtil;
-    private final StreamUtil streamUtil;
 
     private final DefaultCommands defaultCommands;
     private final CommandsUtil commandsUtil;
+
+    private final TwitchSmiles twitchSmiles;
+    private final GGSmiles ggSmiles;
+    private final YTSmiles ytSmiles;
 
     private final MessageSource messageSource;
     private final MessageValidator messageValidator;
@@ -95,94 +91,80 @@ public class ChatUtil {
     @Value("${err}")
     private String error;
 
-    public boolean userAllowedSendMessages(String channel, Principal principal, String type, User userForCheck) {
-        if (!type.equalsIgnoreCase("history") && !type.equalsIgnoreCase("modAction")) {
-            if (!streamModerationUtil.canChatInChannelBan(userForCheck, channel)) {
-                MessageStatus messageStatus = new MessageStatus();
-                messageStatus.setType("infoBan");
-                messageStatus.setInfo(messageSource.getMessage("pages.chat.message.youBanned", null, LocaleContextHolder.getLocale()));
-                messagesUtil.convertAndSendToUser(principal.getName(), channel, messageStatus);
+    public boolean userAllowedSendMessages(String channel, String messageType, User user, Stream stream) {
+        if (!messageType.equalsIgnoreCase("history") && !messageType.equalsIgnoreCase("modAction")) {
+            if (!streamModerationUtil.canChatInChannelBan(user, stream)) {
+                messagesUtil.createAndSendMessageStatus("infoBan", "pages.chat.message.youBanned", user.getLogin(), channel);
                 return false;
             }
 
-            if (!streamModerationUtil.canChatInChannelTimeout(userForCheck, channel)) {
-                MessageStatus messageStatus = new MessageStatus();
-                messageStatus.setType("infoTimeout");
-
-                Stream stream;
-                User channelOwnerUser = null;
-                try {
-                    channelOwnerUser = usersRepositoryHandler.getUserByNickname(channel);
-                    stream = streamUtil.getStreamByUserNickname(channelOwnerUser.getNickname());
-                } finally {
-                    usersRepositoryHandler.free(channelOwnerUser);
-                }
-
-                String firstPart = messageSource.getMessage("pages.chat.message.youTimeout", null, LocaleContextHolder.getLocale());
-                LocalDateTime localDateTime = apiTimeouts.getTimeoutsByStreamId(stream.getId()).get(userForCheck);
-                long between = ChronoUnit.SECONDS.between(LocalDateTime.now(), localDateTime);
-                String time = String.valueOf(between);
-                String lastPart = messageSource.getMessage("pages.chat.message.youTimeoutTimeUnit", null, LocaleContextHolder.getLocale());
-                messageStatus.setInfo(firstPart + " " + time + " " + lastPart);
-                messagesUtil.convertAndSendToUser(principal.getName(), channel, messageStatus);
+            if (!streamModerationUtil.canChatInChannelTimeout(user, stream)) {
+                messagesUtil.createAndSendSimpleMessageStatus("infoTimeout", getInfo(user, stream), user.getLogin(), channel);
                 return false;
             }
 
-            if (!antiSpamUtil.isAntiSpamOk(userForCheck)) {
-                MessageStatus messageStatus = new MessageStatus();
-                messageStatus.setType("infoSpam");
-                messageStatus.setInfo(messageSource.getMessage("pages.chat.message.spam", null, LocaleContextHolder.getLocale())
-                        .concat(" <span class='spanTime'>")
-                        .concat(antiSpamUtil.getTimeUntilAntiSpamUnblock(userForCheck))
-                        .concat("</span> ")
-                        .concat(messageSource.getMessage("pages.chat.message.youTimeoutTimeUnit", null, LocaleContextHolder.getLocale()))
+            if (!antiSpamUtil.isAntiSpamOk(user)) {
+                messagesUtil.createAndSendSimpleMessageStatus(
+                        "infoSpam",
+                        messageSource.getMessage("pages.chat.message.spam", null, LocaleContextHolder.getLocale())
+                                .concat(" <span class='spanTime'>")
+                                .concat(antiSpamUtil.getTimeUntilUnblock(user))
+                                .concat("</span> ")
+                                .concat(
+                                        messageSource.getMessage(
+                                                "pages.chat.message.youTimeoutTimeUnit",
+                                                null,
+                                                LocaleContextHolder.getLocale()
+                                        )
+                                ),
+                        user.getLogin(),
+                        channel
                 );
-                messagesUtil.convertAndSendToUser(principal.getName(), channel, messageStatus);
                 return false;
             }
         }
         return true;
     }
 
-    public ChatMessage solveMessageMessage(String channel, Principal principal, Map<String, Object> map, User userForCheck) {
-        User user = null;
-        try {
-            ChatMessage chatMessage = solveMessage(principal.getName(), String.valueOf(map.get("text")).trim(), channel);
-            if (chatMessage instanceof Message) {
-                messageRepository.save(((Message) chatMessage));
-                user = usersRepositoryHandler.getUserByLogin(principal.getName());
-                userExpUtil.addExpAndPrint(String.valueOf(user.getId()), 1, channel);
-                usersForCoins.add(String.valueOf(userForCheck.getId()));
-            }
-            return chatMessage;
-        } finally {
-            usersRepositoryHandler.saveAndFree(user);
-        }
+    @NotNull
+    private String getInfo(User user, Stream stream) {
+        String firstPart = messageSource.getMessage("pages.chat.message.youTimeout", null, LocaleContextHolder.getLocale());
+        LocalDateTime localDateTime = apiTimeouts.getTimeoutsByStreamId(stream.getId()).get(user);
+        long between = ChronoUnit.SECONDS.between(LocalDateTime.now(), localDateTime);
+        String time = String.valueOf(between);
+        String lastPart = messageSource.getMessage("pages.chat.message.youTimeoutTimeUnit", null, LocaleContextHolder.getLocale());
+
+        return firstPart + " " + time + " " + lastPart;
     }
 
-    private ChatMessage solveMessage(String name, String text, String channel) {
-        User userByLogin = null;
-        try {
-            ChatMessage message = prepareMessage(name, text, channel);
-            userByLogin = usersRepositoryHandler.getUserByLogin(name);
-            if (message instanceof Message)
-                messageDeliver.sendMessageToAllApiChats(((Message) message), channel, this, userByLogin);
-            return message;
-        } finally {
-            usersRepositoryHandler.saveAndFree(userByLogin);
+    public ChatMessage solveMessageMessage(String channel, Map<String, Object> map, User user, Stream stream) {
+        ChatMessage chatMessage = solveMessage(String.valueOf(map.get("text")).trim(), channel, user, stream);
+        if (chatMessage instanceof Message) {
+            messageRepository.save(((Message) chatMessage));
+            userExpUtil.addExpAndPrint(String.valueOf(user.getId()), 1, channel);
+            usersForCoins.add(String.valueOf(user.getId()));
         }
+        return chatMessage;
+
     }
 
+    private ChatMessage solveMessage(String text, String channel, User user, Stream stream) {
+        ChatMessage message = prepareMessage(text, channel, user, stream);
+        if (message instanceof Message && stream.getId() > 0)
+            messageDeliver.sendMessageToAllApiChats(((Message) message), channel, this, user);
+        return message;
 
-    public ChatMessage solveCommandMessage(String channel, Principal principal, Map<String, Object> map, User userForCheck) {
-        ChatMessage message = solveCommand(principal.getName(), String.valueOf(map.get("text")).trim(), channel, userForCheck);
+    }
+
+    public ChatMessage solveCommandMessage(String channel, Map<String, Object> map, User user, Stream stream) {
+        ChatMessage message = solveCommand(user.getLogin(), String.valueOf(map.get("text")).trim(), channel, user, stream);
         if (message instanceof Message)
             messageRepository.save(((Message) message));
         return message;
     }
 
-    private ChatMessage solveCommand(String login, String text, String channel, User user) {
-        ChatMessage chatMessage = prepareMessage(login, text, channel);
+    private ChatMessage solveCommand(String login, String text, String channel, User user, Stream stream) {
+        ChatMessage chatMessage = prepareMessage(text, channel, user, stream);
         if (chatMessage instanceof Message) {
             Message message = ((Message) chatMessage);
             if (message.getText().startsWith("!")) {
@@ -216,7 +198,6 @@ public class ChatUtil {
                         return null;
                     }
                 } else {
-                    Stream stream = streamUtil.getStreamByUserNickname(channel);
                     Command command = commandsUtil.getCommand(login, text, channel, user, stream);
                     if (command != null) {
                         if (command.isForPublicShown()) {
@@ -244,9 +225,7 @@ public class ChatUtil {
                 messagesUtil.convertAndSendToUser(login, channel, messageStatus);
                 return null;
             } else {
-                User userByLogin = usersRepositoryHandler.getUserByLogin(login);
-                messageDeliver.sendMessageToAllApiChats(message, channel, this, userByLogin);
-                usersRepositoryHandler.saveAndFree(userByLogin);
+                messageDeliver.sendMessageToAllApiChats(message, channel, this, user);
                 return message;
             }
         } else {
@@ -283,102 +262,88 @@ public class ChatUtil {
     }
 
 
-    public ChatMessage solveModActionMessage(String channel, Principal principal, Map<String, Object> map) {
+    public ChatMessage solveModActionMessage(String channel, Map<String, Object> map, User user, Stream stream) {
         String secondType = String.valueOf(map.get("secondType"));
-        MessageStatus chatMessage = solveModAction(principal.getName(), String.valueOf(map.get("text")).trim(), channel, secondType);
+        MessageStatus chatMessage = solveModAction(String.valueOf(map.get("text")).trim(), channel, secondType, user, stream);
         if (chatMessage == null) {
             return null;
         } else if (chatMessage.getInfo().startsWith(error)) {
-            messagesUtil.convertAndSendToUser(principal.getName(), channel, chatMessage);
+            messagesUtil.convertAndSendToUser(user.getLogin(), channel, chatMessage);
             return null;
         } else {
             return chatMessage;
         }
     }
 
-    private MessageStatus solveModAction(String login, String text, String channel, String secondType) {
-        User moderator = null;
-        User channelOwnerUser = null;
-        try {
-            moderator = usersRepositoryHandler.getUserByLogin(login);
-            channelOwnerUser = usersRepositoryHandler.getUserByNickname(channel);
-            Stream stream = streamUtil.getStreamByUserNickname(channelOwnerUser.getNickname());
-            if (text.startsWith("/")) {
-                if (text.startsWith("/help")) {
-                    sendHelpAnswer(login, channel);
-                    return null;
-                } else if (streamModerationUtil.canModerateStream(moderator, stream)) {
-                    if (text.startsWith("/ban ") || text.startsWith("/b ")) {
-                        if (secondType.equalsIgnoreCase("null")) {
-                            return banUtil.banUserByNickName(moderator, text, channel);
-                        } else if (secondType.equalsIgnoreCase("id")) {
-                            return banUtil.banUserByMessageId(moderator, text, channel);
-                        } else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/unban ") || text.startsWith("/ub ")) {
-                        if (secondType.equalsIgnoreCase("null")) {
-                            return unBanUtil.unBanUserByNickName(moderator, text, channel);
-                        } else if (secondType.equalsIgnoreCase("id"))
-                            return unBanUtil.unBanUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/timeout ") || text.startsWith("/t ")) {
-                        if (secondType.equalsIgnoreCase("null"))
-                            return timeoutUtil.timeoutUserByNickName(moderator, text, channel);
-                        else if (secondType.equalsIgnoreCase("id"))
-                            return timeoutUtil.timeoutUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/untimeout ") || text.startsWith("/ut ")) {
-                        if (secondType.equalsIgnoreCase("null"))
-                            return unTimeoutUtil.unTimeoutUserByNickName(moderator, text, channel);
-                        else if (secondType.equalsIgnoreCase("id"))
-                            return unTimeoutUtil.unTimeoutUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/clear ") | text.startsWith("/c ")) {
-                        if (secondType.equalsIgnoreCase("null"))
-                            return clearUtil.clearUserByNickName(moderator, text, channel);
-                        else if (secondType.equalsIgnoreCase("id"))
-                            return clearUtil.clearUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/mod ") || text.startsWith("/m ")) {
-                        if (secondType.equalsIgnoreCase("null"))
-                            return modUtil.modUserByNickName(moderator, text, channel);
-                        else if (secondType.equalsIgnoreCase("id"))
-                            return modUtil.modUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/unmod ") || text.startsWith("/um ")) {
-                        if (secondType.equalsIgnoreCase("null"))
-                            return unModUtil.unmodUserByNickName(moderator, text, channel);
-                        else if (secondType.equalsIgnoreCase("id"))
-                            return unModUtil.unmodUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/purge ") || text.startsWith("/p ")) {
-                        if (secondType.equalsIgnoreCase("null"))
-                            return purgeUtil.purgeUserByNickName(moderator, text, channel);
-                        else if (secondType.equalsIgnoreCase("id"))
-                            return purgeUtil.purgeUserByMessageId(moderator, text, channel);
-                        else
-                            return unknownTypeMethod();
-                    } else if (text.startsWith("/clearAll") || text.startsWith("/ca")) {
-                        return clearUtil.clearAll(moderator, text, stream, channel);
-                    } else {
-                        return messagesUtil.getErrorMessageStatus("modAction",
-                                messageSource.getMessage(
-                                        "pages.chat.message.moderator.unknownCommand",
-                                        null,
-                                        LocaleContextHolder.getLocale()
-                                )
-                        );
-                    }
+    private MessageStatus solveModAction(String text, String channel, String secondType, User user, Stream stream) {
+
+        if (text.startsWith("/")) {
+            if (text.startsWith("/help")) {
+                sendHelpAnswer(user.getLogin(), channel);
+                return null;
+            } else if (streamModerationUtil.canModerateStream(user, stream)) {
+                if (text.startsWith("/ban ") || text.startsWith("/b ")) {
+                    if (secondType.equalsIgnoreCase("null")) {
+                        return banUtil.banUserByNickName(user, text, channel);
+                    } else if (secondType.equalsIgnoreCase("id")) {
+                        return banUtil.banUserByMessageId(user, text, channel);
+                    } else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/unban ") || text.startsWith("/ub ")) {
+                    if (secondType.equalsIgnoreCase("null")) {
+                        return unBanUtil.unBanUserByNickName(user, text, channel);
+                    } else if (secondType.equalsIgnoreCase("id"))
+                        return unBanUtil.unBanUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/timeout ") || text.startsWith("/t ")) {
+                    if (secondType.equalsIgnoreCase("null"))
+                        return timeoutUtil.timeoutUserByNickName(user, text, channel);
+                    else if (secondType.equalsIgnoreCase("id"))
+                        return timeoutUtil.timeoutUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/untimeout ") || text.startsWith("/ut ")) {
+                    if (secondType.equalsIgnoreCase("null"))
+                        return unTimeoutUtil.unTimeoutUserByNickName(user, text, channel);
+                    else if (secondType.equalsIgnoreCase("id"))
+                        return unTimeoutUtil.unTimeoutUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/clear ") || text.startsWith("/c ")) {
+                    if (secondType.equalsIgnoreCase("null"))
+                        return clearUtil.clearUserByNickName(user, text, channel);
+                    else if (secondType.equalsIgnoreCase("id"))
+                        return clearUtil.clearUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/mod ") || text.startsWith("/m ")) {
+                    if (secondType.equalsIgnoreCase("null"))
+                        return modUtil.modUserByNickName(user, text, channel);
+                    else if (secondType.equalsIgnoreCase("id"))
+                        return modUtil.modUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/unmod ") || text.startsWith("/um ")) {
+                    if (secondType.equalsIgnoreCase("null"))
+                        return unModUtil.unmodUserByNickName(user, text, channel);
+                    else if (secondType.equalsIgnoreCase("id"))
+                        return unModUtil.unmodUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/purge ") || text.startsWith("/p ")) {
+                    if (secondType.equalsIgnoreCase("null"))
+                        return purgeUtil.purgeUserByNickName(user, text, channel);
+                    else if (secondType.equalsIgnoreCase("id"))
+                        return purgeUtil.purgeUserByMessageId(user, text, channel);
+                    else
+                        return unknownTypeMethod();
+                } else if (text.startsWith("/clearAll") || text.startsWith("/ca")) {
+                    return clearUtil.clearAll(user, text, stream, channel);
                 } else {
                     return messagesUtil.getErrorMessageStatus("modAction",
                             messageSource.getMessage(
-                                    "pages.chat.message.moderator.insufficientPermission",
+                                    "pages.chat.message.moderator.unknownCommand",
                                     null,
                                     LocaleContextHolder.getLocale()
                             )
@@ -387,15 +352,20 @@ public class ChatUtil {
             } else {
                 return messagesUtil.getErrorMessageStatus("modAction",
                         messageSource.getMessage(
-                                "pages.chat.message.moderator.commandMustStartWithSlash",
+                                "pages.chat.message.moderator.insufficientPermission",
                                 null,
                                 LocaleContextHolder.getLocale()
                         )
                 );
             }
-        } finally {
-            usersRepositoryHandler.saveAndFree(channelOwnerUser);
-            usersRepositoryHandler.saveAndFree(moderator);
+        } else {
+            return messagesUtil.getErrorMessageStatus("modAction",
+                    messageSource.getMessage(
+                            "pages.chat.message.moderator.commandMustStartWithSlash",
+                            null,
+                            LocaleContextHolder.getLocale()
+                    )
+            );
         }
     }
 
@@ -413,96 +383,75 @@ public class ChatUtil {
     }
 
     //todo: ANOTHER API SERVICE
-    private ChatMessage prepareMessage(String login, String text, String channel) {
-        User user = null;
-        User userChannelOwner = null;
-        try {
-            if (text.trim().isEmpty() || text.trim().isBlank()) return null;
-            Message message = new Message();
-            message.setSource(website);
-            message.setType("message");
-            message.setText(htmlTagsClear.removeTags(text));
-            message.setTime(LocalDateTime.now());
+    private ChatMessage prepareMessage(String text, String channel, User user, Stream stream) {
+        if (text.trim().isEmpty() || text.trim().isBlank()) return null;
+        Message message = new Message();
+        message.setSource(website);
+        message.setType("message");
+        message.setText(htmlTagsClear.removeTags(text));
+        message.setTime(LocalDateTime.now());
 
-            if (message.getTwitchSmilesInfo() == null || message.getTwitchSmilesInfo().isEmpty()) {
-                message.setTwitchSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), twitchSmilesUtil));
-            }
+        prepareSmiles(message);
 
-            if (message.getGgSmilesInfo() == null || message.getGgSmilesInfo().isEmpty()) {
-                message.setGgSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), ggSmilesUtil));
-            }
+        long styleId = user.getUserSettings().getStyleId();
+        message.setStyle(stylesRepository.findById(styleId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Style not found"))
+                .getName());
+        message.setIssuerId(String.valueOf(user.getId()));
+        message.setNick(user.getNickname());
+        message.setIcons(user.getUserSettings().getActiveIcons()
+                .stream()
+                .map(icons -> "achievements/" + icons.getName() + ".png")
+                .collect(Collectors.joining(" "))
+        );
+        message.setPremText(user.getUserSettings().isPremiumChat());
+        message.setPremiumUser(user.isPremiumUser());
 
-            if (message.getYtSmilesInfo() == null || message.getYtSmilesInfo().isEmpty()) {
-                message.setYtSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), ytSmilesUtil));
-            }
+        message.setStreamId(stream.getId());
 
-            message.setWebSiteSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), webSiteSmilesUtil));
-            user = usersRepositoryHandler.getUserByLogin(login);
-            long styleId = user.getUserSettings().getStyleId();
-            message.setStyle(stylesRepository.findById(styleId)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Style not found"))
-                    .getName());
-            message.setIssuerId(String.valueOf(user.getId()));
-            message.setNick(user.getNickname());
-            //todo: choose active icons
-            message.setIcons(user.getUserSettings().getActiveIcons()//user.getUserSettings().getActiveIcons()
-                    .stream()
-                    .map(icons -> "achievements/" + icons.getName() + ".png")
-                    .collect(Collectors.joining(" "))
-            );
-            message.setPremText(user.getUserSettings().isPremiumChat());
-            message.setPremiumUser(user.isPremiumUser());
+        message.setModerator(stream.getModeratorsList().contains(user));
+        message.setCanControlMod(streamModerationUtil.canModerateStreamAsOwner(user, stream));
+        message.setGlobalAdmin(userUtil.isAdminOrModerator(user));
 
-            Stream stream;
-
-            userChannelOwner = usersRepositoryHandler.getUserByLogin(channel);
-            stream = streamUtil.getStreamByUserNickname(userChannelOwner.getNickname());
-
-            message.setStreamId(stream.getId());
-
-            message.setModerator(stream.getModeratorsList().contains(user));
-            message.setCanControlMod(streamModerationUtil.canModerateStreamAsOwner(user, stream));
-            message.setGlobalAdmin(userUtil.isAdminOrModerator(user));
-
-            message.setLevel(user.getLevel());
+        message.setLevel(user.getLevel());
 
 
-            MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message, channel);
-            if (messageValidationStatus == MessageValidationStatus.SPAM) {
-                return banUtil.banUserByMessageId(stream.getUser(), text, channel);
-            }
-            if (messageValidationStatus != MessageValidationStatus.OK) {
-                MessageStatus messageStatus = new MessageStatus();
-                messageStatus.setType("ValidationError");
-                messageStatus.setInfo(String.valueOf(messageValidationStatus));
-                return messageStatus;
-            }
-            return message;
-        } finally {
-            usersRepositoryHandler.saveAndFree(userChannelOwner);
-            usersRepositoryHandler.saveAndFree(user);
+        MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
+        if (messageValidationStatus == MessageValidationStatus.SPAM) {
+            return banUtil.banUserByMessageId(stream.getUser(), text, channel);
         }
+        if (messageValidationStatus != MessageValidationStatus.OK) {
+            MessageStatus messageStatus = new MessageStatus();
+            messageStatus.setType("ValidationError");
+            messageStatus.setInfo(String.valueOf(messageValidationStatus));
+            return messageStatus;
+        }
+        return message;
     }
 
-    public void solveIsUserModeratorMessage(@DestinationVariable String channel, Principal principal) {
-        User channelOwner = null;
-        User user = null;
-        try {
-            channelOwner = usersRepositoryHandler.getUserByNickname(channel);
-            user = usersRepositoryHandler.getUserByLogin(principal.getName());
-            Stream stream = streamUtil.getStreamByUserNickname(channelOwner.getNickname());
-            messagesUtil.convertAndSendToUser(principal.getName(), channel, streamModerationUtil.canModerateStream(user, stream));
-        } finally {
-            usersRepositoryHandler.saveAndFree(channelOwner);
-            usersRepositoryHandler.saveAndFree(user);
+    private void prepareSmiles(Message message) {
+        if (message.getTwitchSmilesInfo() == null || message.getTwitchSmilesInfo().isEmpty()) {
+            message.setTwitchSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), twitchSmiles));
         }
+
+        if (message.getGgSmilesInfo() == null || message.getGgSmilesInfo().isEmpty()) {
+            message.setGgSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), ggSmiles));
+        }
+
+        if (message.getYtSmilesInfo() == null || message.getYtSmilesInfo().isEmpty()) {
+            message.setYtSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), ytSmiles));
+        }
+
+        message.setWebSiteSmilesInfo(streamModerationUtil.generateSmilesInfo(message.getText(), webSiteSmilesUtil));
+    }
+
+    public void solveIsUserModeratorMessage(String channel, User user, Stream stream) {
+        messagesUtil.convertAndSendToUser(user.getLogin(), channel, streamModerationUtil.canModerateStream(user, stream));
     }
 
     @Scheduled(fixedRate = 1000 * 60)
     public void addExpAndCoins() {
-        synchronized (usersForCoins) {
-            usersForCoins.forEach(userId -> userCoinsUtil.addCoins(userId, 1));
-            usersForCoins.clear();
-        }
+        usersForCoins.forEach(userId -> userCoinsUtil.addCoins(userId, 1));
+        usersForCoins.clear();
     }
 }

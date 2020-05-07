@@ -141,7 +141,7 @@ public class GGChat extends ApiForChat {
                 Message message = createMessage(userId, userName, text, messageId);
                 if (message == null) return;
 
-                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message, topicTarget);
+                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
                 if (messageValidationStatus == MessageValidationStatus.SPAM) banUser(userName, "SPAM", message);
                 if (messageValidationStatus != MessageValidationStatus.OK) return;
 
@@ -167,10 +167,10 @@ public class GGChat extends ApiForChat {
         if (bySub.isPresent()) {
             User userAuthor = bySub.get().getUser();
             message.setMessageSubId(messageId);
-            if (!streamModerationUtil.canChatInChannelBan(userAuthor, topicTarget)) {
+            if (!streamModerationUtil.canChatInChannelBan(userAuthor, stream)) {
                 banUser(userName, "banned by " + sovaowlRu, message);
                 return null;
-            } else if (!streamModerationUtil.canChatInChannelTimeout(userAuthor, topicTarget)) {
+            } else if (!streamModerationUtil.canChatInChannelTimeout(userAuthor, stream)) {
                 timeoutUser(userName, apiTimeouts.getTimeForChannelAndUser(stream, userAuthor), "timeout by " + sovaowlRu, message);
                 return null;
             }

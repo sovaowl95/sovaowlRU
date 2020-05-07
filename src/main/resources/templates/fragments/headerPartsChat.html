@@ -1,12 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:fragment="libs">
-        <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
-        <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
-        <script th:src="@{/js/lib/sockjs.js}"></script>
-        <script th:src="@{/js/lib/stomp.js}"></script>
-        <script th:src="@{/js/lib/stomp.umd.js}"></script>
-        <script th:src="@{/js/lib/jquery-3.4.1.min.js}"></script>
+        <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
+        <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
+
+        <script src="/webjars/sockjs-client/dist/sockjs.min.js"></script>
+        <script src="/webjars/stomp__stompjs/bundles/stomp.umd.min.js"></script>
+
+        <script src="/webjars/jquery/jquery.min.js"></script>
         <script th:src="@{/js/requestUtil.js}"></script>
     </th:block>
     <th:block th:fragment="css">

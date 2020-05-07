@@ -10,7 +10,7 @@ import ru.sovaowltv.repositories.messages.MessageRepository;
 public class MessageValidator {
     private final MessageRepository messageRepository;
 
-    public MessageValidationStatus validateMessage(Message message, String channel) {
+    public MessageValidationStatus validateMessage(Message message) {
         if (message.getText() == null || message.getText().trim().isEmpty()) return MessageValidationStatus.EMPTY_TEXT;
         if (isSpam(message)) return MessageValidationStatus.SPAM;
         messageRepository.save(message);
@@ -24,6 +24,10 @@ public class MessageValidator {
 
                 || message.getText().toLowerCase().contains("streamhub.us")
                 || message.getText().toLowerCase().contains("streamhub .us")
-                || message.getText().toLowerCase().contains("streamhub");
+                || message.getText().toLowerCase().contains("streamhub")
+
+                || message.getText().toLowerCase().contains("twitchviewer com")
+
+                ;
     }
 }

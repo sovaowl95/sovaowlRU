@@ -3,15 +3,12 @@ package ru.sovaowltv.service.stream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import ru.sovaowltv.model.chat.Smiles;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.service.chat.realization.ApiTimeouts;
 import ru.sovaowltv.service.user.UserUtil;
-import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -24,9 +21,6 @@ import java.util.Set;
 @PropertySource("classpath:constants.yml")
 //todo: ANOTHER API SERVICE
 public class StreamModerationUtil {
-    private final UsersRepositoryHandler usersRepositoryHandler;
-    private final StreamRepositoryHandler streamRepositoryHandler;
-
     private final UserUtil userUtil;
 
     private final ApiTimeouts apiTimeouts;
@@ -39,37 +33,22 @@ public class StreamModerationUtil {
         return userUtil.isAdminOrModerator(user) || stream.getModeratorsList().contains(user) || stream.getUser().getId() == user.getId();
     }
 
-    public boolean canChatInChannelBan(User user, String channel) {
-        User channelOwner = null;
-        try {
-            channelOwner = usersRepositoryHandler.getUserByNickname(channel);
-            Stream stream = streamRepositoryHandler.getByUser(channelOwner)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "STREAM NOT FOUND"));
-            return !stream.getBansList().contains(user);
-        } finally {
-            usersRepositoryHandler.free(channelOwner);
-        }
+    public boolean canChatInChannelBan(User user, Stream stream) {
+        return !stream.getBansList().contains(user);
     }
 
-    public boolean canChatInChannelTimeout(User user, String channel) {
-        User channelOwner = null;
-        try {
-            channelOwner = usersRepositoryHandler.getUserByNickname(channel);
-            Stream stream = streamRepositoryHandler.getByUser(channelOwner)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "STREAM NOT FOUND"));
-            Map<User, LocalDateTime> timeoutMap = apiTimeouts.getTimeoutsByStreamId(stream.getId());
-            if (timeoutMap == null || !timeoutMap.containsKey(user)) return true;
-            LocalDateTime localDateTime = timeoutMap.get(user);
-            if (localDateTime == null) return true;
+    public boolean canChatInChannelTimeout(User user, Stream stream) {
+        Map<User, LocalDateTime> timeoutMap = apiTimeouts.getTimeoutsByStreamId(stream.getId());
+        if (timeoutMap == null || !timeoutMap.containsKey(user)) return true;
 
-            if (localDateTime.isBefore(LocalDateTime.now())) {
-                apiTimeouts.getTimeoutsByStreamId(stream.getId()).remove(user);
-                return true;
-            }
-            return false;
-        } finally {
-            usersRepositoryHandler.free(channelOwner);
+        LocalDateTime localDateTime = timeoutMap.get(user);
+        if (localDateTime == null) return true;
+
+        if (localDateTime.isBefore(LocalDateTime.now())) {
+            apiTimeouts.getTimeoutsByStreamId(stream.getId()).remove(user);
+            return true;
         }
+        return false;
     }
 
 
