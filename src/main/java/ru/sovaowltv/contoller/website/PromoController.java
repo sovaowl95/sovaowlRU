@@ -11,7 +11,7 @@ import ru.sovaowltv.service.user.UserUtil;
 public class PromoController {
     private final UserUtil userUtil;
 
-    @GetMapping("/promo")
+    @GetMapping("/info/promo")
     public String getPromo(Model model) {
         userUtil.setUserInModelREADONLY(model);
         return "promo";

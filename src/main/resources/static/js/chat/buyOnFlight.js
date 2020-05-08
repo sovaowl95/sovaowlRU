@@ -1,5 +1,5 @@
 function buySmile(id, element) {
-    mySendRequest("/shop/buy/smile/" + id, null, function () {
+    mySendRequest("/shop/buy/smile/" + id, null, function (request) {
         if (request.status === 200) {
             let parentNode = element.parentNode.parentNode;
 

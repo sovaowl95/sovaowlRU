@@ -400,7 +400,7 @@ public class YTChat extends ApiForChat {
                     sendInviteMessage(map.get("displayName"));
                 }
 
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null);
+                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             }
         }

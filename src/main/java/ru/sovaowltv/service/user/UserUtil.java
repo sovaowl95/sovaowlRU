@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import ru.sovaowltv.exceptions.user.UserNotFoundException;
+import ru.sovaowltv.exceptions.user.UserNotLoginInException;
 import ru.sovaowltv.model.user.Role;
 import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.service.unclassified.UserDataValidator;
@@ -70,8 +71,12 @@ public class UserUtil {
         }
     }
 
-    private String getLoginFromSecurityContext() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+    private String getLoginFromSecurityContext() throws UserNotLoginInException {
+        try {
+            return SecurityContextHolder.getContext().getAuthentication().getName();
+        } catch (NullPointerException e) {
+            throw new UserNotLoginInException("getLoginFromSecurityContext");
+        }
     }
 
     private boolean isAdmin(User user) {

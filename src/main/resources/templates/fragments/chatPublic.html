@@ -2,11 +2,10 @@
 <head th:fragment="chatHead">
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <title th:text="${stream.getUser().getNickname()}"></title>
 
-    <th:block th:include="fragments/headerPartsChat::libs"/>
-    <th:block th:include="fragments/headerPartsChat::css"/>
-    <th:block th:include="fragments/headerPartsChat::js"/>
+    <th:block th:include="chatFragments/headerPartsChat::libs"/>
+    <th:block th:include="chatFragments/headerPartsChat::css"/>
+    <th:block th:include="chatFragments/headerPartsChat::js"/>
 
     <link rel="stylesheet" th:href="@{/css/chat/chatPublic.css}">
     <style>
@@ -24,19 +23,23 @@
     <div id="bodyChatWrap">
         <div id="bodyChatMain"></div>
     </div>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
         const isPublicChat = true;
         const isGuest = true;
         const chatScrollVisibility = "hidden";
         const userName = undefined;
-        const streamerName = [[${stream.getUser().getNickname()}]];
         let showMessageTime = false;
         let smileSize = 28;
         let fontSize = 16;
         /*]]>*/
     </script>
-    <th:block th:include="fragments/chatJsInput::jsInput"/>
+
+    <th:block th:include="chatFragments/chatJsInput::jsInput"/>
+    <th:block th:include="chatFragments/chatStreamName::streamName"/>
+    <th:block th:include="chatFragments/msData::msData"/>
+
 </th:block>
 </body>
 </html>

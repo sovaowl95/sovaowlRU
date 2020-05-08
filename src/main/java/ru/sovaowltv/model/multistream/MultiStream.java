@@ -27,9 +27,6 @@ public class MultiStream {
     @Column
     private String inviteCode;
 
-    @OneToOne
-    private Stream stream;
-
     @ManyToMany(cascade = CascadeType.DETACH)
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Stream> streamSet;

@@ -32,22 +32,24 @@ public class WebSiteSmileAbstract extends SmileAbstract {
 
     @Override
     public boolean canUseSmile(String smile) {
+        User user = null;
         try {
-            User user =  userUtil.getUser();
+            user = userUtil.getUser();
             Set<Smile> smiles = user.getSmiles();
-            usersRepositoryHandler.saveAndFree(user);
             Smile o = new Smile();
             o.setName(smile);
             return smiles.contains(o);
         } catch (Exception e) {
             log.warn("can use smile error " + smile, e);
             return false;
+        } finally {
+            usersRepositoryHandler.free(user);
         }
     }
 
     public void initSiteSmiles() {
-        List<Smile> all = smilesRepository.findAll();
-        all.forEach(smile -> smiles.put(smile.getName(), smile.getLink()));
+        List<Smile> smileList = smilesRepository.findAll();
+        smileList.forEach(smile -> smiles.put(smile.getName(), smile.getLink()));
     }
 
     public void createNewSmile() {
@@ -69,16 +71,16 @@ public class WebSiteSmileAbstract extends SmileAbstract {
 
     @Override
     public void initSmiles() {
-
+        log.info("website init smiles no need to implement");
     }
 
     @Override
     public void parseSmiles() {
-
+        log.info("website parse smiles no need to implement");
     }
 
     @Override
     public void loadSmiles() {
-
+        log.info("website load smiles no need to implement");
     }
 }

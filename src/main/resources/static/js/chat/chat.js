@@ -1,21 +1,20 @@
-var client = null;
+let client = null;
 
-var scrollSmiles1;
-var scrollSmiles2;
-var scrollOptions;
-var scrollDonation;
-var scrollInput;
-var scrollChat;
-var textArea;
+let scrollSmiles1;
+let scrollSmiles2;
+let scrollOptions;
+let scrollDonation;
+let scrollInput;
+let scrollChat;
+let textArea;
 
 let destinationSubArray = [];
 let destinationSend;
 
-var meModerator = false;
-var connected = false;
+let meModerator = false;
+let connected = false;
 
-var chatSessionId;
-
+let chatSessionId;
 
 function bodyChatTopOpen() {
     let elClose = document.getElementById('bodyChatTopClose');
@@ -68,7 +67,7 @@ function connect() {
         let split = client.webSocket._transport.url.split("/");
         chatSessionId = split[split.length - 2];
 
-        if (typeof streamsLogins !== 'undefined') {
+        if (typeof streamsLogins !== 'undefined' && streamsLogins !== null) {
             for (let i = 0; i < streamsLogins.length; i++) {
                 destinationSubArray.push('/topic/' + streamsLogins[i]);
             }
@@ -397,8 +396,7 @@ function printClearAllMessage(clazz, nick) {
 }
 
 
-var timeoutOp;
-
+let timeoutOp;
 function printSpamMessage(clazz, message) {
     if (document.getElementById('bodyChatBottomInputTimeout') !== null) {
         try {
@@ -614,10 +612,9 @@ function restoreScroll() {
     document.getElementById('bodyChatScrollNewMessages').style.display = "none";
 }
 
-var offsetChat = 0;
-var scrollEnable = true;
-var newMessage = false;
-
+let offsetChat = 0;
+let scrollEnable = true;
+let newMessage = false;
 document.addEventListener('DOMContentLoaded', function () {
     connect();
 
@@ -734,8 +731,8 @@ document.addEventListener('DOMContentLoaded', function () {
         /**
          * MODERATOR BAR
          */
-        var ctrl = false;
-        var moderatorHelpBar = [];
+        let ctrl = false;
+        let moderatorHelpBar = [];
         $(document).mousemove(function (e) {
             if (meModerator) {
                 if (ctrl) {

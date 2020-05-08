@@ -143,8 +143,8 @@ function doReg() {
         });
         let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
         reg.setRequestHeader("X-CSRF-Token", csrfToken);
-        json = {'login': login, 'password': password, 'email': email, 'gender': gender, 'rules': rules};
-        myJson = JSON.stringify(json);
+        let json = {'login': login, 'password': password, 'email': email, 'gender': gender, 'rules': rules};
+        let myJson = JSON.stringify(json);
         reg.send(myJson);
     } else {
         event = new Event("input");
@@ -177,8 +177,8 @@ function doLogin() {
         });
         let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
         reg.setRequestHeader("X-CSRF-Token", csrfToken);
-        json = {'login': login, 'password': password, 'remember': remember};
-        myJson = JSON.stringify(json);
+        let json = {'login': login, 'password': password, 'remember': remember};
+        let myJson = JSON.stringify(json);
         reg.send(myJson);
     } else {
         wrongDoLogin(form);

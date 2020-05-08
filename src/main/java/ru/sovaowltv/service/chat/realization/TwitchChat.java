@@ -145,7 +145,7 @@ public class TwitchChat extends ApiForChat {
                     nickNames.add(nick);
                     sendInviteMessage(nick);
                 }
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null);
+                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             }
         } catch (Exception e) {

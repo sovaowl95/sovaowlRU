@@ -42,7 +42,6 @@ public class MultiStreamUtil {
         }
 
         MultiStream multiStream = new MultiStream();
-        multiStream.setStream(streamOptional.get());
         multiStream.setStreamSet(Set.of(streamOptional.get()));
         multiStream.setInviteCode(UUID.randomUUID().toString());
         multiStream.setUser(userREADONLY);
@@ -102,10 +101,8 @@ public class MultiStreamUtil {
                 .map(stream -> stream.getUser().getLogin())
                 .collect(Collectors.toList())
         );
-        model.addAttribute("stream", multiStream.getStream());
         model.addAttribute("msId", multiStream.getId());
-
-        streamUtil.initStreamModelWithUserData(model);
+        streamUtil.initStreamModelUserData(model);
     }
 
     @NotNull
@@ -128,6 +125,7 @@ public class MultiStreamUtil {
     }
 
     public void setMSIfExist(Model model, User user) {
+        if (user == null) return;
         Optional<MultiStream> multiStreamOptional = multiStreamRepository.findByUserId(user.getId());
         multiStreamOptional.ifPresent(multiStream -> model.addAttribute("multiStream", multiStream));
     }

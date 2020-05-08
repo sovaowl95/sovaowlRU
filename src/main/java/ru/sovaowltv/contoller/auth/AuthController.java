@@ -12,7 +12,6 @@ import ru.sovaowltv.service.data.DataFieldsChecker;
 import ru.sovaowltv.service.factorys.UserFactory;
 import ru.sovaowltv.service.security.SecurityUtil;
 import ru.sovaowltv.service.user.UserUtil;
-import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;

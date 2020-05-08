@@ -11,6 +11,7 @@ import ru.sovaowltv.model.chat.Message;
 import ru.sovaowltv.model.spammer.Spammer;
 import ru.sovaowltv.model.spammer.SpammerStatus;
 import ru.sovaowltv.model.stream.Stream;
+import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.repositories.stream.SpammerRepository;
 import ru.sovaowltv.repositories.stream.StreamRepository;
 import ru.sovaowltv.service.messages.MessageDeliver;
@@ -74,8 +75,9 @@ class SpammerThread extends Thread {
                 message.setOriginalMessage(text);
 
                 message.setTime(LocalDateTime.now());
-                messageDeliver.sendMessageToAllApiChats(message, spammer.getStream().getUser().getNickname(), null, spammer.getStream().getUser());
-                simpMessagingTemplate.convertAndSend("/topic/" + spammer.getStream().getUser().getNickname(), message);
+                User user = spammer.getStream().getUser();
+                messageDeliver.sendMessageToAllApiChats(message, user.getNickname(), null, user, streamById.get());
+                simpMessagingTemplate.convertAndSend("/topic/" + user.getNickname(), message);
 
                 timeUtil.sleepSeconds(spammer.getTime());
             } catch (Exception e) {

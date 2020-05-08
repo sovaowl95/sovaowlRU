@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 import ru.sovaowltv.exceptions.stream.NotYourStreamException;
 import ru.sovaowltv.exceptions.stream.StreamNotFoundException;
 import ru.sovaowltv.exceptions.user.UserNotFoundException;
+import ru.sovaowltv.model.multistream.MultiStream;
 import ru.sovaowltv.model.shop.Rarity;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.model.user.User;
+import ru.sovaowltv.repositories.multistream.MultiStreamRepository;
 import ru.sovaowltv.service.shop.ShopUtil;
 import ru.sovaowltv.service.spammer.SpammerUtil;
 import ru.sovaowltv.service.user.UserUtil;
@@ -27,6 +29,7 @@ import java.util.Optional;
 public class StreamUtil {
     private final UsersRepositoryHandler usersRepositoryHandler;
     private final StreamRepositoryHandler streamRepositoryHandler;
+    private final MultiStreamRepository multiStreamRepository;
 
     private final UserUtil userUtil;
     private final SpammerUtil spammerUtil;
@@ -70,7 +73,15 @@ public class StreamUtil {
         return streamOptional.get();
     }
 
-    public void initStreamModelWithUserData(Model model) {
+    public void initStreamModelUserData(String streamName, Model model) {
+        Stream stream = getStreamByUserNickname(streamName);
+        model.addAttribute("stream", stream);
+        model.addAttribute("donateFor", stream.getUser());
+        isInMultiStream(stream, model);
+        initStreamModelUserData(model);
+    }
+
+    public void initStreamModelUserData(Model model) {
         User user = userUtil.setUserInModelREADONLY(model);
         model.addAttribute("userStyles", user != null ? user.getStyles() : Collections.emptySet());
         model.addAttribute("userSmiles", user != null ? user.getSmiles() : Collections.emptySet());
@@ -78,14 +89,6 @@ public class StreamUtil {
         model.addAttribute("rarityOrder", Rarity.values());
         model.addAttribute("smiles", shopUtil.getSmilesList());
         model.addAttribute("styles", shopUtil.getStylesList());
-    }
-
-    public void initStreamModelWithUserData(String streamName, Model model) {
-        Stream stream = getStreamByUserNickname(streamName);
-        model.addAttribute("stream", stream);
-        model.addAttribute("donateFor", stream.getUser());
-
-        initStreamModelWithUserData(model);
     }
 
     //todo: ANOTHER API SERVICE
@@ -109,6 +112,16 @@ public class StreamUtil {
         if (!stream.getUser().equals(userREADONLY)) {
             throw new NotYourStreamException(
                     "not your stream " + stream.getUser().getId() + ":" + userREADONLY.getId());
+        }
+    }
+
+    public void isInMultiStream(Stream stream, Model model) {
+        List<MultiStream> multiStreamList = multiStreamRepository.findAll();
+        for (MultiStream ms : multiStreamList) {
+            if (ms.getStreamSet().contains(stream)) {
+                model.addAttribute("multiStream", ms);
+                break;
+            }
         }
     }
 }

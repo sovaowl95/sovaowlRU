@@ -36,7 +36,7 @@ public class CaravanMessages {
         streamRepositoryHandler.getAll().forEach(stream -> {
             if (stream.isLive()) {
                 messagesUtil.convertAndSend(stream.getUser().getNickname(), caravanStartMessage);
-                messageDeliver.sendMessageToAllApiChats(message, stream.getUser().getNickname(), null, stream.getUser());
+                messageDeliver.sendMessageToAllApiChats(message, stream.getUser().getNickname(), null, stream.getUser(), stream);
             }
         });
     }

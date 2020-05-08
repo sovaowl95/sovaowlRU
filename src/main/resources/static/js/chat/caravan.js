@@ -1,17 +1,20 @@
 function getCaravanImg(clazz) {
-    return "<img style='max-width: 100%' class='caravanImageClassForInteractive imageFromUser" + " " + clazz + "Border" + "' src='/caravan/caravan.jpg' onclick='joinRobbery()'>";
+    return "<img style='max-width: 100%' " + "alt='caravan' " +
+        "class='caravanImageClassForInteractive imageFromUser " + clazz + "Border' " +
+        "src='/caravan/caravan.jpg' " +
+        "onclick='joinRobbery()'>";
 }
 
 function getImgPrice() {
-    return "<img style='width: 16px' src='/img/money-bag.png'>";
+    return "<img style='width: 16px' src='/img/money-bag.png' alt='price'>";
 }
 
 function getImgExp() {
-    return "<img style='width: 16px' src='/img/rank.png'>";
+    return "<img style='width: 16px' src='/img/rank.png' alt='exp'>";
 }
 
 function getImgPremium() {
-    return "<img src='/img/premium.png' class='premiumImg'>";
+    return "<img src='/img/premium.png' class='premiumImg' alt='premium'>";
 }
 
 function joinRobbery() {
@@ -20,18 +23,18 @@ function joinRobbery() {
 
 function getTranslatedRarity(message) {
     let rWord;
-    if (message.rarity === "ANCIENT") {
-        rWord = ANCIENT;
-    } else if (message.rarity === "LEGENDARY") {
-        rWord = LEGENDARY;
-    } else if (message.rarity === "EPIC") {
-        rWord = EPIC;
-    } else if (message.rarity === "RARE") {
-        rWord = RARE;
-    } else if (message.rarity === "COMMON") {
-        rWord = COMMON;
+    let rarity = message.rarity;
+    if (rarity === "ANCIENT") {
+        return ANCIENT;
+    } else if (rarity === "LEGENDARY") {
+        return LEGENDARY;
+    } else if (rarity === "EPIC") {
+        return EPIC;
+    } else if (rarity === "RARE") {
+        return RARE;
+    } else if (rarity === "COMMON") {
+        return COMMON;
     }
-    return rWord;
 }
 
 function getTranslatedItemName(name) {
@@ -99,7 +102,7 @@ function printCaravanReward(message) {
 
     let rewardName;
     if (message.type === "smile") {
-        rewardName = caravanItemNameSmile + "<img src='/smiles/" + message.link + "' class='smile'>";
+        rewardName = caravanItemNameSmile + "<img src='/smiles/" + message.link + "' class='smile' alt='reward'>";
         if (duplicate) rewardName = rewardName + " (" + caravanItemNameDuplicate + ")";
     } else if (message.type === "style") {
         rewardName = "<span class='" + message.name + "'>" + message.name + " " + caravanItemNameStyle + "</span>";
@@ -150,7 +153,10 @@ function prepareCaravanStartInnerHTML(message, rarityTranslated) {
     return caravanStart + " "
         + message.time + " " + timeUnitMin + ". " + robCommand
         + getCaravanImg(message.rarity)
-        + "<span style='cursor: pointer' onclick='joinRobbery()' class='caravanTitleClassForInteractive bodyChatTitle " + message.rarity + "'>" + rarityTranslated + "</span>"
+        + "<span style='cursor: pointer' onclick='joinRobbery()' "
+        + "class='caravanTitleClassForInteractive bodyChatTitle " + message.rarity + "'>"
+        + rarityTranslated
+        + "</span>"
         + " " + caravanPriceToJoin + ": " + getImgPrice() + message.price + " ";
 }
 

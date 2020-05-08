@@ -224,3 +224,8 @@
     align-items: center;
     width: 33%;
 }
+
+.linkToUser:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

@@ -1,4 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="nick" type="java.lang.String"*/-->
 <head>
     <meta charset="UTF-8">
     <title th:text="#{page.error.streamNotFound.title} + ' ' + ${nick}"></title>
@@ -20,7 +21,7 @@
     <div class="errorPageBlock">
         <div class="errorPageText" th:text="${nick}"></div>
         <div class="errorPageText" th:text="#{page.error.streamNotFound.title}"></div>
-        <img class="errorPageBlock" src="/404/owl.jpg">
+        <img alt="owl" class="errorPageBlock" src="/404/owl.jpg">
     </div>
 </div>
 </body>

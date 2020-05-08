@@ -7,7 +7,12 @@ function authGoogle() {
         "&" +
         "access_type=offline" +
         "&" +
-        "scope=openid profile email https://www.googleapis.com/auth/youtube.force-ssl https://www.googleapis.com/auth/youtube https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/youtube.upload https://www.googleapis.com/auth/youtubepartner-channel-audit" +
+        "scope=openid profile email " +
+        "https://www.googleapis.com/auth/youtube.force-ssl " +
+        "https://www.googleapis.com/auth/youtube " +
+        "https://www.googleapis.com/auth/youtube.readonly " +
+        "https://www.googleapis.com/auth/youtube.upload " +
+        "https://www.googleapis.com/auth/youtubepartner-channel-audit" +
         "&" +
         "redirect_uri=https://sovaowl.ru/api/auth/google";
     let token = document.getElementsByName("secTokenState")[0].getAttribute('content');
@@ -65,7 +70,7 @@ function authTwitch() {
 function authGG() {
     let url = "https://api2.goodgame.ru/oauth/authorize" +
         "?" +
-        "client_id=" + ggclientId +
+        "client_id=" + ggClientId +
         "&" +
         "redirect_uri=https://sovaowl.ru/api/auth/gg" +
         "&" +

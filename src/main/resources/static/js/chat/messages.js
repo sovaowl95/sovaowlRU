@@ -87,8 +87,8 @@ function printMessage(message) {
     divText.innerHTML = text;
 
 
-    var tempImgWithShtora;
-    var tempImgWithShtoraInsertBefore;
+    let tempImgWithShtora;
+    let tempImgWithShtoraInsertBefore;
     let addCEOpen = function (ev) {
         ev.stopPropagation();
         let shtora = document.createElement('div');
@@ -530,7 +530,6 @@ function replaceAllSmiles(text, twitchSmilesInfo, webSiteSmileInfo, ggSmilesInfo
         } catch (e) {
         }
 
-        //todo: check inrestects
         smilesList.sort((a, b) => parseInt(a.from) < parseInt(b.from)
             ? 1
             : (parseInt(b.from) < parseInt(a.from) ? -1 : 0));

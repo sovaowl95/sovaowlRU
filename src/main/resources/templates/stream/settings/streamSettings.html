@@ -9,9 +9,12 @@
 
 
     <link rel="stylesheet" th:href="@{/css/slider.css}">
+
     <link rel="stylesheet" th:href="@{/css/streamSettings.css}">
     <script th:src="@{/js/streamSettings.js}"></script>
     <script th:src="@{/js/commandsSettings.js}"></script>
+    <script th:src="@{/js/multistream/multistream.js}"></script>
+
     <script th:src="@{/js/requestUtil.js}"></script>
 
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
@@ -45,6 +48,9 @@
         <a href="#" onclick="show(6)">
             <div th:utext="'' + #{pages.streamSettings.row.donations}"></div>
         </a>
+        <a href="#" onclick="show(7)">
+            <div th:utext="'' + #{pages.streamSettings.row.multiStream}"></div>
+        </a>
     </div>
 
     <th:block th:include="stream/settings/linkAccounts :: linkAccounts"/>
@@ -53,7 +59,7 @@
     <th:block th:include="stream/settings/spammers :: spammers"/>
     <th:block th:include="stream/settings/commands :: commands"/>
     <th:block th:include="stream/settings/donations :: donations"/>
-
+    <th:block th:include="stream/settings/ms :: ms"/>
 </div>
 
 <script th:inline="javascript">
@@ -63,6 +69,9 @@
 
     const discordClientId = [[${@environment.getProperty('discord_ClientId')}]];
     const twitchClientId = [[${@environment.getProperty('twitch_clientId')}]];
+    const vkClientId = [[${@environment.getProperty('vk_clientId')}]];
+    const googleClientId = [[${@environment.getProperty('google_clientId')}]];
+    const ggClientId = [[${@environment.getProperty('gg_clientId')}]];
     /*]]>*/
 </script>
 </body>

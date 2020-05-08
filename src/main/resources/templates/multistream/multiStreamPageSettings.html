@@ -2,23 +2,19 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <!--    <title th:text="${stream.getUser().getNickname()}"></title>-->
 
     <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
     <link rel="stylesheet" th:href="@{/css/streamPage.css}">
 
-    <!--    <script th:src="@{/js/streamPage.js}"></script>-->
-
-    <!--    <th:block th:include="fragments/topMenu :: topMenuHeader"/>-->
-    <!--    <th:block th:include="fragments/chat :: chatHead"/>-->
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
 </head>
 <body>
 <th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div id="body">
-    <!--/*@thymesVar id="multiStream" type="ru.sovaowltv.model.multistream.MultiStream"*/-->
-    <div th:text="'/ms/join/' + ${multiStream.getId()} '/'+ ${multiStream.getInviteCode()}"></div>
+    SOON
+    <!--    &lt;!&ndash;/*@thymesVar id="multiStream" type="ru.sovaowltv.model.multistream.MultiStream"*/&ndash;&gt;-->
+    <!--    <div th:text="'/ms/join/' + ${multiStream.getId()} '/'+ ${multiStream.getInviteCode()}"></div>-->
 </div>
 </body>
 </html>

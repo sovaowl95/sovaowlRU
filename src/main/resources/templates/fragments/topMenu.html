@@ -50,6 +50,7 @@
                     <div id="userMoney" th:text="${#numbers.formatInteger(user.getCoins(), 0, 'POINT')}"></div>
                     <a href="/pay" target="_blank" style="height: 20px;"><img alt="plus" src="/img/plus.png"></a>
                 </div>
+                <!--/*@thymesVar id="userHaveStream" type="java.lang.String"*/-->
                 <div class="profileDropDownBodyItem" th:if="${userHaveStream}!=null"><a
                         th:href="'/' + ${user.getNickname()}"
                         th:text="#{menu.profile.dropdown.myStream}"></a></div>

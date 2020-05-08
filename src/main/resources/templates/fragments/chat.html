@@ -1,12 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
 <head th:fragment="chatHead">
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <title th:text="${stream.getUser().getNickname()} + ' ' + #{pages.chat.title}"></title>
+    <title th:if="${stream}!=null" th:text="${stream.getUser().getNickname()} + ' ' + #{pages.chat.title}"></title>
 
-    <th:block th:include="fragments/headerPartsChat::libs"/>
-    <th:block th:include="fragments/headerPartsChat::css"/>
-    <th:block th:include="fragments/headerPartsChat::js"/>
+    <th:block th:include="chatFragments/headerPartsChat::libs"/>
+    <th:block th:include="chatFragments/headerPartsChat::css"/>
+    <th:block th:include="chatFragments/headerPartsChat::js"/>
 
     <script th:src="@{/js/chat/buyOnFlight.js}"></script>
     <script th:src="@{/js/chat/smiles.js}"></script>
@@ -39,26 +40,27 @@
         const isGuest = false;
         const chatScrollVisibility = "auto";
         const userName = [[${user.getNickname()}]];
-        const streamerName = [[${stream.getUser().getNickname()}]];
         let showMessageTime = [[${user.getUserSettings().isShowTime()}]];
         let smileSize = [[${user.getUserSettings().getSmileSize()}]];
         let fontSize = [[${user.getUserSettings().getTextSize()}]];
         /*]]>*/
     </script>
-    <script th:inline="javascript" th:unless="${user != null}">
+    <script th:if="${user == null}" th:inline="javascript">
         /*<![CDATA[*/
         const isPublicChat = true;
         const isGuest = true;
         const chatScrollVisibility = "auto";
         const userName = undefined;
-        const streamerName = [[${stream.getUser().getNickname()}]];
         let showMessageTime = false;
         let smileSize = 28;
         let fontSize = 16;
         /*]]>*/
     </script>
 
-    <th:block th:include="fragments/chatJsInput::jsInput"/>
+    <th:block th:include="chatFragments/chatJsInput::jsInput"/>
+    <th:block th:include="chatFragments/chatStreamName::streamName"/>
+    <th:block th:include="chatFragments/msData::msData"/>
+
 </th:block>
 </body>
 </html>

@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="streamName">
+    <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+    <script th:if="${stream == null}" th:inline="javascript">
+        /*<![CDATA[*/
+        const streamerName = 'ms/' + [[${msId}]];
+        /*]]>*/
+    </script>
+    <script th:if="${stream != null}" th:inline="javascript">
+        /*<![CDATA[*/
+        const streamerName = [[${stream.getUser().getNickname()}]];
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>

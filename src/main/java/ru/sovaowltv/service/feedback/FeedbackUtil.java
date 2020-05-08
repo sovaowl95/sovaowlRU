@@ -44,6 +44,5 @@ public class FeedbackUtil {
         feedbackRepository.save(feedbackMessage);
 
         adminWebsiteSettingsUtil.addNewFeedbackMessage();
-        //todo: send notification in admin panel
     }
 }

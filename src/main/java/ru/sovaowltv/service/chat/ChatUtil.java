@@ -150,8 +150,8 @@ public class ChatUtil {
 
     private ChatMessage solveMessage(String text, String channel, User user, Stream stream) {
         ChatMessage message = prepareMessage(text, channel, user, stream);
-        if (message instanceof Message && stream.getId() > 0)
-            messageDeliver.sendMessageToAllApiChats(((Message) message), channel, this, user);
+        if (message instanceof Message)
+            messageDeliver.sendMessageToAllApiChats(((Message) message), channel, this, user, stream);
         return message;
 
     }
@@ -225,7 +225,7 @@ public class ChatUtil {
                 messagesUtil.convertAndSendToUser(login, channel, messageStatus);
                 return null;
             } else {
-                messageDeliver.sendMessageToAllApiChats(message, channel, this, user);
+                messageDeliver.sendMessageToAllApiChats(message, channel, this, user, stream);
                 return message;
             }
         } else {

@@ -112,7 +112,6 @@ function addNewStyle() {
     sendAdminRequest('/admin/styles/addNewStyle');
 }
 
-
 /**PREMIUMS*/
 function revalidatePremiums() {
     sendAdminRequest("/admin/premiums/revalidatePremiums");

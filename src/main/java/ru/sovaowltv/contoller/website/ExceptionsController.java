@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.thymeleaf.exceptions.TemplateInputException;
 import ru.sovaowltv.exceptions.JsonResponseException;
-import ru.sovaowltv.exceptions.chat.BadSmileServiceException;
-import ru.sovaowltv.exceptions.chat.BadSmileServiceParamsException;
-import ru.sovaowltv.exceptions.chat.SavedSmileNotFound;
-import ru.sovaowltv.exceptions.stream.NotYourStreamException;
 import ru.sovaowltv.exceptions.stream.StreamNotFoundException;
 import ru.sovaowltv.exceptions.user.UserNotFoundException;
+import ru.sovaowltv.exceptions.user.UserNotLoginInException;
 import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
@@ -86,6 +83,12 @@ public class ExceptionsController implements ErrorController {
     @ResponseBody
     public Object getTemplateInputException(TemplateInputException e) {
         return e.getMessage();
+    }
+
+    @ExceptionHandler(value = {UserNotLoginInException.class})
+    @ResponseStatus(HttpStatus.TEMPORARY_REDIRECT)
+    public String getUserNotLoginInException(UserNotLoginInException e) {
+        return "redirect:/login";
     }
 
     @ExceptionHandler(value = {JsonResponseException.class})

@@ -40,7 +40,6 @@ function testDonation() {
     sendRequestCommand("/stream/settings/sendTestDonation")
 }
 
-
 function sendRequestCommand(link, body) {
     let request = new XMLHttpRequest();
     request.open("POST", link, true);

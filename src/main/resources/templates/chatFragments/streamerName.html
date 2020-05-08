@@ -7,7 +7,8 @@
          th:text="#{pages.chat.scroll.restore}"></div>
 
     <div id="bodyChatStreamerNicknameBlock">
-        <div>
+        <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+        <div th:if="${stream} != null">
             <div id="streamerArrow"></div>
             <div id="streamerName" th:text="${stream.getUser().getNickname()}"></div>
         </div>

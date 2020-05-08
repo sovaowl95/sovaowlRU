@@ -13,13 +13,14 @@
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
 </head>
 <body>
+<!--/*@thymesVar id="donateFor" type="ru.sovaowltv.model.user.User"*/-->
 <th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div class="payPage">
     <th:block th:fragment="payBlock">
         <div class="wrapPay">
             <div class="titleWrap">
-                <img class='firstQiwi' src="/payments/QIWI_Kassa.svg">
-                <img class='secondQiwi' src="/payments/icons.svg">
+                <img alt="qiwi" class='firstQiwi' src="/payments/QIWI_Kassa.svg">
+                <img alt="qiwi" class='secondQiwi' src="/payments/icons.svg">
             </div>
             <div class="formWrap">
                 <div class="center">

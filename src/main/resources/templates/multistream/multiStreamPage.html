@@ -29,30 +29,25 @@
             <div id="bodyPlayerTopLeft"></div>
             <div id="playerSelector">
                 <th:block th:each="stream: ${streams}">
-                    <div th:text="${stream.getUser().getNickname()}"></div>
-                    <th:block th:include="/stream/playerSelects::streamPlayersSelector"/>
+                    <div class="linkToUser"
+                         th:onclick="'window.location=\'/'  + __${stream.getUser().getLogin()}__ + '\''"
+                         th:text="${stream.getUser().getNickname()}"></div>
+                    <th:block th:include="stream/playerSelects::streamPlayersSelector"/>
                 </th:block>
             </div>
             <div id="bodyPlayerTopRight"></div>
         </div>
         <div id="bodyPlayerMiddle">
-            <th:block th:each="stream: ${streams}" th:include="/stream/iframes::streamPlayers"/>
+            <th:block th:each="stream: ${streams}" th:include="stream/iframes::streamPlayers"/>
             <div id="playerSelectorSecond">
                 <th:block th:each="stream: ${streams}">
                     <div th:text="${stream.getUser().getNickname()}"></div>
-                    <th:block th:include="/stream/playerSelects::streamPlayersSelector"/>
+                    <th:block th:include="stream/playerSelects::streamPlayersSelector"/>
                 </th:block>
             </div>
         </div>
         <div id="bodyPlayerBottom"></div>
     </div>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        let streamsLogins = [[${streamsLogins}]];
-        let msId = [[${msId}]];
-        /*]]>*/
-    </script>
     <div id="bodyChat">
         <th:block th:include="fragments/chat::chatBody"/>
     </div>

@@ -14,6 +14,7 @@
 <th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div id='bodyPlayerStreamersSelect'>
     <div class='streamerSelectList'>
+        <!--/*@thymesVar id="userHaveStream" type="java.lang.String"*/-->
         <th:block th:if="${userHaveStream}==null">
             <div class='streamerSelect' style='font-size: 100px;' onclick="createStream()">
                 <div>+</div>

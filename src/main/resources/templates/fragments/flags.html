@@ -1,4 +1,4 @@
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 <head th:fragment="flagsHeader">
     <link rel="stylesheet" th:href="@{/css/flags.css}">
     <script th:src="@{/js/flags.js}"></script>
@@ -6,10 +6,10 @@
 <body>
 <div class="flags" th:fragment="flagsBody">
     <div th:class="${#locale.language == 'ru'?'flagActive':''}">
-        <img src="/flags/russia.png" th:onclick="changeToRu()">
+        <img alt="toRu" src="/flags/russia.png" th:onclick="changeToRu()">
     </div>
     <div th:class="${#locale.language == ''?'flagActive':''}">
-        <img src="/flags/united-kingdom.png" th:onclick="changeToEng()">
+        <img alt="toEng" src="/flags/united-kingdom.png" th:onclick="changeToEng()">
     </div>
 </div>
 </body>

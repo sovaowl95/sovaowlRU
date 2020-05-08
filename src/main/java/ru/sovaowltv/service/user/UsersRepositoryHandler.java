@@ -272,7 +272,7 @@ public class UsersRepositoryHandler {
      */
     public synchronized List<User> findAllByPremiumExpiredBeforeAndPremiumUserTrue() {
         List<User> userList = usersRepository.findAllByPremiumExpiredBeforeAndPremiumUserTrue(LocalDate.now().plusDays(1));
-        userList.forEach(user -> userList.add(addUserToLocalDB(user)));
+        userList.forEach(this::addUserToLocalDB);
         return userList;
     }
 

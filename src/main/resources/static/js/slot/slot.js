@@ -1,13 +1,12 @@
-var spinDoing;
+let spinDoing;
 
-var slot1Interval;
-var slot2Interval;
-var slot3Interval;
+let slot1Interval;
+let slot2Interval;
+let slot3Interval;
 
-var spinRes1;
-var spinRes2;
-var spinRes3;
-
+let spinRes1;
+let spinRes2;
+let spinRes3;
 
 function closeSlotHtml() {
     try {
@@ -232,7 +231,6 @@ function printSlotMessagePart2(clazz, message) {
         div.className = "commandMessage " + clazz;
 
         let premImg = "";
-        console.log(jObj.premium);
         if (jObj.premium === true) {
             premImg = getImgPremium();
         }
@@ -262,7 +260,8 @@ function printSlotMessagePart2(clazz, message) {
                 smiles[i] = JSON.parse(smiles[i]);
                 let duplicate = smiles[i].duplicate;
                 if (duplicate !== true) duplicate = false;
-                let rewardName = caravanItemNameSmile + "<img src='/smiles/" + smiles[i].link + "' class='smile'>";
+                let rewardName = caravanItemNameSmile +
+                    "<img src='/smiles/" + smiles[i].link + "' class='smile' alt='smile'>";
                 if (duplicate) rewardName = rewardName + " (" + caravanItemNameDuplicate + ")";
 
                 additionalReward = additionalReward + " " + rewardName;
@@ -273,7 +272,9 @@ function printSlotMessagePart2(clazz, message) {
                 styles[i] = JSON.parse(styles[i]);
                 let duplicate = styles[i].duplicate;
                 if (duplicate !== true) duplicate = false;
-                let rewardName = "<span class='" + styles[i].name + "'>" + styles[i].name + " " + caravanItemNameStyle + "</span>";
+                let rewardName = "<span class='" + styles[i].name + "'>"
+                    + styles[i].name + " " + caravanItemNameStyle
+                    + "</span>";
                 if (duplicate) rewardName = rewardName + " (" + caravanItemNameDuplicate + ")";
 
                 additionalReward = additionalReward + " " + rewardName;

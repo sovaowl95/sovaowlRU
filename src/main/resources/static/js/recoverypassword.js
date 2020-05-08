@@ -25,7 +25,7 @@ function doRecovery() {
     });
     let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
     request.setRequestHeader("X-CSRF-Token", csrfToken);
-    json = {'email': email};
-    myJson = JSON.stringify(json);
+    let json = {'email': email};
+    let myJson = JSON.stringify(json);
     request.send(myJson);
 }

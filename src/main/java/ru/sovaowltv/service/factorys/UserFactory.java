@@ -14,7 +14,6 @@ import ru.sovaowltv.repositories.user.UserSettingsRepository;
 import ru.sovaowltv.repositories.website.SmilesRepository;
 import ru.sovaowltv.repositories.website.StylesRepository;
 import ru.sovaowltv.service.email.EmailUtil;
-import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.unclassified.UserDataValidator;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
