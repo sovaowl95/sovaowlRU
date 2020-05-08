@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <title th:text="#{pages.shop.title}"></title>
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+
     <link rel="stylesheet" th:href="@{/css/shop.css}">
     <link rel="stylesheet" th:href="@{/css/color.css}">
     <link rel="stylesheet" th:href="@{/css/chat/chatStyles.css}">
@@ -35,7 +35,9 @@
         </a>
     </div>
     <div class="userInfoDiv" style="display: flex" th:if="${user != null}">
-        <div th:utext="#{pages.shop.yourcurrentstats.a} + ' ' +'<img class=\'rowImg\' src=\'/img/money-bag.png\'>'+ '' + ${user.getCoins()} + ' ' +   #{pages.shop.yourcurrentstats.b} + '<img class=\'rowImg\' src=\'/img/rank.png\'>'+ '' + ${user.getLevel()}"></div>
+        <div th:utext="#{pages.shop.yourcurrentstats.a} + ' '
+        + '<img class=\'rowImg\' src=\'/img/money-bag.png\'>' + ${user.getCoins()} + ' ' + #{pages.shop.yourcurrentstats.b}
+        + '<img class=\'rowImg\' src=\'/img/rank.png\'>'+ '' + ${user.getLevel()}"></div>
     </div>
     <div class="content coins" style="display: block">
         <th:block th:include="pay::payBlock"/>
@@ -80,6 +82,9 @@
                      th:text="#{pages.profile.exp}+' '+${user.getExp()}+'/'+(${levelExpMultiplier} * ${user.getLevel()})"></div>
             </div>
         </div>
+        <!--/*@thymesVar id="premiumPrice" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="levelExpMultiplier" type="java.lang.Integer"*/-->
+        <!--/*@thymesVar id="levelPrice" type="java.lang.Integer"*/-->
         <div class="wrapBody" th:if="${user != null}">
             <div class="out top"
                  th:text="${1+user.getLevel()} + ' ' + #{pages.shop.product.rank.name} +' ('+ (${user.getLevel()} * ${levelExpMultiplier} - ${user.getExp()}) + ' ' + #{pages.shop.product.rank.exp} + ')'"></div>
@@ -94,9 +99,11 @@
     </div>
     <div class="content smiles">
         <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+        <!--/*@thymesVar id="rarityOrder" type="ru.sovaowltv.model.shop.Rarity[]"*/-->
+        <!--/*@thymesVar id="smiles" type="java.util.List<ru.sovaowltv.model.shop.Smile>"*/-->
+        <!--/*@thymesVar id="smile" type="ru.sovaowltv.model.shop.Smile"*/-->
         <th:block th:each="order: ${rarityOrder}">
             <th:block th:each="smile:${smiles}">
-                <!--/*@thymesVar id="smile" type="ru.sovaowltv.model.shop.Smile"*/-->
                 <div th:if="${smile.getRarity().name()} == ${order.name()}" class="wrapBody smilesWrapBody"
                      th:classappend="${smile.getRarity().name()}" th:id="${smile.getId()}">
                     <div class="out top" th:text="${smile.getName()}"></div>
@@ -123,10 +130,11 @@
     </div>
     <div class="content text">
         <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+        <!--/*@thymesVar id="rarityOrder" type="ru.sovaowltv.model.shop.Rarity[]"*/-->
+        <!--/*@thymesVar id="styles" type="java.util.List<ru.sovaowltv.model.shop.Style>"*/-->
+        <!--/*@thymesVar id="style" type="ru.sovaowltv.model.shop.Style"*/-->
         <th:block th:each="order:${rarityOrder}">
             <th:block th:each="style:${styles}">
-                <!--/*@thymesVar id="style" type="ru.sovaowltv.model.shop.Style"*/-->
-                <!--/*@thymesVar id="name" type="java.lang.String"*/-->
                 <div th:if="${style.getRarity().name()} == ${order.name()}" class="wrapBody stylesWrapBody"
                      th:classappend="${style.getRarity().name()} +' '+ ${style.getId()}">
                     <div class="out top" th:text="${style.getName()}"></div>

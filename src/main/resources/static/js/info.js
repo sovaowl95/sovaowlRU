@@ -1,6 +1,6 @@
 function show(num) {
-    arr = document.getElementsByClassName('content');
-    row = document.getElementsByClassName('row')[0].getElementsByTagName('a');
+    let arr = document.getElementsByClassName('content');
+    let row = document.getElementsByClassName('row')[0].getElementsByTagName('a');
     for (let i = 0; i < arr.length; i++) {
         if (i + 1 === num) {
             arr[i].style.display = 'block';

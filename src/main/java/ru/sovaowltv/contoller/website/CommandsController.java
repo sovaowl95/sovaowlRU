@@ -44,7 +44,7 @@ public class CommandsController {
             streamerCommands
     );
 
-    @GetMapping("/commands")
+    @GetMapping("/info/commands")
     public String getCommands(Model model) {
         userUtil.setUserInModelREADONLY(model);
         model.addAttribute("commandsList", commandsList);

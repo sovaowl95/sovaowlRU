@@ -4,11 +4,10 @@
     <title th:text="#{page.error.notFound.title}"></title>
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
 
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
     <link rel="stylesheet" th:href="@{/css/error/style.css}">
 
-    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+    <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
+    <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
 
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
 </head>

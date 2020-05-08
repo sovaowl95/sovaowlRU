@@ -4,7 +4,9 @@ function mySendRequest(link, body, func) {
     request.addEventListener("load", function () {
         func(request);
     });
-    let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
+    let csrfToken = document
+        .getElementsByName('_csrf_value')[0]
+        .getAttribute('content');
     request.setRequestHeader("X-CSRF-Token", csrfToken);
     if (body === null || body === undefined) {
         request.send();

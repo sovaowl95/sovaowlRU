@@ -65,9 +65,8 @@ public class WebsiteHandlerScheduler {
         streamUtil.launchAllStreamsChatsAndSpammers();
     }
 
-    @Scheduled(fixedRate = Long.MAX_VALUE)
     @Scheduled(cron = "0 30 23 * * *")
-    private void reSubTwitchWebhook() {
+    private void reSubTwitchWebHook() {
         List<User> allByUserTwitchNotNull = usersRepositoryHandler.findAllByUserTwitchNotNull();
         allByUserTwitchNotNull.forEach(user -> {
             try {

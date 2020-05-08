@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block style="display: none" th:fragment="ms">
+    <!--/*@thymesVar id="multiStream" type="ru.sovaowltv.model.multistream.MultiStream"*/-->
+    <div class="content" style="display: none">
+        <div th:if="${multiStream != null}">
+            <a href="#" th:href="'/ms/'+${multiStream.getId()}" th:text="#{pages.streamSettings.yourMS}"></a>
+        </div>
+
+        <div th:if="${multiStream != null}">
+            <div>COPY THIS FOR INVITE!</div>
+            <div th:text="'https://sovaowl.ru/ms/join/' + ${multiStream.getId()} + '/' + ${multiStream.getInviteCode()}"></div>
+        </div>
+
+        <div th:if="${multiStream == null}">
+            <a href="#" onclick="createMultiStream()" th:text="#{pages.streamSettings.createMS}"></a>
+        </div>
+
+        <div th:if="${multiStream != null}">
+            <a href="#" onclick="deleteMultiStream()" th:text="#{pages.streamSettings.deleteMS}"></a>
+        </div>
+    </div>
+</th:block>
+</body>
+</html>

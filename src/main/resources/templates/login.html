@@ -8,6 +8,7 @@
     <script th:src="@{/js/login.js}"></script>
     <th:block th:include="fragments/flags :: flagsHeader"/>
     <th:block th:include="fragments/auth :: authHeader"/>
+
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
     <meta th:name="secTokenState" th:content="${secTokenState}">
@@ -86,5 +87,14 @@
         </div>
     </div>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const discordClientId = [[${@environment.getProperty('discord_ClientId')}]];
+    const twitchClientId = [[${@environment.getProperty('twitch_clientId')}]];
+    const vkClientId = [[${@environment.getProperty('vk_clientId')}]];
+    const googleClientId = [[${@environment.getProperty('google_clientId')}]];
+    const ggClientId = [[${@environment.getProperty('gg_clientId')}]];
+    /*]]>*/
+</script>
 </body>
 </html>

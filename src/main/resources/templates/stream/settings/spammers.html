@@ -1,4 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
 <th:block th:fragment="spammers">
     <div class="content" style="display: none">
         <div class="streamOptions">
@@ -9,47 +10,43 @@
                         <div class="blockHeader" th:text="#{pages.streamSettings.set.spammerTitle.text}"></div>
                         <div class="block">
                             <input class="input show" th:value="${spammers.getText()}">
-                            <img src="/img/success.png"
+                            <img alt="success" src="/img/success.png"
                                  th:onclick="'changeSpammerText(this, '+${spammers.getId()}+');'">
                         </div>
                     </div>
-
                     <div>
                         <div class="blockHeader" th:text="#{pages.streamSettings.set.spammerTitle.time}"></div>
                         <div class="block">
                             <input class="input show" th:value="${spammers.getTime()}">
-                            <img src="/img/success.png"
+                            <img alt="success" src="/img/success.png"
                                  th:onclick="'changeSpammerTime(this, '+${spammers.getId()}+');'">
                         </div>
                     </div>
-
                     <div>
                         <div class="blockHeader" th:text="#{pages.streamSettings.set.spammerTitle.delayTime}"></div>
                         <div class="block">
                             <input class="input show" th:value="${spammers.getDelay()}">
-                            <img src="/img/success.png"
+                            <img alt="success" src="/img/success.png"
                                  th:onclick="'changeSpammerDelay(this, '+${spammers.getId()}+');'">
                         </div>
                     </div>
-
                     <div class="wrapSpammerStopStart">
                         <div class="centered spammerStopStart"
                              th:if="${spammers.getSpammerStatus().toString()} == 'STOP'"
                              th:onclick="'startSpammer('+${spammers.getId()}+');'">
-                            <img src="/img/play.png">
+                            <img alt="play" src="/img/play.png">
                             <div th:text="#{pages.streamSettings.set.spammer.start}"></div>
                         </div>
                         <div class="centered spammerStopStart"
                              th:if="${spammers.getSpammerStatus().toString()} == 'RUN'"
                              th:onclick="'stopSpammer('+${spammers.getId()}+');'">
-                            <img src="/img/pause.png">
+                            <img alt="pause" src="/img/pause.png">
                             <div th:text="#{pages.streamSettings.set.spammer.stop}"></div>
                         </div>
                     </div>
-
                     <div class="wrapSpammerStopStart">
                         <div class="centered spammerStopStart" th:onclick="'deleteSpammer('+${spammers.getId()}+');'">
-                            <img src="/img/garbage.png">
+                            <img alt="garbage" src="/img/garbage.png">
                             <div th:text="#{pages.streamSettings.set.spammer.delete}"></div>
                         </div>
                     </div>

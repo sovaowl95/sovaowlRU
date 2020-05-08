@@ -1,8 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
 <th:block th:fragment="discord">
     <!--DISCORD-->
     <div class="modal streamOptions">
-        <div class="modalLeft"><img src="/img/discord.png"></div>
+        <div class="modalLeft"><img alt="discord" src="/img/discord.png"></div>
         <div class="modalCenter" th:text="#{web.const.discord}"></div>
         <div class="modalRight"
              th:classappend="${stream.getDiscordNotification()==null}?'apiDisconnected':'apiConnected'"

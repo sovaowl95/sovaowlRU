@@ -1,4 +1,5 @@
 <html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
 <th:block th:fragment="commands">
     <div class="content" style="display: none">
         <th:block th:each="command: ${stream.getCommandSet()}">

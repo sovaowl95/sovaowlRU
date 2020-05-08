@@ -3,7 +3,6 @@
     <meta charset="UTF-8">
     <title th:text="#{pages.info.title}"></title>
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
     <link rel="stylesheet" th:href="@{/css/info.css}">
     <link rel="stylesheet" th:href="@{/css/shop.css}">
     <script th:src="@{/js/info.js}"></script>
@@ -15,9 +14,8 @@
 <div id="infoPage">
     <div>
         <div class="info-header-additional">
-            <a href="/updates" th:text="#{pages.info.redirection.updates}"></a>
-            <a href="/commands" th:text="#{pages.info.redirection.commands}"></a>
-            <a href="/promo" th:text="#{pages.info.redirection.promo}"></a>
+            <a href="/info/commands" th:text="#{pages.info.redirection.commands}"></a>
+            <a href="/info/promo" th:text="#{pages.info.redirection.promo}"></a>
         </div>
         <div style="height: 10px"></div>
         <hr>
@@ -28,22 +26,20 @@
         <div th:utext="#{pages.info.text.c}"></div>
         <div th:utext="#{pages.info.text.d}"></div>
     </div>
-
     <div class="row">
         <a href="#" onclick="show(1)" style="border: none;">
             <div>
-                <img class="rowImg" src="/img/streamer.png">
+                <img alt="streamer" class="rowImg" src="/img/streamer.png">
                 <div style="display: inline" th:text="#{pages.info.text.streamer}"></div>
             </div>
         </a>
         <a href="#" onclick="show(2)" style="border: none;">
             <div>
-                <img class="rowImg" src="/img/spectator.png">
+                <img alt="spectator" class="rowImg" src="/img/spectator.png">
                 <div style="display: inline" th:text="#{pages.info.text.spectator}"></div>
             </div>
         </a>
     </div>
-
     <div class="content">
         <ul>
             <li th:text="#{pages.info.text.streamer.a}"></li>

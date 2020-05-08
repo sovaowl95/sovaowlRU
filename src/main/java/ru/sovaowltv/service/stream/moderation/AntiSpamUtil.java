@@ -2,54 +2,81 @@ package ru.sovaowltv.service.stream.moderation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.user.User;
 
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class AntiSpamUtil {
-    private final HashMap<Long, Long> userTimeMap = new HashMap<>();
-    private final HashMap<Long, Long> userCountMap = new HashMap<>();
+    private static final Map<Long, UserToTime> map = new ConcurrentHashMap<>();
 
-    private void setLastTimeMessage(User user) {
-        userTimeMap.put(user.getId(), System.currentTimeMillis());
-    }
+    private static final long TIME_TO_REMOVE = TimeUnit.SECONDS.toMillis(3);
+    private static final long THOUSAND_MS = TimeUnit.SECONDS.toMillis(1);
+    private static final long ALLOWED_MESSAGES = 10;
 
-    private long getTimeForUser(User user) {
-        if (userCountMap.containsKey(user.getId())) {
-            return 1000 * userCountMap.get(user.getId());
-        } else {
-            return 500;
+    private static class UserToTime {
+        long id;
+        List<Long> times;
+        int timesBlocked;
+        static final long TIME_BLOCK = 3000;
+
+        public UserToTime(User user) {
+            this.id = user.getId();
+            times = new LinkedList<>();
+            times.add(System.currentTimeMillis());
+        }
+
+        public long block() {
+            return TIME_BLOCK * ++timesBlocked;
         }
     }
 
-    private void incrementAntiSpamTime(User user) {
-        long aLong = !userCountMap.containsKey(user.getId()) ? 1 : userCountMap.get(user.getId()) + 1;
-        userCountMap.put(user.getId(), aLong);
-    }
+    public boolean isAntiSpamOk(User user) {
+        long id = user.getId();
+        UserToTime userToTime = map.get(id);
 
-    private void clearAntiSpamTime(User user) {
-        userCountMap.remove(user.getId());
-    }
-
-    public boolean lastTimeMessageOk(User userForCheck) {
-        if (!userTimeMap.containsKey(userForCheck.getId())) {
-            setLastTimeMessage(userForCheck);
+        if (userToTime == null) {
+            map.put(user.getId(), new UserToTime(user));
             return true;
-        } else {
-            Long aLong = userTimeMap.get(userForCheck.getId());
-            setLastTimeMessage(userForCheck);
-            boolean canChat = System.currentTimeMillis() - aLong > getTimeForUser(userForCheck);
-            if (!canChat) incrementAntiSpamTime(userForCheck);
-            else clearAntiSpamTime(userForCheck);
-            return canChat;
         }
+
+        addAndClear(userToTime);
+
+        return userToTime.times.size() < ALLOWED_MESSAGES;
     }
 
-    public String getSpamTime(User userForCheck) {
-        return String.valueOf(getTimeForUser(userForCheck) / 1000);
+
+    public String getTimeUntilUnblock(User user) {
+        long id = user.getId();
+        UserToTime userToTime = map.get(id);
+
+        return String.valueOf(userToTime.block() / THOUSAND_MS);
+    }
+
+    private void addAndClear(UserToTime userToTime) {
+        Iterator<Long> iterator = userToTime.times.iterator();
+        while (iterator.hasNext()) {
+            long timeHasPassed = System.currentTimeMillis() - iterator.next();
+            if (timeHasPassed > TIME_TO_REMOVE) {
+                iterator.remove();
+            } else {
+                break;
+            }
+        }
+        userToTime.times.add(System.currentTimeMillis());
+    }
+
+    @Scheduled(fixedRate = 1000 * 60)
+    private void clearMap() {
+        map.entrySet().removeIf(entry -> entry.getValue().times.isEmpty());
     }
 }

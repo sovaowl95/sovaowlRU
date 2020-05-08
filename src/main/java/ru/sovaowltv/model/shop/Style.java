@@ -1,15 +1,14 @@
 package ru.sovaowltv.model.shop;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import ru.sovaowltv.model.user.User;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
-@EqualsAndHashCode(of = {"id"})
 @Entity
 public class Style {
     @Id
@@ -27,4 +26,17 @@ public class Style {
 
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Style style = (Style) o;
+        return id == style.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

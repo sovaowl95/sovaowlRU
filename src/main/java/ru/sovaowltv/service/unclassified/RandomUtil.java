@@ -1,11 +1,11 @@
 package ru.sovaowltv.service.unclassified;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class RandomUtil {
     private final Random random = new Random();

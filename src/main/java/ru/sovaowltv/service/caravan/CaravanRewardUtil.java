@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.chat.MessageStatus;
 import ru.sovaowltv.model.shop.Rarity;
 import ru.sovaowltv.model.user.Achievements;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@Component
+@Service
 @RequiredArgsConstructor
 @Slf4j
 @PropertySource("classpath:constants.yml")

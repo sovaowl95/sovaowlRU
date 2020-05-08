@@ -1,6 +1,6 @@
 function show(num) {
-    arr = document.getElementsByClassName('content');
-    row = document.getElementsByClassName('row')[0].getElementsByTagName('a');
+    let arr = document.getElementsByClassName('content');
+    let row = document.getElementsByClassName('row')[0].getElementsByTagName('a');
     for (let i = 0; i < arr.length; i++) {
         if (i + 1 === num) {
             arr[i].style.display = 'block';
@@ -21,7 +21,7 @@ function buyPremium() {
             let wrapBody = content.getElementsByClassName('wrapBody')[0];
             let bottom = wrapBody.getElementsByClassName('bottom')[0];
             let right = bottom.getElementsByClassName('right')[0];
-            right.innerHTML = '<img src="/img/success.png">';
+            right.innerHTML = '<img src="/img/success.png" alt="success">';
         }
     });
     let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
@@ -37,7 +37,7 @@ function buySmile(id) {
             let wrapBody = document.getElementById(id);
             let bottom = wrapBody.getElementsByClassName('bottom')[0];
             let right = bottom.getElementsByClassName('right')[0];
-            right.innerHTML = '<img src="/img/success.png">';
+            right.innerHTML = '<img src="/img/success.png" alt="success">';
         }
     });
     let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
@@ -46,7 +46,7 @@ function buySmile(id) {
 }
 
 function buyLevel() {
-    var request = new XMLHttpRequest();
+    let request = new XMLHttpRequest();
     request.open("POST", "/shop/buy/level", true);
     request.addEventListener("load", function () {
         if (request.status === 200) {
@@ -69,7 +69,7 @@ function buyLevel() {
             let bottom = wrapBody.getElementsByClassName('bottom')[0];
             let right = bottom.getElementsByClassName('right')[0];
             if (document.getElementById("buyLevelPic") !== null) return;
-            right.innerHTML = right.innerHTML + '<img id="buyLevelPic" src="/img/success.png">';
+            right.innerHTML = right.innerHTML + '<img id="buyLevelPic" src="/img/success.png" alt="success">';
         }
     });
     let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
@@ -86,7 +86,7 @@ function buyStyle(id) {
             let wrapBody = styles.getElementsByClassName(id)[0];
             let bottom = wrapBody.getElementsByClassName('bottom')[0];
             let right = bottom.getElementsByClassName('right')[0];
-            right.innerHTML = '<img src="/img/success.png">';
+            right.innerHTML = '<img src="/img/success.png" alt="success">';
         }
     });
     let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');

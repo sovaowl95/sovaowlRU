@@ -1,5 +1,5 @@
-var id = 'uniqIdForModalShow';
-var modal;
+let id = 'uniqIdForModalShow';
+let modal;
 
 /*
 */

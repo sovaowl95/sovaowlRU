@@ -56,11 +56,7 @@ public class IOExtractor {
             String input;
             while ((input = bufferedReader.readLine()) != null)
                 sb.append(input);
-            log.debug("readResponse: " + sb.toString());
             return sb.toString();
-        } catch (IOException e) {
-            log.error("readResponse error " + sb, e);
-            throw e;
         }
     }
 }

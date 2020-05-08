@@ -11,32 +11,30 @@ function openOptions() {
 }
 
 function notifyThemAll() {
-    let reg = new XMLHttpRequest();
-    reg.open("POST", "/notifyThemAll", true);
-    reg.addEventListener("load", function () {
-        if (reg.status === 200) {
-            document.getElementById('bodyPlayerTopLeft').getElementsByTagName('div')[0].style.border = "1px solid lightgreen";
+    mySendRequest("/notifyThemAll", null, function (request) {
+        if (request.status === 200) {
+            document.getElementById('bodyPlayerTopLeft')
+                .getElementsByTagName('div')[0].style.border = "1px solid lightgreen";
         }
     });
-    let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
-    reg.setRequestHeader("X-CSRF-Token", csrfToken);
-    reg.send();
 }
 
-function showTwitchPlayer(el) {
-    showPlayer(el, "playerTwitch");
+function showTwitchPlayer(el, id) {
+    showPlayer(el, "playerTwitch", id);
 }
 
-function showGGPlayer(el) {
-    showPlayer(el, "playerGG");
+function showGGPlayer(el, id) {
+    showPlayer(el, "playerGG", id);
 }
 
-function showYTPlayer(el) {
-    showPlayer(el, "playerYT");
+function showYTPlayer(el, id) {
+    showPlayer(el, "playerYT", id);
 }
 
 
-function showPlayer(el, name) {
+function showPlayer(el, name, id) {
+    name = name + '_' + id;
+
     let parentNode = el.parentNode.parentNode.parentNode;
     let arr = parentNode.getElementsByTagName('iframe');
     for (let i = 0; i < arr.length; i++) {
@@ -46,11 +44,15 @@ function showPlayer(el, name) {
             arr[i].style.display = "none";
         }
     }
+    delStartSelector();
 }
 
 function delStartSelector() {
-    document.getElementById('playerSelectorSecond').remove();
-    document.getElementById('playerSelector').style.display = "flex";
+    let elementById = document.getElementById('playerSelectorSecond');
+    if (elementById !== null) {
+        elementById.remove();
+        document.getElementById('playerSelector').style.display = "flex";
+    }
 }
 
 function changeStreamStatus(status, element) {
@@ -67,5 +69,6 @@ function changeStreamStatus(status, element) {
             } else {
                 element.style.border = "1px solid red";
             }
-        });
+        }
+    );
 }

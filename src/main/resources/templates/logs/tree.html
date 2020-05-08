@@ -1,6 +1,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head></head>
 <body>
+<!--/*@thymesVar id="paths" type="java.util.List<java.lang.String>"*/-->
 <div th:each="path:${paths}">
     <a th:href="@{/admin/logs/custom(path=${path})}" th:text="${path}"></a>
 </div>

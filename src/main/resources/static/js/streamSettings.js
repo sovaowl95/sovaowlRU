@@ -1,49 +1,3 @@
-function launchAllChats() {
-    let request = new XMLHttpRequest();
-    let link = "/stream/chat/launch/allChats";
-    request.open("POST", link, true);
-    request.addEventListener("load", function () {
-        if (request.status === 200) {
-            //
-        }
-    });
-    let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
-    request.setRequestHeader("X-CSRF-Token", csrfToken);
-    request.send();
-}
-
-//todo: ANOTHER API SERVICE
-function launchMyTwitchChat() {
-    let request = new XMLHttpRequest();
-    let link = "/stream/chat/launch/twitchChat";
-    request.open("POST", link, true);
-    request.addEventListener("load", function () {
-        if (request.status === 200) {
-            //
-        }
-    });
-    let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
-    request.setRequestHeader("X-CSRF-Token", csrfToken);
-    request.send();
-}
-
-//todo: ANOTHER API SERVICE
-function addTwitchChat() {
-    let request = new XMLHttpRequest();
-    let link = "/stream/chat/launch/twitchChat/";
-    link = link + prompt("sometext", "defaultText");
-    request.open("POST", link, true);
-    request.addEventListener("load", function () {
-        if (request.status === 200) {
-            //
-        }
-    });
-    let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
-    request.setRequestHeader("X-CSRF-Token", csrfToken);
-    request.send();
-}
-
-
 /**CHANGE WEBSITE*/
 function changeStreamName(parent) {
     changeAnyNode(parent);
@@ -89,7 +43,6 @@ function doDeleteStream() {
     request.setRequestHeader("X-CSRF-Token", csrfToken);
     request.send();
 }
-
 
 /**CHANGE DISCORD*/
 function changeDiscordNotification(parent) {
@@ -420,8 +373,8 @@ function changeSpammerText(el, id) {
 
 
 function show(num) {
-    arr = document.getElementsByClassName('content');
-    row = document.getElementsByClassName('row')[0].getElementsByTagName('a');
+    let arr = document.getElementsByClassName('content');
+    let row = document.getElementsByClassName('row')[0].getElementsByTagName('a');
     for (let i = 0; i < arr.length; i++) {
         if (i + 1 === num) {
             arr[i].style.display = 'block';

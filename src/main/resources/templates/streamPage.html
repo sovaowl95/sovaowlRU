@@ -1,16 +1,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
     <title th:text="${stream.getUser().getNickname()}"></title>
 
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
     <link rel="stylesheet" th:href="@{/css/streamPage.css}">
 
     <script th:src="@{/js/streamPage.js}"></script>
 
-    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+    <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
+    <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
 
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
     <th:block th:include="fragments/chat :: chatHead"/>
@@ -18,57 +18,34 @@
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
 </head>
 <body>
-<th:block th:include="fragments/topMenu::landingTopMenu"/>
 <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+<!--/*@thymesVar id="multiStream" type="ru.sovaowltv.model.multistream.MultiStream"*/-->
+<th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div id="body">
     <div id="bodyPlayer">
         <div id="bodyPlayerTop">
-            <th:block>
-                <div id="bodyPlayerTopLeft">
-                    <div th:text="#{pages.stream.notifyThemAll}" onclick="notifyThemAll()"
-                         th:if="${stream.getUser()} == ${user}"></div>
-                    <div th:text="${stream.isLive()}?__#{pages.stream.status.online}__:__#{pages.stream.status.offline}__"
-                         th:if="${stream.getUser()} == ${user}"
-                         th:onclick="'changeStreamStatus(' + ${!stream.isLive()} + ', this)'"></div>
-                    <div style="background-color: #222222" th:unless="${stream.getUser()} == ${user}"></div>
-                </div>
-            </th:block>
+            <div id="bodyPlayerTopLeft">
+                <div th:text="#{pages.stream.notifyThemAll}" onclick="notifyThemAll()"
+                     th:if="${stream.getUser()} == ${user}"></div>
+                <div th:text="${stream.isLive()}?__#{pages.stream.status.online}__:__#{pages.stream.status.offline}__"
+                     th:if="${stream.getUser()} == ${user}"
+                     th:onclick="'changeStreamStatus(' + ${!stream.isLive()} + ', this)'"></div>
+                <div style="background-color: #222222" th:unless="${stream.getUser()} == ${user}"></div>
+            </div>
             <div id="playerSelector">
-                <img th:if="${stream.getUser().getUserTwitch()!=null}" alt="twitch"
-                     src="/authicons/Twitch_Purple_RGB.svg" onclick="showTwitchPlayer(this);">
-                <img th:if="${stream.getUser().getUserGG()!=null}" alt="gg"
-                     src="/authicons/gg.svg" onclick="showGGPlayer(this);">
-                <img th:if="${stream.getUser().getUserGoogle()!=null}" alt="youtube"
-                     src="/authicons/yt.svg" onclick="showYTPlayer(this);">
+                <th:block th:include="stream/playerSelects::streamPlayersSelector"/>
             </div>
             <div id="bodyPlayerTopRight">
+                <div th:if="${multiStream != null}" th:onclick="'window.location=\'ms/'  +${multiStream.getId()} + '\''"
+                     th:text="#{pages.stream.status.ms}"></div>
                 <div th:text="#{pages.stream.follow}"></div>
                 <div th:text="#{pages.stream.sub}"></div>
             </div>
         </div>
         <div id="bodyPlayerMiddle">
-            <iframe id="playerTwitch" th:if="${stream.getUser().getUserTwitch()!=null}"
-                    th:src="'https://player.twitch.tv/?autoplay=false&channel='+${stream.getUser().getUserTwitch().getNick()}"
-                    frameborder="0" allowfullscreen scrolling="no">
-            </iframe>
-            <iframe id="playerGG" th:if="${stream.getUser().getUserGG()!=null}"
-                    frameborder="0" allowfullscreen
-                    th:src="'https://goodgame.ru/player?' + ${stream.getUser().getUserGG().getChannelId()}">
-            </iframe>
-            <iframe id="playerYT" th:if="${stream.getUser().getUserGoogle()!=null}"
-                    th:src="'https://www.youtube.com/embed/'+${stream.getUser().getUserGoogle().getVideoId()}"
-                    frameborder="0" allowfullscreen>
-            </iframe>
+            <th:block th:include="stream/iframes::streamPlayers"/>
             <div id="playerSelectorSecond">
-                <img th:if="${stream.getUser().getUserTwitch()!=null}"
-                     src="/authicons/Twitch_Purple_RGB.svg" alt="twitch"
-                     onclick="showTwitchPlayer(this); delStartSelector();">
-                <img th:if="${stream.getUser().getUserGG()!=null}"
-                     src="/authicons/gg.svg" alt="goodgame"
-                     onclick="showGGPlayer(this);  delStartSelector();">
-                <img th:if="${stream.getUser().getUserGoogle()!=null}"
-                     src="/authicons/yt.svg" alt="google"
-                     onclick="showYTPlayer(this);  delStartSelector();">
+                <th:block th:include="stream/playerSelects::streamPlayersSelector"/>
             </div>
         </div>
         <div id="bodyPlayerBottom">

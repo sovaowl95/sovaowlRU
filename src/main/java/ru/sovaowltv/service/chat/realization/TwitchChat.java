@@ -137,7 +137,7 @@ public class TwitchChat extends ApiForChat {
                 if (message == null)
                     return;
 
-                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message, topicTarget);
+                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
                 if (messageValidationStatus == MessageValidationStatus.SPAM) banUser(nick, "SPAM", message);
                 if (messageValidationStatus != MessageValidationStatus.OK) return;
 
@@ -145,7 +145,7 @@ public class TwitchChat extends ApiForChat {
                     nickNames.add(nick);
                     sendInviteMessage(nick);
                 }
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null);
+                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             }
         } catch (Exception e) {
@@ -189,10 +189,10 @@ public class TwitchChat extends ApiForChat {
         Optional<UserTwitch> bySub = userTwitchUtil.getUserTwitchBySub(userId);
         if (bySub.isPresent()) {
             User userAuthor = bySub.get().getUser();
-            if (!streamModerationUtil.canChatInChannelBan(userAuthor, topicTarget)) {
+            if (!streamModerationUtil.canChatInChannelBan(userAuthor, stream)) {
                 banUser(nick, "banned by " + sovaowlRu, null);
                 return null;
-            } else if (!streamModerationUtil.canChatInChannelTimeout(userAuthor, topicTarget)) {
+            } else if (!streamModerationUtil.canChatInChannelTimeout(userAuthor, stream)) {
                 timeoutUser(nick, apiTimeouts.getTimeForChannelAndUser(stream, userAuthor), "timeout by " + sovaowlRu, null);
                 return null;
             }

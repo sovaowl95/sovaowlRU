@@ -76,13 +76,14 @@ function doReg() {
         request.setRequestHeader("X-CSRF-Token", csrfToken);
         let secTokenState = document.getElementsByName('secTokenState')[0].getAttribute('content');
         request.setRequestHeader("secTokenState", secTokenState);
+        let json;
         if (document.getElementById('emailInputField') !== null) {
-            email = document.getElementById('emailInputField').value;
+            let email = document.getElementById('emailInputField').value;
             json = {'login': login, 'gender': gender, 'rules': rules, 'email': email};
         } else {
             json = {'login': login, 'gender': gender, 'rules': rules};
         }
-        myJson = JSON.stringify(json);
+        let myJson = JSON.stringify(json);
         request.send(myJson);
     } else {
         event = new Event("input");

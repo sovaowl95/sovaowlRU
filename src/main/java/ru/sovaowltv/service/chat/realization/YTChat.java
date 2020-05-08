@@ -389,7 +389,7 @@ public class YTChat extends ApiForChat {
 
                 Message message = prepareMessage(map, messageId);
 
-                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message, topicTarget);
+                MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
                 if (messageValidationStatus == MessageValidationStatus.SPAM)
                     banUser(message.getNick(), "SPAM", message);
                 if (messageValidationStatus != MessageValidationStatus.OK)
@@ -400,7 +400,7 @@ public class YTChat extends ApiForChat {
                     sendInviteMessage(map.get("displayName"));
                 }
 
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null);
+                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             }
         }

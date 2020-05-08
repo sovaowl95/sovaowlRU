@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="msData">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let streamsLogins = [[${streamsLogins}]];
+        let msId = [[${msId}]];
+        /*]]>*/
+    </script>
+</th:block>
+</body>
+</html>
+

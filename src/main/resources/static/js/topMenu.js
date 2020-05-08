@@ -1,4 +1,4 @@
-var topProfileShow = false;
+let topProfileShow = false;
 
 document.addEventListener('DOMContentLoaded', function () {
     try {
@@ -50,7 +50,7 @@ function doLogout() {
 }
 
 function getCookie(name) {
-    var matches = document.cookie.match(new RegExp(
+    let matches = document.cookie.match(new RegExp(
         "(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\\/+^])/g, '\\$1') + "=([^;]*)"
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
@@ -101,7 +101,7 @@ function bodyChatTopCloseA() {
     }
 }
 
-var menuOpened = false;
+let menuOpened = false;
 
 function toggleMenu() {
     if (menuOpened) {
@@ -121,7 +121,7 @@ function closeMenu() {
     menuOpened = false;
 }
 
-var wasWidth = -1;
+let wasWidth = -1;
 window.onresize = function (event) {
     let width = window.innerWidth;
     let widthCss = 1200;

@@ -1,12 +1,12 @@
 package ru.sovaowltv.service.notifications;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.service.notifications.discord.DiscordNotificationUtil;
 import ru.sovaowltv.service.notifications.vk.VKNotificationUtil;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class NotificationUtil {
     private final DiscordNotificationUtil discordNotificationUtil;

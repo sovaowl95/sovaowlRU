@@ -41,8 +41,6 @@ public class ShopUtil {
         return "shop";
     }
 
-
-    //todo: optimization
     public List<Smile> getSmilesList() {
         List<Smile> smileList = smilesRepository.findAll();
         smileList.sort(Comparator.comparingInt(s -> s.getRarity().ordinal()));

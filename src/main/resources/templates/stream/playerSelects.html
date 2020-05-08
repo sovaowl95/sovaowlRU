@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="streamPlayersSelector">
+    <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
+    <img th:if="${stream.getUser().getUserTwitch()!=null}" alt="twitch"
+         src="/authicons/Twitch_Purple_RGB.svg"
+         th:onclick="'showTwitchPlayer(this,'+ ${stream.getId()}+ ');'">
+    <img th:if="${stream.getUser().getUserGG()!=null}" alt="gg"
+         src="/authicons/gg.svg"
+         th:onclick="'showGGPlayer(this,'+${stream.getId()}+');'">
+    <img th:if="${stream.getUser().getUserGoogle()!=null}" alt="youtube"
+         src="/authicons/yt.svg"
+         th:onclick="'showYTPlayer(this'+${stream.getId()} +');'">
+</th:block>
+</body>
+</html>

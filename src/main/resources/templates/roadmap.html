@@ -3,13 +3,15 @@
     <meta charset="UTF-8">
     <title th:text="#{pages.roadmap.title}"></title>
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
+
     <link rel="stylesheet" th:href="@{/css/roadmap.css}">
     <link rel="stylesheet" th:href="@{/css/feedback.css}">
     <script th:src="@{/js/feedback.js}"></script>
     <script th:src="@{/js/roadmap.js}"></script>
-    <script th:src="@{/js/lib/OverlayScrollbars.js}"></script>
-    <link rel="stylesheet" th:href="@{/css/lib/OverlayScrollbars.css}">
+
+    <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
+    <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
+
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">

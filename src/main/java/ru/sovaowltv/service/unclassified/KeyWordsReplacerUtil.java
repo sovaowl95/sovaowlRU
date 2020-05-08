@@ -1,10 +1,10 @@
 package ru.sovaowltv.service.unclassified;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.apinotification.NotificationFor;
 import ru.sovaowltv.model.stream.Stream;
 
-@Component
+@Service
 public class KeyWordsReplacerUtil {
     public String replaceAllKeyWords(Stream stream, String text, NotificationFor notificationFor) {
         StringBuilder sb = new StringBuilder(text);

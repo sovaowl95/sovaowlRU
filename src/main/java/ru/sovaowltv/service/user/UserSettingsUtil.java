@@ -129,14 +129,16 @@ public class UserSettingsUtil {
         try {
             user = userUtil.getUser();
             if (user.getAchievements().contains(Achievements.valueOf(name))) {
-                for (Icons icon : user.getIcons()) {
-                    if (icon.getName().equalsIgnoreCase(name)) {
-                        user.getUserSettings().getActiveIcons().add(icon);
+                for (Icons userIcons : user.getIcons()) {
+                    if (userIcons.getName().equalsIgnoreCase(name)) {
+                        user.getUserSettings().getActiveIcons().add(userIcons);
+                        userSettingsRepository.save(user.getUserSettings());
                         return;
                     }
                 }
                 Icons icons = iconsUtil.addIconAchievement(user, Achievements.valueOf(name));
                 user.getUserSettings().getActiveIcons().add(icons);
+                userSettingsRepository.save(user.getUserSettings());
             }
         } finally {
             usersRepositoryHandler.saveAndFree(user);

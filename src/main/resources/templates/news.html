@@ -3,14 +3,14 @@
     <meta charset="UTF-8">
     <title th:text="#{pages.info.title}"></title>
     <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-    <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
     <link rel="stylesheet" th:href="@{/css/news.css}">
-    <script th:src="@{/js/updatePage.js}"></script>
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
 </head>
 <body>
 <th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div id="updatePage">
+    <!--/*@thymesVar id="news" type="java.util.List<ru.sovaowltv.model.admin.News>"*/-->
+    <!--/*@thymesVar id="newsEl" type="ru.sovaowltv.model.admin.News"*/-->
     <th:block th:each="newsEl:${news}">
         <div class="updateBlock"
              th:if="${newsEl.publicated} OR (${user != null and #sets.contains(user.roles, T(ru.sovaowltv.model.user.Role).ADMIN)})">
