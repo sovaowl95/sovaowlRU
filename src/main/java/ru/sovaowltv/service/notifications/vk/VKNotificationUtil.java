@@ -30,7 +30,7 @@ public class VKNotificationUtil extends ListenerAdapter {
         try {
             VKNotification vkNotification = stream.getVkNotification();
             if (vkNotification == null) {
-                log.debug("Can't find vk for stream " + stream.getUser().getNickname());
+                log.debug("Can't find vk for stream {}", stream.getUser().getNickname());
                 return;
             }
             send(stream, vkNotification);
@@ -46,7 +46,7 @@ public class VKNotificationUtil extends ListenerAdapter {
         String groupId = vkNotification.getGroupId();
 
         if (token == null || token.isEmpty() || groupId == null || groupId.isEmpty()) {
-            log.info("can't find token or group id for vk notification for stream: " + stream.getId());
+            log.info("can't find token or group id for vk notification for stream: {}", stream.getId());
             return;
         }
         HttpsURLConnection connection = urlConnectionPrepare.getConnection(

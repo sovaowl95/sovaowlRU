@@ -82,15 +82,12 @@ function connect() {
             let destinationSub = destinationSubArray[i];
 
             client.subscribe(destinationSub, function (message) {
-                // let temp = destinationSub.split("/");
-                // temp = temp[temp.length - 1];
                 let dst = destinationSub.substring(destinationSub.lastIndexOf('/') + 1);
-                console.log("dst = " + dst);
                 try {
                     let parse = JSON.parse(message.body);
                     console.log(parse);
                     if (parse.type === "message") {
-                        printMessage(parse);
+                        printMessage(parse, dst);
                     } else if (parse.type === "infoBan") {
                         printSystemMessage('infoFromServer', parse.info);
                     } else if (parse.type === "infoTimeout") {
@@ -120,11 +117,9 @@ function connect() {
                     else if (parse.type === "caravanStart") {
                         printCaravanStartMessage(parse.info);
                     } else if (parse.type === "caravanEnd") {
-                        printCaravanEndMessage('caravanEnd', caravanEnd);
+                        printCaravanEndMessage('caravanEnd', caravanEnd, parse.info);
                     } else if (parse.type === "caravanReward") {
-                        let myObj = JSON.parse(parse.info);
-                        for (let i = 0; i < myObj.length; i++)
-                            printCaravanReward(myObj[i].info);
+                        printCaravanReward(parse.info);
                     } else {
                         printSystemMessage('ERROR');
                         console.log("ERR");

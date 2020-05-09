@@ -22,7 +22,7 @@ public class MessageRunnable {
             try {
                 ytChatUtil.sendMessageToYT(message, webSiteChannel, apiChatObject, user);
             } catch (Exception e) {
-                log.error("cant send message to yt " + message.getText(), e);
+                log.error("cant send message to yt {} {}", message.getText(), e);
             }
         };
     }
@@ -32,7 +32,7 @@ public class MessageRunnable {
             try {
                 ggChatUtil.sendMessageToGG(message, webSiteChannel, apiChatObject, user);
             } catch (Exception e) {
-                log.error("cant send message to gg " + message.getText(), e);
+                log.error("cant send message to gg {} {}", message.getText(), e);
             }
         };
     }
@@ -42,7 +42,7 @@ public class MessageRunnable {
             try {
                 twitchChatUtil.sendMessageToTwitch(message, webSiteChannel, apiChatObject, user);
             } catch (Exception e) {
-                log.error("cant send message to twitch " + message.getText(), e);
+                log.error("cant send message to twitch {} {}", message.getText(), e);
             }
         };
     }

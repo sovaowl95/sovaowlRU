@@ -46,7 +46,7 @@ public class TwitchTokenHandler {
             Map<String, Object> stringObjectMap = ioExtractor.extractDataFromResponse(urlConnection);
             Object status = stringObjectMap.get("status");
             if (status != null) {
-                log.error("Can't refresh twitch token for " + userTwitch.getNick() + "\n" + stringObjectMap.get("message"));
+                log.error("Can't refresh twitch token for {}\n{}", userTwitch.getNick(), stringObjectMap.get("message"));
                 return false;
             }
             userTwitch.setAccessToken(String.valueOf(stringObjectMap.get("access_token")));
@@ -58,7 +58,7 @@ public class TwitchTokenHandler {
             usersTwitchRepository.save(userTwitch);
             return true;
         } catch (Exception e) {
-            log.error("Can't refresh twitch token for " + userTwitch.getNick(), e);
+            log.error("Can't refresh twitch token for {} {}", userTwitch.getNick(), e);
             return false;
         }
     }

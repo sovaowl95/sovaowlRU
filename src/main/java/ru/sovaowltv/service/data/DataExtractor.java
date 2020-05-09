@@ -19,6 +19,7 @@ import java.util.Set;
 public class DataExtractor {
     private final DataFieldsChecker dataFieldsChecker;
 
+    @SuppressWarnings("unchecked")
     public Map<String, Object> extractMapFromString(String jsonString) {
         return new Gson().fromJson(jsonString, Map.class);
     }
@@ -31,6 +32,7 @@ public class DataExtractor {
         return data;
     }
 
+    @SuppressWarnings("unchecked")
     private Map<String, Object> extractDataFromSession(HttpSession session) {
         return (Map<String, Object>) session.getAttribute("data");
     }
@@ -52,7 +54,7 @@ public class DataExtractor {
         try {
             return jObject.get(param).getAsJsonPrimitive().getAsString();
         } catch (Exception e) {
-            log.error("getPrimitiveAsStringFromJson " + jObject, e);
+            log.error("getPrimitiveAsStringFromJson {} {}", jObject, e);
             return null;
         }
     }

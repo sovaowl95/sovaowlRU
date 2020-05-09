@@ -40,7 +40,7 @@ public class IOExtractor {
             response = readResponse(inputStream);
             return dataExtractor.extractJsonFromString(response);
         } catch (IOException e) {
-            log.error("cant' extract JSON object: " + response, e);
+            log.error("cant' extract JSON object: {} {}", response, e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't extract JSON object");
         }
     }

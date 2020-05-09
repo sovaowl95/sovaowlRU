@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * caravanPrepare          ждем каравана (30 мин)
  * caravanStart            набираем людей для грабежа. (1 мин)
- * caravanEnd              ограбление закончено. выдаются нагрды, залечиваются раны (0 сек)
+ * caravanEnd              ограбление закончено. выдаются награды, залечиваются раны (0 сек)
  * <p>
  * <p>
  * <p>
@@ -63,6 +63,7 @@ public class Caravan extends Thread {
     @Value("${caravanJoinTimeMAXInMin}")
     private int caravanJoinTimeMAXInMin;
 
+    private int caravanCounter;
     private boolean work;
     private int timeToSleep;
     private Rarity caravanRarity;
@@ -112,17 +113,18 @@ public class Caravan extends Thread {
     }
 
     private void startRobberyPrepare() {
+        caravanCounter++;
         timeToSleep = randomUtil.getIntWithBounds(caravanJoinTimeMINInMin, caravanJoinTimeMAXInMin);
         caravanStatus = CaravanStatus.GROUP_UP;
         caravanRarity = rarityUtil.generateRarity(Rarity.COMMON, Rarity.ANCIENT, 3);
-        caravanMessages.sendToAllStreamsCaravanStartRobbery(caravanRarity, timeToSleep, getCurrentCaravanPrice());
+        caravanMessages.sendToAllStreamsCaravanStartRobbery(caravanRarity, timeToSleep, getCurrentCaravanPrice(), caravanCounter);
     }
 
     private void finishRobbery() {
         caravanStatus = CaravanStatus.FINISHING;
-        caravanMessages.sendToAllStreamsCaravanEnd();
+        caravanMessages.sendToAllStreamsCaravanEnd(caravanCounter);
         caravanStatus = CaravanStatus.WAITING_NEXT;
-        caravanRewardUtil.giveReward(robbers, caravanRarity);
+        caravanRewardUtil.giveReward(robbers, caravanRarity, caravanCounter);
     }
 
     int getCurrentCaravanPrice() {

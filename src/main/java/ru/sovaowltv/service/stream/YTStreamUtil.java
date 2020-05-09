@@ -42,9 +42,9 @@ public class YTStreamUtil {
             UserGoogle userGoogle = user.getUserGoogle();
             if (userGoogle != null) createYTChatReader(user, userGoogle, userGoogle.getNick(), true);
         } catch (UserApiCorruptedException e) {
-            log.error("error launch yt chat for user " + user.getNickname() + " corrupted.");
+            log.error("error launch yt chat for user {} corrupted.", user.getNickname());
         } catch (Exception e) {
-            log.error("error launch yt chat for user " + user.getNickname(), e);
+            log.error("error launch yt chat for user {} {}", user.getNickname(), e);
         }
     }
 

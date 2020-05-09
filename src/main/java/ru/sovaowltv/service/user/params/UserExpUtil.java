@@ -25,14 +25,14 @@ public class UserExpUtil {
         User user = null;
         try {
             user = userUtil.getUser();
-            log.info("user " + user.getLogin() + " trying buy lvl");
+            log.info("user {} trying buy lvl", user.getLogin());
             if (userCoinsUtil.withdrawMoney(user, constants.getLevelPrice())) {
                 user.setExp(0);
                 int levelBefore = user.getLevel();
                 user.setLevel(levelBefore + 1);
-                log.info("user " + user.getLogin() + " bought lvl. now - " + user.getLevel() + " was:" + levelBefore);
+                log.info("user {} bought lvl. now - {} was: {}", user.getLogin(), user.getLevel(), levelBefore);
             } else {
-                log.info("user " + user.getLogin() + " trying buy lvl - not enough money: " + user.getCoins() + " price:" + constants.getLevelPrice());
+                log.info("user {} trying buy lvl - not enough money: {} price: {}", user.getLogin(), user.getCoins(), constants.getLevelPrice());
             }
         } finally {
             usersRepositoryHandler.saveAndFree(user);

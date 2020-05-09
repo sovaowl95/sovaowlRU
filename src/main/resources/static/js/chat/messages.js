@@ -1,4 +1,4 @@
-function printMessage(message) {
+function printMessage(message, dst) {
     let id = message.id;
     if (document.getElementById('message' + id) !== null) {
         return;
@@ -72,7 +72,6 @@ function printMessage(message) {
     let divLogin = document.createElement('div');
     divLogin.innerHTML = nick;
     divLogin.className = 'nick ' + style;
-
     divLogin.addEventListener("click", clickOnNickListener);
 
     let divTime = solveTime(message);
@@ -85,7 +84,6 @@ function printMessage(message) {
     }
 
     divText.innerHTML = text;
-
 
     let tempImgWithShtora;
     let tempImgWithShtoraInsertBefore;
@@ -180,7 +178,14 @@ function printMessage(message) {
         levelDiv.innerHTML = lvl;
         messageDiv.appendChild(levelDiv);
     }
+
     messageDiv.appendChild(divLogin);
+    if (msId !== null) {
+        let fromChannel = document.createElement('div');
+        fromChannel.innerHTML = '(' + nick + ')';
+        fromChannel.className = 'nick';
+        messageDiv.appendChild(fromChannel);
+    }
     messageDiv.appendChild(delimiter);
     messageDiv.appendChild(divText);
 

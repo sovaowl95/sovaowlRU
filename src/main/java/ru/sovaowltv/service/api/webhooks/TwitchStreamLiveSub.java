@@ -37,7 +37,7 @@ public class TwitchStreamLiveSub {
     }
 
     private boolean sub(UserTwitch userTwitch, Stream stream) {
-        log.info("sub " + userTwitch.getNick());
+        log.info("sub {}", userTwitch.getNick());
         twitchTokenHandler.refresh(userTwitch);
         String body = twitchRequestUtil.getBodyForWebhookSub(userTwitch, stream);
         HttpsURLConnection connection = urlConnectionPrepare.getConnection(

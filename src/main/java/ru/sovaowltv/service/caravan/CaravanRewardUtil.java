@@ -44,7 +44,7 @@ public class CaravanRewardUtil {
     @Value("${caravanPremiumChance}")
     private double caravanPremiumChance;
 
-    void giveReward(Set<Long> robbers, Rarity caravanRarity) {
+    void giveReward(Set<Long> robbers, Rarity caravanRarity, int caravanCounter) {
         int qualityInc = rarityUtil.changeRarityToQualityInc(caravanRarity);
         List<Object> list = new ArrayList<>();
 
@@ -58,12 +58,17 @@ public class CaravanRewardUtil {
                 list.add(ms);
                 giveCaravanAchievement(user);
             } catch (Exception e) {
-                log.error("user not found! " + userId, e);
+                log.error("user not found! {} {}", userId, e);
             } finally {
                 usersRepositoryHandler.saveAndFree(user);
             }
         });
         robbers.clear();
+
+        MessageStatus ms = new MessageStatus();
+        ms.setType("caravanCounter");
+        ms.setInfo(String.valueOf(caravanCounter));
+        list.add(0, ms);
 
         MessageStatus messageStatus = new MessageStatus();
         messageStatus.setType("caravanReward");
@@ -94,7 +99,7 @@ public class CaravanRewardUtil {
     private String givePremium(User user, Rarity caravanRarity, double qualityIncrease) {
         String premiumReward = userPremiumUtil.getPremiumReward(user);
         if (premiumReward == null) {
-            log.error("CAN'T GIVE PREMIUM TO USER: " + user.getId() + " " + user.getNickname());
+            log.error("CAN'T GIVE PREMIUM TO USER: {} {}", user.getId(), user.getNickname());
             return itemUtil.getItemReward(user, caravanRarity, qualityIncrease);
         }
         return premiumReward;

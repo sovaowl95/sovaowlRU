@@ -52,7 +52,7 @@ public class UserTwitchUtil {
     public User getUserByUserTwitchChannelId(String channelId) {
         Optional<UserTwitch> userTwitchOptional = usersTwitchRepository.findByUserTwitchChannelId(channelId);
         if (userTwitchOptional.isEmpty()) {
-            log.error("no twitch user " + channelId);
+            log.error("no twitch user {}", channelId);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "getUserByUserTwitchChannelId");
         }
         return userTwitchOptional.get().getUser();

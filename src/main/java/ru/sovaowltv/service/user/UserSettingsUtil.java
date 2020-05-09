@@ -53,6 +53,7 @@ public class UserSettingsUtil {
         try {
             user = userUtil.getUser();
             user.getUserSettings().setShowTime(val);
+            userSettingsRepository.save(user.getUserSettings());
         } finally {
             usersRepositoryHandler.saveAndFree(user);
         }
@@ -66,6 +67,7 @@ public class UserSettingsUtil {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Buy premium first");
             }
             user.getUserSettings().setPremiumChat(premiumText);
+            userSettingsRepository.save(user.getUserSettings());
         } finally {
             usersRepositoryHandler.saveAndFree(user);
         }
@@ -77,6 +79,7 @@ public class UserSettingsUtil {
             if (size <= -1 || size >= 60) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad size");
             user = userUtil.getUser();
             user.getUserSettings().setTextSize(size);
+            userSettingsRepository.save(user.getUserSettings());
         } finally {
             usersRepositoryHandler.saveAndFree(user);
         }
@@ -88,6 +91,7 @@ public class UserSettingsUtil {
             if (size <= -1 || size >= 150) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad size");
             user = userUtil.getUser();
             user.getUserSettings().setSmileSize(size);
+            userSettingsRepository.save(user.getUserSettings());
         } finally {
             usersRepositoryHandler.saveAndFree(user);
         }
@@ -119,6 +123,7 @@ public class UserSettingsUtil {
         try {
             user = userUtil.getUser();
             user.getUserSettings().getActiveIcons().clear();
+            userSettingsRepository.save(user.getUserSettings());
         } finally {
             usersRepositoryHandler.saveAndFree(user);
         }
@@ -129,9 +134,12 @@ public class UserSettingsUtil {
         try {
             user = userUtil.getUser();
             if (user.getAchievements().contains(Achievements.valueOf(name))) {
-                for (Icons userIcons : user.getIcons()) {
-                    if (userIcons.getName().equalsIgnoreCase(name)) {
-                        user.getUserSettings().getActiveIcons().add(userIcons);
+                for (Icons icon : user.getIcons()) {
+                    if (icon.getName().equalsIgnoreCase(name)) {
+                        for (Icons activeIcon : user.getUserSettings().getActiveIcons()) {
+                            if (activeIcon.getName().equalsIgnoreCase(name)) return;
+                        }
+                        user.getUserSettings().getActiveIcons().add(icon);
                         userSettingsRepository.save(user.getUserSettings());
                         return;
                     }
@@ -153,6 +161,7 @@ public class UserSettingsUtil {
                 for (Icons icon : user.getIcons()) {
                     if (icon.getName().equalsIgnoreCase(name)) {
                         user.getUserSettings().getActiveIcons().remove(icon);
+                        userSettingsRepository.save(user.getUserSettings());
                         return;
                     }
                 }

@@ -121,7 +121,7 @@ public class ChatController {
                 case "modAction":
                     return chatUtil.solveModActionMessage(channel, map, user, stream);
                 default:
-                    log.error("cant find message type:" + messageType);
+                    log.error("cant find message type:{}", messageType);
             }
             return null;
         } finally {
@@ -131,6 +131,6 @@ public class ChatController {
 
     @MessageExceptionHandler(MissingSessionUserException.class)
     public void handleNoUserException(Exception e) {
-        log.info("chat MissingSessionUserException -> " + e.getMessage());
+        log.info("chat MissingSessionUserException -> {}", e.getMessage());
     }
 }

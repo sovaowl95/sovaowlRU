@@ -68,7 +68,7 @@ public class ItemUtil {
             case 14:
                 return new Trash();
             default:
-                log.error("CANT FIND RANDOM ITEM:" + i);
+                log.error("CANT FIND RANDOM ITEM:{}", i);
         }
         return new Trash();
     }

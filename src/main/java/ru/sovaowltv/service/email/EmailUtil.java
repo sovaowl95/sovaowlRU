@@ -72,7 +72,7 @@ public class EmailUtil {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You already verified your email");
         }
         if (!user.getEmailVerification().equalsIgnoreCase(code)) {
-            log.error("user email verification code not the same " + code + " " + user.getEmailVerification());
+            log.error("user email verification code not the same {} {}", code, user.getEmailVerification());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Code not equals");
         }
     }
@@ -83,7 +83,7 @@ public class EmailUtil {
         try {
             return generateAndSendEmail(emailTo, subject, user, "email/emailRegEmail.html");
         } catch (MessagingException | UnsupportedEncodingException | MailException e) {
-            log.error("can't sendRegEmail email to " + emailTo, e);
+            log.error("can't sendRegEmail email to {} {}", emailTo, e);
             return false;
         }
     }
@@ -93,7 +93,7 @@ public class EmailUtil {
         try {
             generateAndSendEmail(emailTo, subject, user, "email/passwordRecoveryEmail.html");
         } catch (MessagingException | UnsupportedEncodingException | MailException e) {
-            log.error("can't sendPasswordRecovery email to " + emailTo, e);
+            log.error("can't sendPasswordRecovery email to {} {}", emailTo, e);
         }
     }
 }

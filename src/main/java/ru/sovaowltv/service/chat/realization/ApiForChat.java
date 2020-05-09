@@ -117,7 +117,7 @@ public abstract class ApiForChat extends Thread
      */
     @OnClose
     public final void onClose(Session session, CloseReason reason) {
-        log.error("socket closed " + this.getClass().getSimpleName() + " " + apiUser.getNick() + " " + channelToConnect);
+        log.error("socket closed {} {} {}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect);
         log.error(reason.toString());
         if (work)
             connect();
@@ -125,7 +125,7 @@ public abstract class ApiForChat extends Thread
 
     @OnError
     public final void onError(Session session, Throwable t) {
-        log.error("some socket error. trying reconnect " + this.getClass().getSimpleName() + " " + apiUser.getNick() + " " + channelToConnect, t);
+        log.error("some socket error. trying reconnect {} {} {} {}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect, t);
         if (work)
             connect();
     }
@@ -141,13 +141,13 @@ public abstract class ApiForChat extends Thread
                 }
                 timeUtil.sleepSeconds(1);
                 session = container.connectToServer(this, new URI(getConnectString()));
-                log.info("socket opened " + this.getClass().getSimpleName() + " nick:" + apiUser.getNick() + " channel:" + channelToConnect);
+                log.info("socket opened {} nick:{} channel:{}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect);
                 timeUtil.sleepSeconds(1);
                 lastTimeException = -1;
                 timeToSleepOnException = 5;
                 return true;
             } catch (Exception e) {
-                log.error("socket deployment exception " + this.getClass().getSimpleName() + " nick:" + apiUser.getNick() + " channel:" + channelToConnect, e);
+                log.error("socket deployment exception {} nick:{} channel:{} {}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect, e);
                 if (System.currentTimeMillis() - lastTimeException <= timeToSleepOnException + 5000) {
                     timeToSleepOnException = timeToSleepOnException + 10;
                 }
@@ -205,15 +205,15 @@ public abstract class ApiForChat extends Thread
             while (session == null) Thread.sleep(200);
             locker.lock();
             if (!session.isOpen()) {
-                log.error("session is closed. " + text);
+                log.error("session is closed. {}", text);
                 return false;
             }
             session.getBasicRemote().sendText(text);
             session.getBasicRemote().flushBatch();
-            log.info(">>>" + channelToConnect + " text: " + text);
+            log.info(">>> {} text: {}", channelToConnect, text);
             return true;
         } catch (Exception e) {
-            log.error("some socket error. trying reconnect " + this.getClass().getSimpleName() + " " + apiUser.getNick() + " " + channelToConnect, e);
+            log.error("some socket error. trying reconnect {} {} {} {}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect, e);
             return false;
         } finally {
             locker.unlock();
@@ -225,14 +225,14 @@ public abstract class ApiForChat extends Thread
             while (session == null) Thread.sleep(50);
             locker.lock();
             if (!session.isOpen()) {
-                log.error("session is closed. " + text);
+                log.error("session is closed. {}", text);
                 return false;
             }
             session.getBasicRemote().sendText(text);
             session.getBasicRemote().flushBatch();
             return true;
         } catch (Exception e) {
-            log.error("some socket error. trying reconnect " + this.getClass().getSimpleName() + " " + apiUser.getNick() + " " + channelToConnect, e);
+            log.error("some socket error. trying reconnect {} {} {} {}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect, e);
             return false;
         } finally {
             locker.unlock();
@@ -244,7 +244,7 @@ public abstract class ApiForChat extends Thread
             work = false;
             session.close();
         } catch (IOException e) {
-            log.error("some socket error. trying reconnect " + this.getClass().getSimpleName() + " " + apiUser.getNick() + " " + channelToConnect, e);
+            log.error("some socket error. trying reconnect {} {} {} {}", this.getClass().getSimpleName(), apiUser.getNick(), channelToConnect, e);
         }
     }
 

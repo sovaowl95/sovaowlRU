@@ -54,7 +54,7 @@ public class DiscordNotificationUtil extends ListenerAdapter {
         try {
             DiscordNotification discordNotification = stream.getDiscordNotification();
             if (discordNotification == null) {
-                log.debug("Can't find discord for stream " + stream.getUser().getNickname());
+                log.debug("Can't find discord for stream {}", stream.getUser().getNickname());
                 return;
             }
             send(stream, discordNotification);

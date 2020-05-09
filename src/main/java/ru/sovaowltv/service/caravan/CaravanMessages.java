@@ -29,8 +29,8 @@ public class CaravanMessages {
     @Value("${sovaowlRuHttps}")
     private String sovaowlRuHttps;
 
-    void sendToAllStreamsCaravanStartRobbery(Rarity caravanRarity, int timeToSleep, int currentCaravanPrice) {
-        MessageStatus caravanStartMessage = prepareCaravanStartMessage(caravanRarity, timeToSleep, currentCaravanPrice);
+    void sendToAllStreamsCaravanStartRobbery(Rarity caravanRarity, int timeToSleep, int currentCaravanPrice, int caravanCounter) {
+        MessageStatus caravanStartMessage = prepareCaravanStartMessage(caravanRarity, timeToSleep, currentCaravanPrice, caravanCounter);
         Message message = prepareCaravanStartMessageForApiChats();
 
         streamRepositoryHandler.getAll().forEach(stream -> {
@@ -41,9 +41,10 @@ public class CaravanMessages {
         });
     }
 
-    void sendToAllStreamsCaravanEnd() {
+    void sendToAllStreamsCaravanEnd(int caravanCounter) {
         MessageStatus caravanEndMessage = new MessageStatus();
         caravanEndMessage.setType("caravanEnd");
+        caravanEndMessage.setInfo(String.valueOf(caravanCounter));
         streamRepositoryHandler.getAll().forEach(stream -> {
             if (stream.isLive()) {
                 messagesUtil.convertAndSend(stream.getUser().getNickname(), caravanEndMessage);
@@ -59,22 +60,23 @@ public class CaravanMessages {
         });
     }
 
+    MessageStatus prepareCaravanStartMessage(Rarity rarity, int timeToSleep, int price, int caravanCounter) {
+        MessageStatus ms = new MessageStatus();
+        ms.setType("caravanStart");
+        Map<String, Object> map = new HashMap<>();
+        map.put("rarity", rarity.name());
+        map.put("caravanCounter", caravanCounter);
+        map.put("time", timeToSleep);
+        map.put("price", price);
+        ms.setInfo(new Gson().toJson(map));
+        return ms;
+    }
+
     private Message prepareCaravanStartMessageForApiChats() {
         Message message = new Message();
         message.setType("caravanStart");
         message.setText("Caravan started! Join website to rob it! " + sovaowlRuHttps);
         message.setOriginalMessage("Caravan started! Join website to rob it!");
         return message;
-    }
-
-    MessageStatus prepareCaravanStartMessage(Rarity rarity, int timeToSleep, int price) {
-        MessageStatus ms = new MessageStatus();
-        ms.setType("caravanStart");
-        Map<String, Object> map = new HashMap<>();
-        map.put("rarity", rarity.name());
-        map.put("time", timeToSleep);
-        map.put("price", price);
-        ms.setInfo(new Gson().toJson(map));
-        return ms;
     }
 }

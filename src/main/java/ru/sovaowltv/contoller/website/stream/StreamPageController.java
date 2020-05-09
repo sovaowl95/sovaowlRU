@@ -55,7 +55,7 @@ public class StreamPageController {
         return "fragments/chat";
     }
 
-    @GetMapping("/{streamName}/publicchat")
+    @GetMapping("/{streamName}/chat/public")
     public String getOnlyChatPublic(@PathVariable String streamName, Model model) {
         Stream stream = streamUtil.getStreamByUserNickname(streamName);
         model.addAttribute("stream", stream);

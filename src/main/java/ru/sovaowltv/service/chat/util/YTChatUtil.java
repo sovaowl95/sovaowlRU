@@ -128,7 +128,7 @@ public class YTChatUtil {
 
     public Map<String, String> extractMessageData(JsonObject jObj) {
         if (jObj.getAsJsonObject("error") != null) {
-            log.error("youtube api request error." + jObj.toString());
+            log.error("youtube api request error. {}", jObj.toString());
             Map<String, String> map = new HashMap<>();
             if (jObj.toString().contains("The quota will be reset at midnight Pacific Time (PT)")
                     || jObj.toString().contains("The request cannot be completed because you have exceeded your"))

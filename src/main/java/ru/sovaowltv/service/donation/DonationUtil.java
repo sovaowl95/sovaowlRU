@@ -120,7 +120,7 @@ public class DonationUtil {
                     messageStatus.setTime(LocalDateTime.now());
                     messageStatusRepository.save(messageStatus);
 
-                    log.info("messageStatus = " + messageStatus);
+                    log.info("messageStatus = {}", messageStatus);
 
                     messagesUtil.convertAndSend(donation.getStreamTo().getUser().getNickname(), messageStatus);
                     double number = donation.getValue() * constants.getDonationMultiplier();

@@ -63,13 +63,13 @@ public class TwitchSmiles extends SmileAbstract {
                     jsonReader.beginObject();
                 } else if (JsonToken.NAME.equals(nextToken)) {
                     String name = jsonReader.nextName();
-                    log.debug("Token KEY >>>> " + name);
+                    log.debug("Token KEY >>>> {}", name);
                 } else if (JsonToken.STRING.equals(nextToken)) {
                     String value = jsonReader.nextString();
-                    log.debug("Token Value >>>> " + value);
+                    log.debug("Token Value >>>> {}", value);
                 } else if (JsonToken.NUMBER.equals(nextToken)) {
                     long value = jsonReader.nextLong();
-                    log.debug("Token Value >>>> " + value);
+                    log.debug("Token Value >>>> {}", value);
                 } else if (JsonToken.NULL.equals(nextToken)) {
                     jsonReader.nextNull();
                     log.debug("Token Value >>>> null");
@@ -80,7 +80,7 @@ public class TwitchSmiles extends SmileAbstract {
                 } else if (JsonToken.END_DOCUMENT.equals(nextToken)) {
                     return;
                 } else {
-                    log.error("UNKNOWN TOKEN = " + nextToken);
+                    log.error("UNKNOWN TOKEN = {}", nextToken);
                     throw new RuntimeException("Parse failed");
                 }
             }
@@ -142,7 +142,7 @@ public class TwitchSmiles extends SmileAbstract {
             } else if (JsonToken.END_DOCUMENT.equals(nextToken)) {
                 return;
             } else {
-                log.error("UNKNOWN TOKEN = " + nextToken);
+                log.error("UNKNOWN TOKEN = {}", nextToken);
                 throw new RuntimeException("Parse failed");
             }
         }
@@ -156,9 +156,9 @@ public class TwitchSmiles extends SmileAbstract {
 
         connection.addRequestProperty("Client-ID", clientId);
         connection.addRequestProperty("Accept", "application/vnd.twitchtv.v5+json");
-        log.info("loadSmiles connection.getContentLength() = " + connection.getContentLength());
+        log.info("loadSmiles connection.getContentLength() = {}", connection.getContentLength());
 
-        try(InputStream inputStream = connection.getInputStream()) {
+        try (InputStream inputStream = connection.getInputStream()) {
             Files.write(Paths.get(twitchSmilesUnparsed), new byte[0], StandardOpenOption.TRUNCATE_EXISTING);
 
             log.info("reading twitch smiles");
@@ -174,7 +174,7 @@ public class TwitchSmiles extends SmileAbstract {
                 tempPercent = (int) (readed * 1.0 / total * 100);
                 if (tempPercent != percent) {
                     percent = tempPercent;
-                    log.info(percent + "%");
+                    log.info("{}%", percent);
                 }
 
                 if (bytes.length == 0) {

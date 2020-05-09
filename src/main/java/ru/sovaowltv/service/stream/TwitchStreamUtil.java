@@ -48,16 +48,16 @@ public class TwitchStreamUtil {
             if (userTwitch != null) createTwitchChatReader(user, userTwitch, userTwitch.getNick(), true);
             if (userTwitch != null) createTwitchOnlineOfflineHook(user, userTwitch, stream);
         } catch (UserApiCorruptedException e) {
-            log.error("error launch twitch chat for user " + user.getNickname() + " corrupted.");
+            log.error("error launch twitch chat for user {} corrupted.", user.getNickname());
         } catch (Exception e) {
-            log.error("error launch twitch chat for user " + user.getNickname(), e);
+            log.error("error launch twitch chat for user {} {}", user.getNickname(), e);
         }
     }
 
     private void createTwitchOnlineOfflineHook(User userFromWebsite, UserTwitch userTwitch, Stream stream) {
         boolean res = twitchStreamLiveSub.subForStream(userFromWebsite, userTwitch, stream);
         if (!res) {
-            log.error("couldn't create webhook for " + userFromWebsite.getNickname());
+            log.error("couldn't create webHook for {}", userFromWebsite.getNickname());
         }
     }
 
@@ -77,7 +77,7 @@ public class TwitchStreamUtil {
     }
 
     public void reloadTwitchStreamChat(User userFromWebsite) {
-        log.info("reloadTwitchStreamChat " + userFromWebsite.getLogin());
+        log.info("reloadTwitchStreamChat {}", userFromWebsite.getLogin());
         UserTwitch userTwitch = userFromWebsite.getUserTwitch();
         if (userTwitch != null) {
             createTwitchChatReader(userFromWebsite, userTwitch, userTwitch.getNick(), true);

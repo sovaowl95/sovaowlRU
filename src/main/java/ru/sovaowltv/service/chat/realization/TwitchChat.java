@@ -103,14 +103,14 @@ public class TwitchChat extends ApiForChat {
             }
 
             if (twitchMessage.contains(":tmi.twitch.tv NOTICE * :Login authentication failed")) {
-                log.error("Twitch chat Login auth failed " + apiUser.getNick());
+                log.error("Twitch chat Login auth failed {}", apiUser.getNick());
                 userTwitchUtil.setCorrupted((UserTwitch) apiUser);
                 work = false;
                 return;
             }
 
             if (!canRead) return;
-            log.info("<<< " + apiUser.getNick() + " <<< #" + channelToConnect + " <<< " + twitchMessage);
+            log.info("<<< {}  <<< #{} <<< {}", apiUser.getNick(), channelToConnect, twitchMessage);
 
             if (twitchMessage.contains(".tmi.twitch.tv " + PRIVMSG_SHARP + channelToConnect)) {
                 String badges = twitchMessage.split(" :", 2)[0].trim();

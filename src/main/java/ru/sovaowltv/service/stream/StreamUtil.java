@@ -52,7 +52,7 @@ public class StreamUtil {
 
             Optional<Stream> streamByUserId = streamRepositoryHandler.getByUserId(userByNickname.getId());
             if (streamByUserId.isEmpty()) {
-                log.error(streamName + " streamByUserId is empty");
+                log.error("{} streamByUserId is empty", streamName);
                 throw new StreamNotFoundException(STREAM_NOT_FOUND + " " + streamName);
             }
 
