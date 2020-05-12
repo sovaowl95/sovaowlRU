@@ -26,7 +26,7 @@ public class FeedbackController {
 
     @GetMapping("/feedback")
     public String getFeedbackPage(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "feedback";
     }
 

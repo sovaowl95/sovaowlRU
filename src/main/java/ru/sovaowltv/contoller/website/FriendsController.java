@@ -13,7 +13,7 @@ public class FriendsController {
 
     @GetMapping("/friends")
     public String getFriends(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "friends";
     }
 }

@@ -24,7 +24,7 @@ public class ProfileSettingsController {
     @GetMapping(value = {"/profile/settings"})
     public String getProfile(Model model, HttpServletRequest httpServletRequest) {
         securityUtil.generateSecTokenStateForSession(httpServletRequest.getSession(), model);
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "profileSettingsPage";
     }
 

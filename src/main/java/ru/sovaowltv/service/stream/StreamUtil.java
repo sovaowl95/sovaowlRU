@@ -82,7 +82,7 @@ public class StreamUtil {
     }
 
     public void initStreamModelUserData(Model model) {
-        User user = userUtil.setUserInModelREADONLY(model);
+        User user = userUtil.setUserIfExistInModelREADONLY(model);
         model.addAttribute("userStyles", user != null ? user.getStyles() : Collections.emptySet());
         model.addAttribute("userSmiles", user != null ? user.getSmiles() : Collections.emptySet());
 

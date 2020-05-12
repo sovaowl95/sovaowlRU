@@ -13,7 +13,7 @@ public class ContactsController {
 
     @GetMapping("/contacts")
     public String getContacts(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "contacts";
     }
 }

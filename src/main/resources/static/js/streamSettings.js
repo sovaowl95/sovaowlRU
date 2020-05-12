@@ -70,23 +70,39 @@ function confirmChangeDiscordNotification(parent) {
 }
 
 function confirmChangeVKNotification() {
+    let vkInput1 = document.getElementById('vkNotificationInput-1');
+    let vkInput2 = document.getElementById('vkNotificationInput-2');
+    let vkInput3 = document.getElementById('vkNotificationInput-3');
+    let vkInput4 = document.getElementById('vkNotificationInput-4');
+    let vkInput5 = document.getElementById('vkNotificationInput-5');
+
     let request = new XMLHttpRequest();
     let link = "/vk/settings";
     request.open("POST", link, true);
     request.addEventListener("load", function () {
         if (request.status === 200) {
-            document.getElementById('vkNotificationInput-1').style.border = "1px solid lightgreen";
-            document.getElementById('vkNotificationInput-2').style.border = "1px solid lightgreen";
+            vkInput1.style.border = "1px solid lightgreen";
+            vkInput2.style.border = "1px solid lightgreen";
+            vkInput3.style.border = "1px solid lightgreen";
+            vkInput4.style.border = "1px solid lightgreen";
+            vkInput5.style.border = "1px solid lightgreen";
         } else {
-            document.getElementById('vkNotificationInput-1').style.border = "1px solid red";
-            document.getElementById('vkNotificationInput-2').style.border = "1px solid red";
+            vkInput1.style.border = "1px solid red";
+            vkInput2.style.border = "1px solid red";
+            vkInput3.style.border = "1px solid red";
+            vkInput4.style.border = "1px solid red";
+            vkInput5.style.border = "1px solid red";
         }
     });
     let csrfToken = document.getElementsByName('_csrf_value')[0].getAttribute('content');
     request.setRequestHeader("X-CSRF-Token", csrfToken);
-    let group = document.getElementById('vkNotificationInput-1').value;
-    let key = document.getElementById('vkNotificationInput-2').value;
-    let json = {'group': group, 'key': key};
+    let json = {
+        'group': vkInput1.value,
+        'key': vkInput2.value,
+        'response': vkInput3.value,
+        'secret': vkInput4.value,
+        'access_token': vkInput5.value,
+    };
     request.send(JSON.stringify(json));
 }
 

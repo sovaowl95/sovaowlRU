@@ -68,7 +68,7 @@ public class RoadmapUtil {
     }
 
     public void prepareRoadmapPage(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         List<Roadmap> all = roadmapRepository.findAll();
         model.addAttribute("roadmap", all);
         model.addAttribute("order", Arrays.asList(RoadmapStatus.values()));

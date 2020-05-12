@@ -15,18 +15,27 @@
             <div class="blockHeader" th:text="#{pages.streamSettings.set.vk}"></div>
             <div class="block" style="height: unset">
                 <div id="vkNotificationInput" class="show" style="text-align: center;">
-                    <label>
-                        <th:block th:text="#{pages.streamSettings.set.groupId}"/>
-                        <input id="vkNotificationInput-1" class="input show"
-                               th:value="${stream.getVkNotification().getGroupId()}">
-                    </label>
-                    <label>
-                        <div class="notifications-vk-link"
-                             th:text="#{pages.streamSettings.set.key.getKey}"
-                             onclick="getVKKey()"></div>
-                        <input id="vkNotificationInput-2" class="input show"
-                               th:value="${stream.getVkNotification().getKey()}">
-                    </label>
+                    <div th:text="#{pages.streamSettings.set.vk.groupId}"></div>
+                    <input class="input show" id="vkNotificationInput-1"
+                           th:value="${stream.getVkNotification().getGroupId()}">
+                    <div class="notifications-vk-link"
+                         onclick="getVKKey()"
+                         th:text="#{pages.streamSettings.set.vk.key.getKey}"></div>
+                    <input class="input show" id="vkNotificationInput-2"
+                           th:value="${stream.getVkNotification().getWallKey()}">
+
+                    <div th:text="#{pages.streamSettings.set.vk.app.callback.response}"></div>
+                    <input class="input show" id="vkNotificationInput-3"
+                           th:value="${stream.getVkNotification().getCallbackResponseKey()}">
+
+                    <div th:text="#{pages.streamSettings.set.vk.app.callback.secret}"></div>
+                    <input class="input show" id="vkNotificationInput-4"
+                           th:value="${stream.getVkNotification().getCallbackSecretKey()}">
+
+                    <div th:text="#{pages.streamSettings.set.vk.app.callback.accessKey}"></div>
+                    <input class="input show" id="vkNotificationInput-5"
+                           th:value="${stream.getVkNotification().getAccessKey()}">
+
                     <img id="vkNotificationSuccess" class="img success show" alt="accept"
                          src="/img/success.png" style="margin-left: auto; margin-right: auto"
                          onclick="confirmChangeVKNotification(this.parentNode)">

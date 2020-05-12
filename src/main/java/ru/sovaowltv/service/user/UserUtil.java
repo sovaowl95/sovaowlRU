@@ -29,7 +29,7 @@ public class UserUtil {
     private final UserDataValidator userDataValidator;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public User setUserInModelREADONLY(Model model) {
+    public User setUserIfExistInModelREADONLY(Model model) {
         User user = null;
         try {
             user = usersRepositoryHandler.getUserByLogin(getLoginFromSecurityContext());
@@ -71,7 +71,7 @@ public class UserUtil {
         }
     }
 
-    private String getLoginFromSecurityContext() throws UserNotLoginInException {
+    private String getLoginFromSecurityContext() {
         try {
             return SecurityContextHolder.getContext().getAuthentication().getName();
         } catch (NullPointerException e) {

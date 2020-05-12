@@ -71,18 +71,18 @@ public class StreamRepositoryHandler {
     }
 
     public void save(Stream stream) {
-        streamRepository.save(stream);
+        stream = streamRepository.save(stream);
         addStreamToLocalDB(stream);
-    }
-
-    public void delete(Stream stream) {
-        streamRepository.delete(stream);
-        streamMap.remove(stream.getId());
     }
 
     public Stream saveAndFlush(Stream stream) {
         stream = streamRepository.saveAndFlush(stream);
         addStreamToLocalDB(stream);
         return stream;
+    }
+
+    public void delete(Stream stream) {
+        streamRepository.delete(stream);
+        streamMap.remove(stream.getId());
     }
 }

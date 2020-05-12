@@ -24,7 +24,7 @@ public class ProfileController {
     public String getProfile(Model model, @PathVariable(required = false) String userNickname) {
         Optional<User> targetUserOptional = Optional.empty();
         try {
-            User user = userUtil.setUserInModelREADONLY(model);
+            User user = userUtil.setUserIfExistInModelREADONLY(model);
             String issuerNickName = user.getNickname();
 
             if (userNickname == null || userNickname.isEmpty()) {

@@ -27,7 +27,7 @@ public class StreamPageController {
 
     @GetMapping("/")
     public String getAllStreams(Model model) {
-        User user = userUtil.setUserInModelREADONLY(model);
+        User user = userUtil.setUserIfExistInModelREADONLY(model);
         userHaveStreamUtil.solveUserHaveStream(model, user);
 
         List<Stream> streamList = streamUtil.getAllStreams();
@@ -65,7 +65,10 @@ public class StreamPageController {
     @GetMapping("/stream/settings")
     public String getStreamSettingsPage(Model model, HttpSession session) {
         securityUtil.generateSecTokenStateForSession(session, model);
-        User user = userUtil.setUserInModelREADONLY(model);
+        User user = userUtil.setUserIfExistInModelREADONLY(model);
+        if (user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("stream", streamUtil.getStreamByUserNickname(user.getNickname()));
         multiStreamUtil.setMSIfExist(model, user);
         return "stream/settings/streamSettings";

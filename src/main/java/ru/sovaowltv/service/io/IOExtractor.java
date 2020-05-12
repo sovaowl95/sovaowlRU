@@ -38,6 +38,7 @@ public class IOExtractor {
         String response = null;
         try (InputStream inputStream = getInputOrErrorStream(urlConnection)) {
             response = readResponse(inputStream);
+            log.info("extractJsonObject {}", response);
             return dataExtractor.extractJsonFromString(response);
         } catch (IOException e) {
             log.error("cant' extract JSON object: {} {}", response, e);

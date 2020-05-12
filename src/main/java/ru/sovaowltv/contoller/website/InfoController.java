@@ -13,7 +13,7 @@ public class InfoController {
 
     @GetMapping("/info")
     public String getInfo(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "info";
     }
 }

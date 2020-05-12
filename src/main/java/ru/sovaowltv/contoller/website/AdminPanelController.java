@@ -60,7 +60,7 @@ public class AdminPanelController {
 
     @GetMapping("/admin")
     public String getAdminPage(Model model) {
-        User user = userUtil.setUserInModelREADONLY(model);
+        User user = userUtil.setUserIfExistInModelREADONLY(model);
         log.warn("someone access ADMIN page. {}", user.getLogin());
         model.addAttribute("newMessages", adminWebsiteSettingsUtil.getNewMessage());
         return "admin";

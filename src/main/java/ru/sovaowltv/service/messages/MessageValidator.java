@@ -30,6 +30,9 @@ public class MessageValidator {
 
                 || message.getText().toLowerCase().contains("twitchviewbot")
 
+                || message.getText().toLowerCase().contains("addviewers.com")
+                || message.getText().toLowerCase().contains("(addviewers. com")
+
                 ;
     }
 }

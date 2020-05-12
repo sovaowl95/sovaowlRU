@@ -13,7 +13,7 @@ public class InventoryController {
 
     @GetMapping("/inventory")
     public String getInv(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "inventory";
     }
 }

@@ -1,0 +1,3 @@
+GET https://localhost/api/vk/callback
+
+{"type":"message_new","object":{"message":{"date":1589303758,"from_id":25729683,"id":1644,"out":0,"peer_id":25729683,"text":"123","conversation_message_id":24,"fwd_messages":[],"important":false,"random_id":0,"attachments":[],"is_hidden":false},"client_info":{"button_actions":["text","vkpay","open_app","location","open_link"],"keyboard":true,"inline_keyboard":true,"lang_id":0}},"group_id":62422337,"event_id":"4dfd42f0afd94ad9d58737b934d9eab8c599c01a"}
