@@ -1,0 +1,11 @@
+POST https://localhost/api/vk/callback/init
+Accept: application/vnd.twitchtv.v5+json
+Client-ID: 123
+Authorization: Bearer 123
+
+{ "type": "confirmation", "group_id": 62422337 }
+
+<> 2020-05-11T104244.401.json
+<> 2020-05-11T104240.401.json
+<> 2020-05-11T104156.401.json
+<> 2020-05-11T104004.401.json

@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
+import ru.sovaowltv.model.apiauth.UserTwitch;
+import ru.sovaowltv.service.api.token.TwitchTokenHandler;
 import ru.sovaowltv.service.io.IOExtractor;
 import ru.sovaowltv.service.io.URLConnectionPrepare;
 
@@ -19,6 +21,7 @@ import java.util.Map;
 @PropertySource("classpath:api/twitch.yml")
 public class TwitchRequest {
     private final TwitchRequestUtil twitchRequestUtil;
+    private final TwitchTokenHandler twitchTokenHandler;
 
     private final IOExtractor ioExtractor;
 
@@ -33,12 +36,15 @@ public class TwitchRequest {
     @Value("${twitch_redirectUri}")
     private String redirectUri;
 
-    public String changeTwitchGameIdToTitle(String gameId) {
+    public String changeTwitchGameIdToTitle(String gameId, UserTwitch userTwitch) {
+        twitchTokenHandler.refresh(userTwitch);
+
         if (gameId == null || gameId.isEmpty()) return "";
         HttpsURLConnection connection = urlConnectionPrepare.getConnection(
                 "https://api.twitch.tv/helix/games?id=" + gameId);
         connection.addRequestProperty("Client-ID", clientId);
-        connection.addRequestProperty("Accept", "application/vnd.twitchtv.v5+json");
+        connection.addRequestProperty("AuthorizationAccept", "application/vnd.twitchtv.v5+json");
+        connection.addRequestProperty("Authorization", "Bearer " + userTwitch.getAccessToken());
 
         JsonObject jObj = ioExtractor.extractJsonObject(connection);
         JsonArray jArr = jObj.getAsJsonArray("data");

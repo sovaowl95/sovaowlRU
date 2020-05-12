@@ -4,9 +4,10 @@
     <div id="bodyChatSmilesPopUpBlock">
         <th:block th:if="${user} != null">
             <div id="bodyChatSmilesList1">
-                <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
                 <!--/*@thymesVar id="smile" type="ru.sovaowltv.model.shop.Smile"*/-->
                 <!--/*@thymesVar id="smiles" type="java.util.List"*/-->
+                <!--/*@thymesVar id="order" type="ru.sovaowltv.model.shop.Rarity"*/-->
+                <!--/*@thymesVar id="rarityOrder" type="ru.sovaowltv.model.shop.Rarity[]"*/-->
                 <th:block th:each="order: ${rarityOrder}">
                     <div class="bodyChatTitle" th:text="${order.name()}" th:classappend="${order.name()}"></div>
                     <div class="bodyChatSmilesWrapStyles">

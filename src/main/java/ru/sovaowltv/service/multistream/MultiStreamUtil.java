@@ -90,7 +90,7 @@ public class MultiStreamUtil {
         MultiStream multiStream = getMultiStream(multiStreamId);
         model.addAttribute("multiStream", multiStream);
 
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
     }
 
     public void init(Long multiStreamId, Model model) {

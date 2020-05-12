@@ -14,10 +14,11 @@ public class VKNotificationFactory {
     public VKNotification createVKNotification(Stream stream) {
         VKNotification vkNotification = new VKNotification();
         vkNotification.setGroupId("");
-        vkNotification.setKey("");
+        vkNotification.setWallKey("");
+        vkNotification.setCallbackResponseKey("");
+        vkNotification.setCallbackSecretKey("");
         vkNotification.setText(getDefaultText(stream.getUser().isMale()));
-        vkNotificationRepository.save(vkNotification);
-        return vkNotification;
+        return vkNotificationRepository.saveAndFlush(vkNotification);
     }
 
     private String getDefaultText(boolean male) {

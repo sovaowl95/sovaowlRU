@@ -46,7 +46,10 @@ public class VKUtil {
         Stream stream = streamUtil.getStreamByUserNickname(user.getNickname());
         VKNotification vkNotification = stream.getVkNotification();
         if (map.containsKey("group")) vkNotification.setGroupId(map.get("group").toString());
-        if (map.containsKey("key")) vkNotification.setKey(map.get("key").toString());
+        if (map.containsKey("key")) vkNotification.setWallKey(map.get("key").toString());
+        if (map.containsKey("response")) vkNotification.setCallbackResponseKey(map.get("response").toString());
+        if (map.containsKey("secret")) vkNotification.setCallbackSecretKey(map.get("secret").toString());
+        if (map.containsKey("access_token")) vkNotification.setAccessKey(map.get("access_token").toString());
         vkNotificationRepository.save(vkNotification);
         streamUtil.save(stream);
         return REDIRECT_PROFILE_SETTINGS;

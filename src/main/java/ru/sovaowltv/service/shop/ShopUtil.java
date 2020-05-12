@@ -27,7 +27,7 @@ public class ShopUtil {
     private final Constants constants;
 
     public String prepareShopPage(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         model.addAttribute("premiumPrice", constants.getPremiumPrice());
 
         model.addAttribute("smiles", getSmilesList());

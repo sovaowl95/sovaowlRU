@@ -29,7 +29,7 @@ public class UsersRepositoryHandler {
 
     private final Map<Long, Long> usersForRemove = new HashMap<>();
 
-    @Scheduled(cron = "*/1 * * * * *") //every 1 sec
+    @Scheduled(cron = "*/10 * * * * *") //every 10 sec
     private synchronized void removeUnused() {
         Iterator<Map.Entry<Long, Long>> iterator = usersForRemove.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -45,9 +45,9 @@ public class UsersRepositoryHandler {
                 counterToUser.remove(user.getId());
                 iterator.remove();
 
-                log.debug("user saved and removed from map. id: " + user.getId());
+                log.debug("user saved and removed from map. id: {}", user.getId());
             } else if (timeValue + TimeUnit.MINUTES.toMillis(1) < System.currentTimeMillis()) {
-                log.error("bug? " + timeValue + " now:" + System.currentTimeMillis() + " " + idToUserMap + "\n" + counterToUser + "\n" + usersForRemove);
+                log.error("bug? {} now: {} {} \n{}\n{}", timeValue, System.currentTimeMillis(), idToUserMap, counterToUser, usersForRemove);
                 usersRepository.save(user);
                 iterator.remove();
             } else {
@@ -67,11 +67,6 @@ public class UsersRepositoryHandler {
         counterToUser.put(id, new AtomicLong(1));
         return user;
     }
-    //
-    //
-    //
-    //
-    //
 
     public synchronized void saveUser(User user) {
         usersRepository.save(user);
@@ -81,7 +76,7 @@ public class UsersRepositoryHandler {
         if (user == null) return;
         long counter = counterToUser.get(user.getId()).decrementAndGet();
         if (counter == 0) usersForRemove.put(user.getId(), System.currentTimeMillis());
-        log.debug("free user without changes. " + user.getId() + " " + counter);
+        log.debug("free user without changes. {} {}", user.getId(), counter);
     }
 
     public synchronized void saveAndFree(User user) {
@@ -93,9 +88,9 @@ public class UsersRepositoryHandler {
         long counter = counterToUser.get(user.getId()).decrementAndGet();
         if (counter <= 0) {
             usersForRemove.put(user.getId(), System.currentTimeMillis());
-            log.debug("user counter == 0.  put in FOR REMOVED LIST. id: " + user.getId());
+            log.debug("user counter == 0.  put in FOR REMOVED LIST. id: {}", user.getId());
         } else {
-            log.debug("user not ready for save. counter: " + counter + " id: " + user.getId());
+            log.debug("user not ready for save. counter: {} id: {}", counter, user.getId());
         }
     }
 
@@ -122,31 +117,31 @@ public class UsersRepositoryHandler {
     @Scheduled(cron = "*/10 * * * * *") //every 10 sec
     private synchronized void showMapsStatus() {
         if (!idToUserMap.isEmpty()) {
-            log.debug("idToUserMap size " + idToUserMap.size());
+            log.debug("idToUserMap size {}", idToUserMap.size());
             idToUserMap.forEach((k, v) -> {
                 log.debug("idToUserMap");
-                log.debug("k = " + k);
-                log.debug("v = " + v.getLogin());
+                log.debug("k = {}", k);
+                log.debug("v = {}", v.getLogin());
             });
             log.debug("");
         }
 
         if (!counterToUser.isEmpty()) {
-            log.debug("counterToUser size " + counterToUser.size());
+            log.debug("counterToUser size {}", counterToUser.size());
             counterToUser.forEach((k, v) -> {
                 log.debug("counterToUser");
-                log.debug("k = " + k);
-                log.debug("v = " + v);
+                log.debug("k = {}", k);
+                log.debug("v = {}", v);
             });
             log.debug("");
         }
 
         if (!usersForRemove.isEmpty()) {
-            log.debug("usersForRemove size " + usersForRemove.size());
+            log.debug("usersForRemove size {}", usersForRemove.size());
             usersForRemove.forEach((k, v) -> {
                 log.debug("usersForRemove");
-                log.debug("k = " + k);
-                log.debug("t = " + v);
+                log.debug("k = {}", k);
+                log.debug("t = {}", v);
             });
             log.debug("");
         }
@@ -167,15 +162,15 @@ public class UsersRepositoryHandler {
     public synchronized User getUserById(Long id) {
         if (idToUserMap.containsKey(id)) {
             long counter = counterToUser.get(id).incrementAndGet();
-            log.debug("user already in map. counter: " + counter + " id: " + id);
+            log.debug("user already in map. counter: {} id: {}", counter, id);
             return idToUserMap.get(id);
         } else {
             Optional<User> userOptional = usersRepository.findById(id);
             if (userOptional.isEmpty())
-                throw new UserNotFoundException("Can't find user by id: " + id.toString());
+                throw new UserNotFoundException("Can't find user by id: {}" + id.toString());
             User user = userOptional.get();
             user = addUserToLocalDB(user);
-            log.debug("user was loaded in map. counter: " + 1 + " id: " + id);
+            log.debug("user was loaded in map. counter: 1 id: {}", id);
             return user;
         }
     }
@@ -210,7 +205,7 @@ public class UsersRepositoryHandler {
     public synchronized User getUserByLoginOrEmail(String login, String email) {
         Optional<User> userOptional = usersRepository.findUserByLoginOrEmail(login, email);
         if (userOptional.isEmpty()) {
-            log.debug("User not found by username or email : " + login + " " + email);
+            log.debug("User not found by username or email : {} {}", login, email);
             throw new UsernameNotFoundException("User not found with username or email : " + login + " " + email);
         }
         return addUserToLocalDB(userOptional.get());
@@ -223,7 +218,7 @@ public class UsersRepositoryHandler {
         try {
             return Optional.of(getUserByNickname(nickname));
         } catch (Exception e) {
-            log.debug("can't find user by nick optional " + nickname);
+            log.debug("can't find user by nick optional {}", nickname);
             return Optional.empty();
         }
     }
@@ -248,7 +243,7 @@ public class UsersRepositoryHandler {
         try {
             return Optional.of(getUserByEmail(email));
         } catch (Exception e) {
-            log.debug("user by email not found: " + email + " returning optional.empty");
+            log.debug("user by email not found: {} returning optional.empty", email);
             return Optional.empty();
         }
     }

@@ -41,9 +41,9 @@ public class GGStreamUtil {
             UserGG userGG = user.getUserGG();
             if (userGG != null) createGGChatReader(user, userGG, userGG.getNick(), true);
         } catch (UserApiCorruptedException e) {
-            log.error("error launch gg chat for user " + user.getNickname() + " corrupted.");
+            log.error("error launch gg chat for user {} corrupted.", user.getNickname());
         } catch (Exception e) {
-            log.error("error launch gg chat for user " + user.getNickname(), e);
+            log.error("error launch gg chat for user {} {}", user.getNickname(), e);
         }
     }
 

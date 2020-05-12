@@ -1,0 +1,8 @@
+POST https://localhost/api/twitch/webhooks/6082
+Accept: */*
+Cache-Control: no-cache
+
+{"data":[]}
+
+###
+

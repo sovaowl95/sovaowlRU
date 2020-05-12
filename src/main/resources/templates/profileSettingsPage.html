@@ -10,6 +10,8 @@
     <script th:src="@{/js/requestUtil.js}"></script>
     <th:block th:include="fragments/topMenu :: topMenuHeader"/>
     <th:block th:include="fragments/linkAccounts :: linkHeader"/>
+
+    <!--/*@thymesVar id="secTokenState" type="java.lang.String"*/-->
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
     <meta th:name="secTokenState" th:content="${secTokenState}">

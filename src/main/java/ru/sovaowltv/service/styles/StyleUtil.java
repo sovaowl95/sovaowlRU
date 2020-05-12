@@ -59,6 +59,7 @@ public class StyleUtil {
             if (userCoinsUtil.withdrawMoney(user, style.getPrice())) {
                 user.getStyles().add(style);
                 user.getUserSettings().setStyleId(style.getId());
+                userSettingsRepository.save(user.getUserSettings());
                 return;
             }
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't buy style");

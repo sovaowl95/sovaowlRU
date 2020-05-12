@@ -13,7 +13,7 @@ public class PayController {
 
     @GetMapping("/pay")
     public String getPay(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "pay";
     }
 }

@@ -30,7 +30,7 @@ public class IconsUtil {
         icon.setName(ach.name());
         icon.setPrice(0);
         icon.setRarity(ach.getRarity());
-        iconsRepository.save(icon);
+        icon = iconsRepository.saveAndFlush(icon);
         return icon;
     }
 

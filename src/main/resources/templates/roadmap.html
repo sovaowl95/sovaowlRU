@@ -1,28 +1,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="#{pages.roadmap.title}"></title>
-    <link rel="icon" type="image/png" th:href="@{/ico/icon.png}"/>
-
-    <link rel="stylesheet" th:href="@{/css/roadmap.css}">
-    <link rel="stylesheet" th:href="@{/css/feedback.css}">
-    <script th:src="@{/js/feedback.js}"></script>
-    <script th:src="@{/js/roadmap.js}"></script>
-
-    <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
-    <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
-
-    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
-    <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
-    <meta th:name="_csrf_value" th:content="${_csrf.token}">
-</head>
 <body>
+<!--/*@thymesVar id="order" type="java.util.List<ru.sovaowltv.model.roadmap.RoadmapStatus>"*/-->
+
+<!--/*@thymesVar id="roadmap" type="java.util.List<ru.sovaowltv.model.roadmap.Roadmap>"*/-->
+<!--/*@thymesVar id="rm" type="ru.sovaowltv.model.roadmap.Roadmap"*/-->
 <th:block th:include="fragments/topMenu::landingTopMenu"/>
 <div class="roadmapPageWrap">
     <div class="roadmapPage">
         <th:block th:each="ord:${order}">
             <div class="roadmapBlock" th:if="${ord.name()} != 'ADVISED'">
-                <div th:class="${ord.name()}+' status'" th:text="#{${'pages.roadmap.status.' + ord.name()}}"></div>
+                <div th:class="${ord.name()}+' status'"
+                     th:text="#{${'pages.roadmap.status.' + ord.name()}}"></div>
                 <div class="roadmapBlock2Wrap">
                     <th:block th:each="rm:${roadmap}" th:if="${ord.name()} == ${rm.getRoadmapStatus().name()}">
                         <div class="roadmapBlock2" th:classappend="${rm.getRoadmapStatus().name()}+'BODY'"
@@ -35,8 +23,10 @@
                             <div class="rbStatus status" th:classappend="${rm.getRoadmapStatus()}"
                                  th:text="${rm.getRoadmapStatus()}"></div>
                             <div class="rbDescription" th:text="${rm.getDescription()}"></div>
-                            <div class="rbDate" th:text="${rm.getDateInit().getDayOfMonth()} + '-' + ${rm.getDateInit().getMonth()} + '-' + ${rm.getDateInit().getYear()}"></div>
-                            <div class="rbDate" th:text="${rm.getDateComplete()!=null}?${rm.getDateComplete().getDayOfMonth()} + '-' + ${rm.getDateComplete().getMonth()} + '-' + ${rm.getDateComplete().getYear()}:''"></div>
+                            <div class="rbDate"
+                                 th:text="${rm.getDateInit().getDayOfMonth()} + '-' + ${rm.getDateInit().getMonth()} + '-' + ${rm.getDateInit().getYear()}"></div>
+                            <div class="rbDate"
+                                 th:text="${rm.getDateComplete()!=null}?${rm.getDateComplete().getDayOfMonth()} + '-' + ${rm.getDateComplete().getMonth()} + '-' + ${rm.getDateComplete().getYear()}:''"></div>
                         </div>
                     </th:block>
                 </div>
@@ -47,38 +37,54 @@
 </div>
 <div></div>
 <div class="roadmapPage">
-    <th:block>
-        <div class="roadmapBlock_ADV">
-            <div class="ADVISED status" th:text="#{pages.roadmap.status.ADVISED}"></div>
-            <div class="roadmapBlock2Wrap_ADV">
-                <th:block th:each="rm:${#lists.sort(roadmap, comparator)}"
-                          th:if="'ADVISED' == ${rm.getRoadmapStatus().name()}">
-                    <div class="roadmapBlock2" th:classappend="${rm.getRoadmapStatus().name()}+'BODY'"
-                         th:id="${rm.getId()}" th:onclick="'show('+${rm.getId()}+')'">
-                        <img th:if="${!rm.getDown().contains(user)}" class="roadmapBlock2Img minus"
-                             src="/img/minus.png" th:onclick="'minus('+${rm.getId()}+')'">
-                        <img th:unless="${!rm.getDown().contains(user)}" class="roadmapBlock2Img ok"
-                             src="/img/success.png">
-                        <div class="rating" th:text="${rm.getUp().size()} - ${rm.getDown().size()}"></div>
-                        <img th:if="${!rm.getUp().contains(user)}" class="roadmapBlock2Img plus"
-                             src="/img/plus.png" th:onclick="'plus('+${rm.getId()}+')'">
-                        <img th:unless="${!rm.getUp().contains(user)}" class="roadmapBlock2Img ok"
-                             src="/img/success.png">
-                        <div class="rbTitle" th:text="${rm.getTitle()}"></div>
-                        <div class="rbId" th:text="'#' + ${rm.getId()}"></div>
-                        <div class="rbNick"
-                             th:text="${rm.getUser()}!=null?${rm.getUser().getNickname()}:#{web.const.admin}"></div>
-                        <div class="rbStatus status" th:classappend="${rm.getRoadmapStatus()}"
-                             th:text="${rm.getRoadmapStatus()}"></div>
-                        <div class="rbDescription" th:text="${rm.getDescription()}"></div>
-                        <div class="rbDate" th:text="${rm.getDateInit().getDayOfMonth()} + '-' + ${rm.getDateInit().getMonth()} + '-' + ${rm.getDateInit().getYear()}"></div>
-                    </div>
-                </th:block>
-            </div>
-            <div class="ADVISED closeBlock"></div>
+    <div class="roadmapBlock_ADV">
+        <div class="ADVISED status" th:text="#{pages.roadmap.status.ADVISED}"></div>
+        <div class="roadmapBlock2Wrap_ADV">
+            <th:block th:each="rm : ${#lists.sort(roadmap, comparator)}"
+                      th:if="'ADVISED' == ${rm.getRoadmapStatus().name()}">
+                <div class="roadmapBlock2" th:classappend="${rm.getRoadmapStatus().name()}+'BODY'"
+                     th:id="${rm.getId()}" th:onclick="'show('+${rm.getId()}+')'">
+                    <img alt="minus" class="roadmapBlock2Img minus" src="/img/minus.png"
+                         th:if="${!rm.getDown().contains(user)}" th:onclick="'minus('+${rm.getId()}+')'">
+                    <img alt="success" class="roadmapBlock2Img ok" src="/img/success.png"
+                         th:unless="${!rm.getDown().contains(user)}">
+                    <div class="rating" th:text="${rm.getUp().size()} - ${rm.getDown().size()}"></div>
+                    <img alt="plus" class="roadmapBlock2Img plus" src="/img/plus.png"
+                         th:if="${!rm.getUp().contains(user)}" th:onclick="'plus('+${rm.getId()}+')'">
+                    <img alt="success" class="roadmapBlock2Img ok" src="/img/success.png"
+                         th:unless="${!rm.getUp().contains(user)}">
+                    <div class="rbTitle" th:text="${rm.getTitle()}"></div>
+                    <div class="rbId" th:text="'#' + ${rm.getId()}"></div>
+                    <div class="rbNick"
+                         th:text="${rm.getUser()}!=null?${rm.getUser().getNickname()}:#{web.const.admin}"></div>
+                    <div class="rbStatus status" th:classappend="${rm.getRoadmapStatus()}"
+                         th:text="${rm.getRoadmapStatus()}"></div>
+                    <div class="rbDescription" th:text="${rm.getDescription()}"></div>
+                    <div class="rbDate"
+                         th:text="${rm.getDateInit().getDayOfMonth()} + '-' + ${rm.getDateInit().getMonth()} + '-' + ${rm.getDateInit().getYear()}"></div>
+                </div>
+            </th:block>
         </div>
-    </th:block>
+        <div class="ADVISED closeBlock"></div>
+    </div>
 </div>
 <th:block th:include="feedback::feedback"/>
 </body>
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{pages.roadmap.title}"></title>
+    <link rel="icon" th:href="@{/ico/icon.png}" type="image/png"/>
+
+    <link rel="stylesheet" th:href="@{/css/roadmap.css}">
+    <link rel="stylesheet" th:href="@{/css/feedback.css}">
+    <script th:src="@{/js/feedback.js}"></script>
+    <script th:src="@{/js/roadmap.js}"></script>
+
+    <script src="/webjars/overlayscrollbars/js/OverlayScrollbars.min.js"></script>
+    <link href="/webjars/overlayscrollbars/css/OverlayScrollbars.min.css" rel="stylesheet">
+
+    <th:block th:include="fragments/topMenu :: topMenuHeader"/>
+    <meta th:content="${_csrf.parameterName}" th:name="_csrf_name">
+    <meta th:content="${_csrf.token}" th:name="_csrf_value">
+</head>
 </html>

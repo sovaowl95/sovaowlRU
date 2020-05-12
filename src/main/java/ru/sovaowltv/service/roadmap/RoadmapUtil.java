@@ -12,10 +12,7 @@ import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.repositories.website.RoadmapRepository;
 import ru.sovaowltv.service.user.UserUtil;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -71,10 +68,10 @@ public class RoadmapUtil {
     }
 
     public void prepareRoadmapPage(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         List<Roadmap> all = roadmapRepository.findAll();
         model.addAttribute("roadmap", all);
-        model.addAttribute("order", RoadmapStatus.values());
+        model.addAttribute("order", Arrays.asList(RoadmapStatus.values()));
         Comparator<Roadmap> roadmapComparator = Comparator.comparingInt(o -> o.getDown().size() - o.getUp().size());
         model.addAttribute("comparator", roadmapComparator);
     }

@@ -13,7 +13,7 @@ public class PromoController {
 
     @GetMapping("/info/promo")
     public String getPromo(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         return "promo";
     }
 }

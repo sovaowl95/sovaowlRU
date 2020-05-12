@@ -24,14 +24,13 @@ public class MultiStreamPageController {
         return "multistream/multiStreamPageSettings";
     }
 
-
     @GetMapping("/ms/{multiStreamId}/chat")
     public String getOnlyChat(@PathVariable Long multiStreamId, Model model) {
         multiStreamUtil.init(multiStreamId, model);
         return "fragments/chat";
     }
 
-    @GetMapping("/ms/{multiStreamId}/publicchat")
+    @GetMapping("/ms/{multiStreamId}/chat/public")
     public String getOnlyChatPublic(@PathVariable Long multiStreamId, Model model) {
         multiStreamUtil.init(multiStreamId, model);
         return "fragments/chatPublic";

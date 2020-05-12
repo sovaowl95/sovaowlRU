@@ -46,7 +46,7 @@ public class CommandsController {
 
     @GetMapping("/info/commands")
     public String getCommands(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         model.addAttribute("commandsList", commandsList);
         return "commands";
     }

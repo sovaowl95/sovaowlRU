@@ -8,6 +8,7 @@ import ru.sovaowltv.exceptions.shop.NotEnoughMoneyException;
 import ru.sovaowltv.model.chat.MessageStatus;
 import ru.sovaowltv.model.shop.Rarity;
 import ru.sovaowltv.model.user.User;
+import ru.sovaowltv.repositories.user.UserSettingsRepository;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.unclassified.Constants;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
@@ -25,6 +26,7 @@ import java.util.Map;
 @Slf4j
 public class UserPremiumUtil {
     private final UsersRepositoryHandler usersRepositoryHandler;
+    private final UserSettingsRepository userSettingsRepository;
 
     private final Constants constants;
     private final UserCoinsUtil userCoinsUtil;
@@ -63,10 +65,11 @@ public class UserPremiumUtil {
         List<User> userList = usersRepositoryHandler.findAllByPremiumExpiredBeforeAndPremiumUserTrue();
         userList.forEach(user -> {
             try {
-                log.info("PREMIUM EXPIRED! " + user.getNickname() + " " + user.getPremiumExpired());
+                log.info("PREMIUM EXPIRED! {} {}", user.getNickname(), user.getPremiumExpired());
                 user.setPremiumUser(false);
                 user.setPremiumExpired(null);
                 user.getUserSettings().setPremiumChat(false);
+                userSettingsRepository.save(user.getUserSettings());
             } finally {
                 usersRepositoryHandler.saveAndFree(user);
             }
@@ -77,7 +80,7 @@ public class UserPremiumUtil {
         if (giftPremium(user)) {
             return convertPremiumToString(user);
         }
-        log.error("can't gift premium to user: " + user.getNickname());
+        log.error("can't gift premium to user: {}", user.getNickname());
         return null;
     }
 

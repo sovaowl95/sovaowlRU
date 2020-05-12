@@ -116,7 +116,7 @@ public class GGChat extends ApiForChat {
     @OnMessage
     public void onMessage(Session session, String ggMessage) {
         try {
-            log.info("<<< " + apiUser.getNick() + " <<< #" + channelToConnect + " <<< " + ggMessage);
+            log.info("<<< {} <<< #{} <<< {}", apiUser.getNick(), channelToConnect, ggMessage);
             JsonObject asJsonObject = dataExtractor.extractJsonFromString(ggMessage);
             String type = dataExtractor.getPrimitiveAsStringFromJson(asJsonObject, "type");
             if ("message".equals(type)) {

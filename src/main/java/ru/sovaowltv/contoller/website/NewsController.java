@@ -17,7 +17,7 @@ public class NewsController {
 
     @GetMapping("/info/updates")
     public String getUpdates(Model model) {
-        userUtil.setUserInModelREADONLY(model);
+        userUtil.setUserIfExistInModelREADONLY(model);
         newsUtil.addAllNews(model);
         return "news";
     }

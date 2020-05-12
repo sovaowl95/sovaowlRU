@@ -30,10 +30,11 @@ public class TwitchWebHookUtil {
     private final Set<String> setOfWebHooksId = new HashSet<>();
 
     public Stream setStreamSettingByWebHookAndGetStream(TwitchWebHook twitchWebhook) {
-        String game = twitchRequest.changeTwitchGameIdToTitle(twitchWebhook.getGameId());
+        Stream stream = getStreamByWebHook(twitchWebhook);
+
+        String game = twitchRequest.changeTwitchGameIdToTitle(twitchWebhook.getGameId(), stream.getUser().getUserTwitch());
         String streamTitle = twitchWebhook.getStreamTitle();
 
-        Stream stream = getStreamByWebHook(twitchWebhook);
         stream.setStreamName(streamTitle);
         stream.setGame(game);
         stream.setLive(true);

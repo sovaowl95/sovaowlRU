@@ -27,7 +27,6 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, unique = true)
     private long id;
 
     @Column(nullable = false, length = 30, unique = true)

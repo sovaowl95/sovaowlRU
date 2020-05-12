@@ -32,7 +32,7 @@ public class UserCoinsUtil {
             }
             addCoins(user, value);
         } catch (Exception e) {
-            log.error("add coins from donation error " + user.getId() + " " + number + " " + currency, e);
+            log.error("add coins from donation error {} {} {} {}", user.getId(), number, currency, e);
         }
     }
 
@@ -52,7 +52,7 @@ public class UserCoinsUtil {
             double coins = user.getCoins() + value;
             user.setCoins(coins);
         } catch (Exception e) {
-            log.error("can't addCoinsNoModificators to userId " + user.getId(), e);
+            log.error("can't addCoinsNoMod to userId {} {}", user.getId(), e);
         }
     }
 
@@ -72,7 +72,7 @@ public class UserCoinsUtil {
             user.setCoins(user.getCoins() - value);
             return true;
         } else {
-            log.warn("user have not enough money " + user.getNickname() + " " + user.getCoins() + " need:" + value);
+            log.warn("user have not enough money {} {} need: {}", user.getNickname(), user.getCoins(), value);
         }
         return false;
     }
@@ -91,12 +91,12 @@ public class UserCoinsUtil {
         try {
             if (user.getCoins() < value) return false;
             if (!reserveMoney(user, value)) {
-                log.warn("user have not enough money " + user.getNickname() + " " + user.getCoins());
+                log.warn("user have not enough money {} {}", user.getNickname(), user.getCoins());
                 return false;
             }
             return true;
         } catch (Exception e) {
-            log.error("withdrawMoney " + user.getNickname() + " " + value, e);
+            log.error("withdrawMoney {} {} {}", user.getNickname(), value, e);
             return false;
         }
     }

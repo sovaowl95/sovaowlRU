@@ -73,11 +73,11 @@ public class WebsiteHandlerScheduler {
                 Optional<Stream> streamOptional = streamRepositoryHandler.getByUserId(user.getId());
                 if (streamOptional.isPresent() && streamOptional.get().getUser().getUserTwitch() != null) {
                     if (!twitchStreamLiveSub.subForStream(user, user.getUserTwitch(), streamOptional.get())) {
-                        log.warn("RESUB TWITCH WEBHOOK " + user.getId() + " " + user.getUserTwitch().getId());
+                        log.warn("resubscribe twitch WebHook {} {}", user.getId(), user.getUserTwitch().getId());
                     }
                 }
             } catch (Exception e) {
-                log.error("reSubTwitchWebhook problems", e);
+                log.error("reSubTwitchWebHook problems", e);
             } finally {
                 usersRepositoryHandler.free(user);
             }

@@ -37,7 +37,7 @@ public class TwitchWebHookController {
     @ResponseStatus(HttpStatus.OK)
     public void twitchWebHookCallback(@RequestBody String body, @PathVariable Long id) {
         JsonObject jsonObject = dataExtractor.extractJsonFromString(body);
-        log.info("twitch webhook " + jsonObject);
+        log.info("twitch webHook {}", jsonObject);
         JsonArray jArr = jsonObject.getAsJsonArray("data");
         if (jArr.size() != 0) { //online
             TwitchWebHook twitchWebhook = new TwitchWebHook(jArr.get(0).getAsJsonObject(), dataExtractor);

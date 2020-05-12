@@ -24,8 +24,8 @@ public class AntiSpamUtil {
     private static final long ALLOWED_MESSAGES = 10;
 
     private static class UserToTime {
-        long id;
-        List<Long> times;
+        final long id;
+        final List<Long> times;
         int timesBlocked;
         static final long TIME_BLOCK = 3000;
 

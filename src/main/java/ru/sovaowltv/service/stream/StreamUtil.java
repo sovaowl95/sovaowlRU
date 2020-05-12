@@ -52,7 +52,7 @@ public class StreamUtil {
 
             Optional<Stream> streamByUserId = streamRepositoryHandler.getByUserId(userByNickname.getId());
             if (streamByUserId.isEmpty()) {
-                log.error(streamName + " streamByUserId is empty");
+                log.error("{} streamByUserId is empty", streamName);
                 throw new StreamNotFoundException(STREAM_NOT_FOUND + " " + streamName);
             }
 
@@ -82,7 +82,7 @@ public class StreamUtil {
     }
 
     public void initStreamModelUserData(Model model) {
-        User user = userUtil.setUserInModelREADONLY(model);
+        User user = userUtil.setUserIfExistInModelREADONLY(model);
         model.addAttribute("userStyles", user != null ? user.getStyles() : Collections.emptySet());
         model.addAttribute("userSmiles", user != null ? user.getSmiles() : Collections.emptySet());
 

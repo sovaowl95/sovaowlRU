@@ -87,7 +87,7 @@ mvn package
 
 cd target
 
-java -jar sovaowltv-1.0-SNAPSHOT SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
+java -jar sovaowltv-1.0-SNAPSHOT.jar SS --spring.profiles.active=local --db_url=jdbc:postgresql://localhost:5432/ИМЯ_БД --db_username=ТУТ_ИМЯ --db_password=ТУТ_ПАРОЛЬ --db_schema=ТУТ_СХЕМА --discord_ClientId=1 --discord_ClientSecret=1 --discord_BotToken=1 --spring.mail.username=1 --spring.mail.password=1 --gg_clientSecret=1 --gg_clientId=1 --google_clientId=1 --google_clientSecret=1 --qiwi_clientId=1 --qiwi_clientSecret=1 --twitch_clientId=1 --twitch_clientSecret=1 --vk_clientId=1 --vk_clientSecret=1 --vk_clientSecret=1
 ```
  - если проект запускается через idea, то необходимо строку выше добавить в **PROGRAM ARGUMENTS**
 #

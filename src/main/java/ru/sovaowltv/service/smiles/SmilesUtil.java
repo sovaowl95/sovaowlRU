@@ -91,12 +91,12 @@ public class SmilesUtil {
         try {
             Optional<Smile> smileOptional = smilesRepository.findById(Long.valueOf(id));
             if (smileOptional.isEmpty()) {
-                log.error("can't find smile by id " + id);
+                log.error("can't find smile by id {}", id);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't find file by id");
             }
             return smileOptional.get();
         } catch (NumberFormatException e) {
-            log.error("smile id must be number, but was: " + id, e);
+            log.error("smile id must be number, but was: {} {}", id, e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be number");
         } catch (Throwable e) {
             log.error("unknown error", e);

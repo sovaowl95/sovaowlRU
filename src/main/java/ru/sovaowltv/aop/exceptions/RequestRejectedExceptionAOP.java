@@ -32,9 +32,9 @@ public class RequestRejectedExceptionAOP extends GenericFilterBean {
     }
 
     private void handleException(HttpServletResponse servletResponse, HttpServletRequest request, Exception e) throws IOException {
-        log.debug("request.getRemoteHost() = " + request.getRemoteHost(), e);
-        log.debug("request.getRequestURL() = " + request.getRequestURL(), e);
-        log.debug("request.getRequestURI() = " + request.getRequestURI(), e);
+        log.debug("request.getRemoteHost() = {} {}", request.getRemoteHost(), e);
+        log.debug("request.getRequestURL() = {} {}", request.getRequestURL(), e);
+        log.debug("request.getRequestURI() = {} {}", request.getRequestURI(), e);
         servletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 }

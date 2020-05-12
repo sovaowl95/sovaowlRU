@@ -3,9 +3,12 @@ package ru.sovaowltv.model.apinotification;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -21,9 +24,22 @@ public class VKNotification {
     private String groupId;
 
     @Column
-    private String key;
+    private String wallKey;
+
+    @Column
+    private String callbackResponseKey;
+
+    @Column
+    private String callbackSecretKey;
+
+    @Column
+    private String accessKey;
 
     @Column
     @Type(type = "text")
     private String text;
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<Long> vkIds;
 }

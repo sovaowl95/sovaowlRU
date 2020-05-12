@@ -40,7 +40,7 @@ public class WebSiteSmileAbstract extends SmileAbstract {
             o.setName(smile);
             return smiles.contains(o);
         } catch (Exception e) {
-            log.warn("can use smile error " + smile, e);
+            log.warn("can use smile error {} {}", smile, e);
             return false;
         } finally {
             usersRepositoryHandler.free(user);

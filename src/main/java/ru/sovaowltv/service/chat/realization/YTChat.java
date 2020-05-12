@@ -205,7 +205,7 @@ public class YTChat extends ApiForChat {
             ytChatUtil.addConnectionAuth(connection, accessToken);
             connection.setRequestMethod("DELETE");
             int responseCode = connection.getResponseCode();
-            log.info("deleteMessage" + responseCode);
+            log.info("deleteMessage {}", responseCode);
         } catch (IOException e) {
             log.error("delete message error", e);
         }
@@ -221,7 +221,7 @@ public class YTChat extends ApiForChat {
             connection.setRequestMethod("DELETE");
             ytChatUtil.addConnectionAuth(connection, accessToken);
             int responseCode = connection.getResponseCode();
-            log.info("purgeUser" + responseCode);
+            log.info("purgeUser {}", responseCode);
         } catch (IOException e) {
             log.error("purge user", e);
         }
@@ -248,12 +248,12 @@ public class YTChat extends ApiForChat {
                 ZonedDateTime americaPlusDayTR = america.plusDays(1).truncatedTo(ChronoUnit.DAYS);
                 long secBetween = ChronoUnit.SECONDS.between(america, americaPlusDayTR);
                 secBetween = Math.abs(secBetween) + 10;
-                log.warn("SLEEP UNTIL PACIFIC MIDNIGHT " + secBetween);
+                log.warn("SLEEP UNTIL PACIFIC MIDNIGHT {}", secBetween);
                 sleepSecCauseQuota = (int) secBetween;
                 if (sleepSecCauseQuota > 80000) sleepSecCauseQuota = 100;
                 return false;
             }
-            log.error("Youtube connect failed: " + jObj.toString());
+            log.error("Youtube connect failed: {}", jObj.toString());
             return false;
         }
         if (jArr.size() == 0) {
@@ -368,7 +368,7 @@ public class YTChat extends ApiForChat {
                     ZonedDateTime americaPlusDayTR = america.plusDays(1).truncatedTo(ChronoUnit.DAYS);
                     long secBetween = ChronoUnit.SECONDS.between(america, americaPlusDayTR);
                     secBetween = Math.abs(secBetween) + 10;
-                    log.warn("SLEEP UNTIL PACIFIC MIDNIGHT " + secBetween);
+                    log.warn("SLEEP UNTIL PACIFIC MIDNIGHT {}", secBetween);
                     if (sleepSecCauseQuota > 80000) sleepSecCauseQuota = 100;
                     return (int) secBetween;
                 } else {

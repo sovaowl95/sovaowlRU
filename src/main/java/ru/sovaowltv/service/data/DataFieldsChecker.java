@@ -33,7 +33,7 @@ public class DataFieldsChecker {
 
     public void checkFeedbackMessage(Map<String, Object> map) {
         if (isIncorrect(map, "message") || isIncorrect(map, "theme")) {
-            log.error("feedback service -> message or theme not found " + map);
+            log.error("feedback service -> message or theme not found {}", map);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Bad Request. message or theme not found");
         }
     }

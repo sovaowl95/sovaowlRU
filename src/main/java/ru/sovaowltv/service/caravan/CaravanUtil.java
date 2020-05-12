@@ -22,7 +22,8 @@ public class CaravanUtil {
         return caravanMessages.prepareCaravanStartMessage(
                 caravan.getCaravanRarity(),
                 caravan.getTimeToSleep(),
-                caravan.getCurrentCaravanPrice()
+                caravan.getCurrentCaravanPrice(),
+                caravan.getCaravanCounter()
         );
     }
 

@@ -53,7 +53,7 @@ public class ModUtil {
         User channelOwner = usersRepositoryHandler.getUserByNickname(channel);
         Stream stream = streamRepositoryHandler.getByUser(channelOwner)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "STREAM NOT FOUND"));
-        usersRepositoryHandler.saveAndFree(channelOwner);
+        usersRepositoryHandler.free(channelOwner);
         String[] split = text.trim().split(" ", 2);
         if (split.length != 2) {
             return messagesUtil.getErrorMessageStatus("modAction",

@@ -37,7 +37,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/qiwi/success",
                         "/discord/success",
                         "/api/twitch/webhooks",
-                        "/api/twitch/webhooks/**");
+                        "/api/twitch/webhooks/**",
+                        "/api/vk/callback",
+                        "/api/vk/callback/**"
+                );
 
         http.authorizeRequests()
                 .antMatchers("**").permitAll();

@@ -1,0 +1,8 @@
+POST https://sovaowl.ru/api/twitch/webhooks/6082
+Accept: */*
+Cache-Control: no-cache
+
+{"data":[{"game_id":"488552","id":"3799253108","language":"ru","started_at":"2020-05-11T18:22:49Z","tag_ids":["0569b171-2a2b-476e-a596-5bdfb45a1327"],"thumbnail_url":"https://static-cdn.jtvnw.net/previews-ttv/live_user_sovaowltv-{width}x{height}.jpg","title":" sovaowl.ru","type":"live","user_id":"175619524","user_name":"sovaowlTV","viewer_count":0}]}
+
+###
+

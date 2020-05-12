@@ -7,6 +7,8 @@
     <link rel="stylesheet" th:href="@{/css/dropStyle.css}">
     <script th:src="@{/js/authLogin.js}"></script>
     <th:block th:include="fragments/flags :: flagsHeader"/>
+
+    <!--/*@thymesVar id="secTokenState" type="java.lang.String"*/-->
     <meta th:name="_csrf_name" th:content="${_csrf.parameterName}">
     <meta th:name="_csrf_value" th:content="${_csrf.token}">
     <meta th:name="secTokenState" th:content="${secTokenState}">

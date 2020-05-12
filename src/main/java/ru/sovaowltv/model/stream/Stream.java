@@ -21,7 +21,6 @@ import java.util.Set;
 public class Stream {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, unique = true)
     private long id;
 
     @OneToOne(cascade = CascadeType.DETACH)
@@ -49,31 +48,25 @@ public class Stream {
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<Command> commandSet;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany
     @PrimaryKeyJoinColumn
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<User> followersList;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany
     @PrimaryKeyJoinColumn
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<User> subscribersList;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany
     @PrimaryKeyJoinColumn
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<User> moderatorsList;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany
     @PrimaryKeyJoinColumn
     @LazyCollection(LazyCollectionOption.FALSE)
     private Set<User> bansList;
-
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private DiscordNotification discordNotification;
-
-    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private VKNotification vkNotification;
 
     @Column(nullable = false)
     private boolean live;
@@ -83,4 +76,13 @@ public class Stream {
 
     @Column(nullable = false)
     private boolean verified;
+
+    /**
+     * NOTIFICATIONS
+     */
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private DiscordNotification discordNotification;
+
+    @OneToOne(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private VKNotification vkNotification;
 }

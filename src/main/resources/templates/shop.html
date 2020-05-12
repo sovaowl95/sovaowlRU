@@ -59,6 +59,7 @@
                     </ul>
                 </div>
             </div>
+            <!--/*@thymesVar id="premiumPrice" type="java.lang.Integer"*/-->
             <div class="out bottom" th:if="${user != null}">
                 <div class="left" th:text="${premiumPrice}+' '+#{pages.shop.currency}"></div>
                 <div th:unless="${user.isPremiumUser()}" class="right"

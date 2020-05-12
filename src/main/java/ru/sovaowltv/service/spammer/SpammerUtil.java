@@ -87,7 +87,7 @@ public class SpammerUtil {
                 }
             });
         } catch (Exception e) {
-            log.error("error launch spammers for user " + stream.getUser().getNickname(), e);
+            log.error("error launch spammers for user {} {}", stream.getUser().getNickname(), e);
         }
     }
 
