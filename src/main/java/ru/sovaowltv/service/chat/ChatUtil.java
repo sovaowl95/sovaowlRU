@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,7 @@ import ru.sovaowltv.repositories.website.StylesRepository;
 import ru.sovaowltv.service.caravan.CaravanUtil;
 import ru.sovaowltv.service.chat.realization.ApiTimeouts;
 import ru.sovaowltv.service.commands.CommandsUtil;
-import ru.sovaowltv.service.messages.MessageDeliver;
+import ru.sovaowltv.service.messages.MessageApiDeliver;
 import ru.sovaowltv.service.messages.MessageValidationStatus;
 import ru.sovaowltv.service.messages.MessageValidator;
 import ru.sovaowltv.service.messages.MessagesUtil;
@@ -34,6 +32,7 @@ import ru.sovaowltv.service.smiles.YTSmiles;
 import ru.sovaowltv.service.stream.StreamModerationUtil;
 import ru.sovaowltv.service.stream.moderation.*;
 import ru.sovaowltv.service.unclassified.HtmlTagsClear;
+import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.params.UserCoinsUtil;
 import ru.sovaowltv.service.user.params.UserExpUtil;
@@ -42,6 +41,8 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static ru.sovaowltv.service.unclassified.Constants.*;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +67,7 @@ public class ChatUtil {
     private final UnModUtil unModUtil;
     private final PurgeUtil purgeUtil;
     private final ClearUtil clearUtil;
+    private final LanguageUtil languageUtil;
 
     private final DefaultCommands defaultCommands;
     private final CommandsUtil commandsUtil;
@@ -74,9 +76,8 @@ public class ChatUtil {
     private final GGSmiles ggSmiles;
     private final YTSmiles ytSmiles;
 
-    private final MessageSource messageSource;
     private final MessageValidator messageValidator;
-    private final MessageDeliver messageDeliver;
+    private final MessageApiDeliver messageApiDeliver;
     private final WebSiteSmileAbstract webSiteSmilesUtil;
 
     private final HtmlTagsClear htmlTagsClear;
@@ -92,31 +93,25 @@ public class ChatUtil {
     private String error;
 
     public boolean userAllowedSendMessages(String channel, String messageType, User user, Stream stream) {
-        if (!messageType.equalsIgnoreCase("history") && !messageType.equalsIgnoreCase("modAction")) {
+        if (!messageType.equalsIgnoreCase("history") && !messageType.equalsIgnoreCase(MOD_ACTION)) {
             if (!streamModerationUtil.canChatInChannelBan(user, stream)) {
-                messagesUtil.createAndSendMessageStatus("infoBan", "pages.chat.message.youBanned", user.getLogin(), channel);
+                messagesUtil.createAndSendMessageStatus(INFO_BAN, "pages.chat.message.youBanned", user.getLogin(), channel);
                 return false;
             }
 
             if (!streamModerationUtil.canChatInChannelTimeout(user, stream)) {
-                messagesUtil.createAndSendSimpleMessageStatus("infoTimeout", getInfo(user, stream), user.getLogin(), channel);
+                messagesUtil.createAndSendSimpleMessageStatus(INFO_TIMEOUT, getInfo(user, stream), user.getLogin(), channel);
                 return false;
             }
 
             if (!antiSpamUtil.isAntiSpamOk(user)) {
                 messagesUtil.createAndSendSimpleMessageStatus(
-                        "infoSpam",
-                        messageSource.getMessage("pages.chat.message.spam", null, LocaleContextHolder.getLocale())
+                        INFO_SPAM,
+                        languageUtil.getStringFor("pages.chat.message.spam")
                                 .concat(" <span class='spanTime'>")
                                 .concat(antiSpamUtil.getTimeUntilUnblock(user))
                                 .concat("</span> ")
-                                .concat(
-                                        messageSource.getMessage(
-                                                "pages.chat.message.youTimeoutTimeUnit",
-                                                null,
-                                                LocaleContextHolder.getLocale()
-                                        )
-                                ),
+                                .concat(languageUtil.getStringFor("pages.chat.message.youTimeoutTimeUnit")),
                         user.getLogin(),
                         channel
                 );
@@ -128,11 +123,11 @@ public class ChatUtil {
 
     @NotNull
     private String getInfo(User user, Stream stream) {
-        String firstPart = messageSource.getMessage("pages.chat.message.youTimeout", null, LocaleContextHolder.getLocale());
+        String firstPart = languageUtil.getStringFor("pages.chat.message.youTimeout");
         LocalDateTime localDateTime = apiTimeouts.getTimeoutsByStreamId(stream.getId()).get(user);
         long between = ChronoUnit.SECONDS.between(LocalDateTime.now(), localDateTime);
         String time = String.valueOf(between);
-        String lastPart = messageSource.getMessage("pages.chat.message.youTimeoutTimeUnit", null, LocaleContextHolder.getLocale());
+        String lastPart = languageUtil.getStringFor("pages.chat.message.youTimeoutTimeUnit");
 
         return firstPart + " " + time + " " + lastPart;
     }
@@ -151,7 +146,7 @@ public class ChatUtil {
     private ChatMessage solveMessage(String text, String channel, User user, Stream stream) {
         ChatMessage message = prepareMessage(text, channel, user, stream);
         if (message instanceof Message)
-            messageDeliver.sendMessageToAllApiChats(((Message) message), channel, this, user, stream);
+            messageApiDeliver.sendMessageToAllApiChats(((Message) message), channel, this, user, stream);
         return message;
 
     }
@@ -186,14 +181,14 @@ public class ChatUtil {
                     messageRepository.delete(message);
                     String slotAnswer = defaultCommands.slotCommand(user, message.getText());
                     if (slotAnswer.startsWith("SLOT -> NOT ENOUGH MONEY")) {
-                        messagesUtil.sendErrorMessageToLogin(channel, "slotNotEnoughMoney", "", login);
+                        messagesUtil.sendErrorMessageToLogin(channel, SLOT_NOT_ENOUGH_MONEY, "", login);
                         return null;
                     } else { // ok
-                        MessageStatus slotStartMS = messagesUtil.getOkMessageStatus("slotStart", "");
+                        MessageStatus slotStartMS = messagesUtil.getOkMessageStatus(SLOT_START, "");
                         messagesUtil.convertAndSendToUser(login, channel, slotStartMS);
 
                         slotAnswer = slotAnswer.replace("SLOT -> ", "");
-                        MessageStatus slotRewardMessage = messagesUtil.getOkMessageStatus("slotRes", slotAnswer);
+                        MessageStatus slotRewardMessage = messagesUtil.getOkMessageStatus(SLOT_RES, slotAnswer);
                         messagesUtil.convertAndSend(channel, slotRewardMessage);
                         return null;
                     }
@@ -202,14 +197,14 @@ public class ChatUtil {
                     if (command != null) {
                         if (command.isForPublicShown()) {
                             String messageText = commandsUtil.solveStreamerCommand(login, text, channel, user, command, stream);
-                            MessageStatus messageStatus = messagesUtil.getOkMessageStatus("commandAnswerOk", messageText);
+                            MessageStatus messageStatus = messagesUtil.getOkMessageStatus(COMMAND_ANSWER_OK, messageText);
                             messageStatus.setStreamId(message.getId());
                             messagesUtil.convertAndSend(channel, messageStatus);
                             return message;
                         } else {
                             messageRepository.delete(message);
                             String messageText = commandsUtil.solveStreamerCommand(login, text, channel, user, command, stream);
-                            MessageStatus messageStatus = messagesUtil.getOkMessageStatus("commandAnswerOk", messageText);
+                            MessageStatus messageStatus = messagesUtil.getOkMessageStatus(COMMAND_ANSWER_OK, messageText);
                             messagesUtil.convertAndSendToUser(login, channel, messageStatus);
                             return null;
                         }
@@ -220,12 +215,12 @@ public class ChatUtil {
             }
 
             if (message.getText().startsWith("ERR ->")) {
-                MessageStatus messageStatus = messagesUtil.getErrorMessageStatus("errCommand", message.getText());
+                MessageStatus messageStatus = messagesUtil.getErrorMessageStatus(COMMAND_ANSWER_ERROR, message.getText());
                 messageRepository.delete(message);
                 messagesUtil.convertAndSendToUser(login, channel, messageStatus);
                 return null;
             } else {
-                messageDeliver.sendMessageToAllApiChats(message, channel, this, user, stream);
+                messageApiDeliver.sendMessageToAllApiChats(message, channel, this, user, stream);
                 return message;
             }
         } else {
@@ -237,23 +232,23 @@ public class ChatUtil {
     private ChatMessage caravanCommandAnswer(String login, String channel, Message message) {
         messageRepository.delete(message);
         switch (message.getText()) {
-            case "CARAVAN -> caravanJoin":
+            case "CARAVAN -> " + CARAVAN_JOIN:
                 MessageStatus messageStatus = new MessageStatus();
-                messageStatus.setType("caravanJoin");
+                messageStatus.setType(CARAVAN_JOIN);
                 Map<String, Object> map = new HashMap<>();
                 map.put("username", login);
                 map.put("rarity", caravanUtil.getCaravanRarityName());
                 messageStatus.setInfo(new Gson().toJson(map));
                 messagesUtil.convertAndSendToUser(login, channel, messageStatus);
                 return null;
-            case "CARAVAN -> caravanErrAlreadyInJoin":
-                messagesUtil.sendErrorMessageToLogin(channel, "caravanErrAlreadyInJoin", message.getText(), login);
+            case "CARAVAN -> " + CARAVAN_JOIN_ERR_ALREADY_IN_JOIN:
+                messagesUtil.sendErrorMessageToLogin(channel, CARAVAN_JOIN_ERR_ALREADY_IN_JOIN, message.getText(), login);
                 return null;
-            case "CARAVAN -> caravanErrStatusJoin":
-                messagesUtil.sendErrorMessageToLogin(channel, "caravanErrStatusJoin", message.getText(), login);
+            case "CARAVAN -> " + CARAVAN_JOIN_ERR_STATUS_JOIN:
+                messagesUtil.sendErrorMessageToLogin(channel, CARAVAN_JOIN_ERR_STATUS_JOIN, message.getText(), login);
                 return null;
-            case "CARAVAN -> caravanJoinNotEnoughMoney":
-                messagesUtil.sendErrorMessageToLogin(channel, "caravanJoinNotEnoughMoney", message.getText(), login);
+            case "CARAVAN -> " + CARAVAN_JOIN_NOT_ENOUGH_MONEY:
+                messagesUtil.sendErrorMessageToLogin(channel, CARAVAN_JOIN_NOT_ENOUGH_MONEY, message.getText(), login);
                 return null;
             default:
                 messagesUtil.sendErrorMessageToLogin(channel, "err", message.getText(), login);
@@ -341,45 +336,30 @@ public class ChatUtil {
                 } else if (text.startsWith("/clearAll") || text.startsWith("/ca")) {
                     return clearUtil.clearAll(user, text, stream, channel);
                 } else {
-                    return messagesUtil.getErrorMessageStatus("modAction",
-                            messageSource.getMessage(
-                                    "pages.chat.message.moderator.unknownCommand",
-                                    null,
-                                    LocaleContextHolder.getLocale()
-                            )
-                    );
+                    return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                            languageUtil.getStringFor("pages.chat.message.moderator.unknownCommand"));
                 }
             } else {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage(
-                                "pages.chat.message.moderator.insufficientPermission",
-                                null,
-                                LocaleContextHolder.getLocale()
-                        )
-                );
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.insufficientPermission"));
             }
         } else {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage(
-                            "pages.chat.message.moderator.commandMustStartWithSlash",
-                            null,
-                            LocaleContextHolder.getLocale()
-                    )
-            );
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.commandMustStartWithSlash"));
         }
     }
 
     private void sendHelpAnswer(String login, String channel) {
         MessageStatus messageStatus = new MessageStatus();
-        messageStatus.setType("help");
-        String faq = messageSource.getMessage("pages.commands.title", null, LocaleContextHolder.getLocale());
+        messageStatus.setType(INFO_HELP);
+        String faq = languageUtil.getStringFor("pages.commands.title");
         messageStatus.setInfo("<a href='/commands'>" + faq + "</a>");
         messagesUtil.convertAndSendToUser(login, channel, messageStatus);
     }
 
     private MessageStatus unknownTypeMethod() {
-        return messagesUtil.getErrorMessageStatus("modAction",
-                messageSource.getMessage("pages.chat.message.moderator.unknownType", null, LocaleContextHolder.getLocale()));
+        return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                languageUtil.getStringFor("pages.chat.message.moderator.unknownType"));
     }
 
     //todo: ANOTHER API SERVICE

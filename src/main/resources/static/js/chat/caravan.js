@@ -77,7 +77,7 @@ function printCaravanJoinMessage() {
     let bodyChatMain = document.getElementById('bodyChatMain');
     let div = document.createElement('div');
     div.innerHTML = caravanJoin;
-    div.className = "caravanMessage caravanJoin";
+    div.className = "caravanMessage " + CARAVAN_JOIN;
     div.style.fontSize = fontSize;
     bodyChatMain.appendChild(div);
 }
@@ -151,14 +151,14 @@ function prepareCaravanRewardInnerHTML(message, premiumImg, rewardName, money, e
 function printCaravanStartMessage(message) {
     message = JSON.parse(message);
 
-    let id = 'caravanStartMessage' + message.caravanCounter;
+    let id = CARAVAN_START + 'Message' + message.caravanCounter;
     if (caravanIdList.includes(id)) return;
     caravanIdList.push(id);
 
     let rarityTranslated = getTranslatedRarity(message);
     let div = document.createElement('div');
 
-    div.className = "caravanMessage caravanStart";
+    div.className = "caravanMessage " + CARAVAN_START;
     div.innerHTML = prepareCaravanStartInnerHTML(message, rarityTranslated);
     div.style.fontSize = fontSize;
 
@@ -180,7 +180,7 @@ function prepareCaravanStartInnerHTML(message, rarityTranslated) {
 
 
 function printCaravanEndMessage(clazz, message, id) {
-    id = 'caravanEndMessage' + id;
+    id = CARAVAN_END + 'Message' + id;
     if (caravanIdList.includes(id)) return;
     caravanIdList.push(id);
 

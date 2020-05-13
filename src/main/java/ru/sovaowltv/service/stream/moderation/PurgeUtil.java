@@ -2,9 +2,7 @@ package ru.sovaowltv.service.stream.moderation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,23 +15,27 @@ import ru.sovaowltv.repositories.messages.MessageRepository;
 import ru.sovaowltv.service.chat.realization.*;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamRepositoryHandler;
+import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
+
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:constants.yml")
 public class PurgeUtil {
-    private final MessageRepository messageRepository;
-    private final StreamRepositoryHandler streamRepositoryHandler;
-
     private final UsersRepositoryHandler usersRepositoryHandler;
+    private final StreamRepositoryHandler streamRepositoryHandler;
+    private final MessageRepository messageRepository;
+
     private final MessagesUtil messagesUtil;
+    private final LanguageUtil languageUtil;
+
     private final ApiWebsiteChats apiWebsiteChats;
 
-    private final MessageSource messageSource;
 
     @Value("${website}")
     private String website;
@@ -50,8 +52,8 @@ public class PurgeUtil {
     public MessageStatus purgeUserByNickName(User moderator, String text, String channel) {
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatPurgeByNick", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatPurgeByNick"));
         }
         Message message;
         try {
@@ -70,8 +72,8 @@ public class PurgeUtil {
         usersRepositoryHandler.free(channelOwner);
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatUnmodById", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatUnmodById"));
         }
 
         String targetId = split[1];
@@ -89,8 +91,8 @@ public class PurgeUtil {
         } else if (message.getSource().equalsIgnoreCase(gg)) {
             return purgeUserOnChannel(moderator, null, stream, message);
         } else {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.notFromWebsite", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.notFromWebsite"));
         }
     }
 
@@ -118,7 +120,7 @@ public class PurgeUtil {
         }
 
         String nickname = userForPurge != null ? userForPurge.getNickname() : message.getNick();
-        return messagesUtil.getOkMessageStatus("modAction",
+        return messagesUtil.getOkMessageStatus(MOD_ACTION,
                 "purgeUserByMessageId " + moderator.getNickname() + " " + nickname + " " + stringBuilder.toString());
     }
 

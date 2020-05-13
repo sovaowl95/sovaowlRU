@@ -69,7 +69,7 @@ public class YTChatUtil {
     }
 
     public Optional<ApiForChat> getYTChatOwner(String webSiteChannel) {
-        return apiChatsUtil.getChatOwner(webSiteChannel, YTChat.class);
+        return apiChatsUtil.getChatsByOwner(webSiteChannel, YTChat.class);
     }
 
     public String prepareBodySendToServer(String text, UserGoogle userGoogle) {

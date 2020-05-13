@@ -2,9 +2,7 @@ package ru.sovaowltv.service.stream.moderation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,6 +23,7 @@ import ru.sovaowltv.service.chat.util.TwitchChatUtil;
 import ru.sovaowltv.service.chat.util.YTChatUtil;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamRepositoryHandler;
+import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
@@ -33,24 +32,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
+
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:constants.yml")
 public class TimeoutUtil {
+    private final UsersRepositoryHandler usersRepositoryHandler;
+    private final StreamRepositoryHandler streamRepositoryHandler;
     private final UsersTwitchRepository usersTwitchRepository;
     private final UsersGGRepository usersGGRepository;
     private final UsersGoogleRepository usersGoogleRepository;
     private final MessageRepository messageRepository;
-    private final StreamRepositoryHandler streamRepositoryHandler;
 
-    private final UsersRepositoryHandler usersRepositoryHandler;
     private final UserUtil userUtil;
     private final TwitchChatUtil twitchChatUtil;
     private final GGChatUtil ggChatUtil;
     private final YTChatUtil ytChatUtil;
     private final MessagesUtil messagesUtil;
+    private final LanguageUtil languageUtil;
 
-    private final MessageSource messageSource;
     private final ApiTimeouts apiTimeouts;
     private final ApiWebsiteChats apiWebsiteChats;
 
@@ -89,8 +90,8 @@ public class TimeoutUtil {
     public MessageStatus timeoutUserByNickName(User moderator, String text, String channel) {
         String[] split = text.trim().split(" ", 4);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatTimeoutByNick", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatTimeoutByNick"));
         }
         Message message;
         try {
@@ -111,8 +112,8 @@ public class TimeoutUtil {
 
         String[] split = text.trim().split(" ", 4);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatTimeoutById", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatTimeoutById"));
         }
 
         String targetId = split[1];
@@ -137,7 +138,7 @@ public class TimeoutUtil {
                 String time = split.length > 2 ? split[2] : "600";
                 String reason = split.length > 3 ? split[3] : "noReason";
                 twitchChatOwner.ifPresent(twitchChat -> twitchChat.timeoutUser(message.getNick(), time, reason, message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "timeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + time + " " + message.getNick() + " " + reason);
             }
         } else if (message.getSource().equalsIgnoreCase(gg)) {
@@ -151,7 +152,7 @@ public class TimeoutUtil {
                 String time = split.length > 2 ? split[2] : "600";
                 String reason = split.length > 3 ? split[3] : "noReason";
                 ggChatOwner.ifPresent(ggChat -> ggChat.timeoutUser(message.getNick(), time, reason, message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "timeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + time + " " + message.getNick() + " " + reason);
             }
         } else if (message.getSource().equalsIgnoreCase(yt)) {
@@ -165,12 +166,12 @@ public class TimeoutUtil {
                 String time = split.length > 2 ? split[2] : "600";
                 String reason = split.length > 3 ? split[3] : "noReason";
                 ytChatOwner.ifPresent(ytChat -> ytChat.timeoutUser(message.getNick(), time, reason, message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "timeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + time + " " + message.getNick() + " " + reason);
             }
         } else {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.someErrorContactAdmin", null, LocaleContextHolder.getLocale()) + " timeoutUserByMessageId");
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.someErrorContactAdmin") + " timeoutUserByMessageId");
         }
     }
 
@@ -178,59 +179,58 @@ public class TimeoutUtil {
         try {
             Long.parseLong(time);
         } catch (NumberFormatException e) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.messageTimeMustBeNumber", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.messageTimeMustBeNumber"));
         }
 
         if (Long.parseLong(time) <= 0) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.messageTimeMustBePositive", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.messageTimeMustBePositive"));
         }
 
         if (message.getStreamId() != stream.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.messageNotFromThisStream", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.messageNotFromThisStream"));
         }
 
         if (moderator.getId() == userForTimeout.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.selfTimeout", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.selfTimeout"));
         }
 
         if (stream.getUser().getId() == userForTimeout.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.ownerTimeout", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.ownerTimeout"));
         }
 
         if (userUtil.isAdminOrModerator(userForTimeout)) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.adminOrModerator", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.adminOrModerator"));
         }
 
         if (stream.getModeratorsList().contains(userForTimeout)) {
             if (userUtil.isAdminOrModerator(moderator) || stream.getUser().getId() == moderator.getId()) {
                 if (!timeoutUserFromStream(userForTimeout, stream.getUser().getNickname(), time)) {
-                    return messagesUtil.getErrorMessageStatus("modAction",
-                            messageSource.getMessage("pages.chat.message.moderator.timeoutError", null, LocaleContextHolder.getLocale()));
+                    return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                            languageUtil.getStringFor("pages.chat.message.moderator.timeoutError"));
                 }
                 sendTimeoutMessageToAllChats(message, stream.getUser().getNickname(), time, reason);
                 timeoutMessage(message);
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "timeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + time + " " + userForTimeout.getNickname() + " " + reason);
             } else {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.channelModerator", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.channelModerator"));
             }
         } else {
             if (!timeoutUserFromStream(userForTimeout, stream.getUser().getNickname(), time)) {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.timeoutError", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.timeoutError"));
             }
             sendTimeoutMessageToAllChats(message, stream.getUser().getNickname(), time, reason);
             timeoutMessage(message);
-            return messagesUtil.getOkMessageStatus("modAction",
+            return messagesUtil.getOkMessageStatus(MOD_ACTION,
                     "timeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + time + " " + userForTimeout.getNickname() + " " + reason);
-
         }
     }
 

@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.SPAM;
+
 @ClientEndpoint
 @Getter
 @Setter
@@ -47,7 +49,6 @@ public class TwitchChat extends ApiForChat {
     @Value("${twitch}")
     private String source;
 
-    private HashSet<String> nickNames;
     private static final String PRIVMSG_SHARP = "PRIVMSG #";
 
     public TwitchChat(String topicTarget,
@@ -138,14 +139,14 @@ public class TwitchChat extends ApiForChat {
                     return;
 
                 MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
-                if (messageValidationStatus == MessageValidationStatus.SPAM) banUser(nick, "SPAM", message);
+                if (messageValidationStatus == MessageValidationStatus.SPAM) banUser(nick, SPAM, message);
                 if (messageValidationStatus != MessageValidationStatus.OK) return;
 
                 if (nickNames != null && !nickNames.contains(nick)) {
                     nickNames.add(nick);
                     sendInviteMessage(nick);
                 }
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
+                messageApiDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             }
         } catch (Exception e) {

@@ -12,7 +12,7 @@ import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.service.api.webhooks.TwitchWebHookUtil;
 import ru.sovaowltv.service.data.DataExtractor;
 import ru.sovaowltv.service.notifications.NotificationUtil;
-import ru.sovaowltv.service.stream.StreamRepositoryHandler;
+import ru.sovaowltv.service.stream.StreamUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @Slf4j
 public class TwitchWebHookController {
-    private final StreamRepositoryHandler streamRepositoryHandler;
-
+    private final StreamUtil streamUtil;
     private final TwitchWebHookUtil twitchWebhookUtil;
     private final NotificationUtil notificationUtil;
 
@@ -43,11 +42,10 @@ public class TwitchWebHookController {
             TwitchWebHook twitchWebhook = new TwitchWebHook(jArr.get(0).getAsJsonObject(), dataExtractor);
             if (twitchWebhookUtil.alreadySolvedHook(twitchWebhook)) return;
             Stream stream = twitchWebhookUtil.setStreamSettingByWebHookAndGetStream(twitchWebhook);
+            streamUtil.goOnline(stream);
             notificationUtil.notifyAll(stream);
         } else {
-            Stream stream = streamRepositoryHandler.getStreamById(id);
-            stream.setLive(false);
-            streamRepositoryHandler.save(stream);
+            streamUtil.goOffline(id);
         }
     }
 }

@@ -13,6 +13,7 @@ import ru.sovaowltv.model.shop.Rarity;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.repositories.multistream.MultiStreamRepository;
+import ru.sovaowltv.service.chat.util.ApiChatsUtil;
 import ru.sovaowltv.service.shop.ShopUtil;
 import ru.sovaowltv.service.spammer.SpammerUtil;
 import ru.sovaowltv.service.user.UserUtil;
@@ -35,6 +36,7 @@ public class StreamUtil {
     private final SpammerUtil spammerUtil;
     private final ShopUtil shopUtil;
 
+    private final ApiChatsUtil apiChatsUtil;
     private final TwitchStreamUtil twitchStreamUtil;
     private final GGStreamUtil ggStreamUtil;
     private final YTStreamUtil ytStreamUtil;
@@ -123,5 +125,21 @@ public class StreamUtil {
                 break;
             }
         }
+    }
+
+    public void goOnline(Stream stream) {
+        stream.setLive(true);
+        streamRepositoryHandler.save(stream);
+    }
+
+    public void goOffline(Long id) {
+        Stream stream = streamRepositoryHandler.getStreamById(id);
+        goOffline(stream);
+    }
+
+    public void goOffline(Stream stream) {
+        stream.setLive(false);
+        apiChatsUtil.clearWelcomeList(stream.getUser().getNickname());
+        streamRepositoryHandler.save(stream);
     }
 }

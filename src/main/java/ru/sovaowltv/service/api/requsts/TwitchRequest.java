@@ -37,19 +37,24 @@ public class TwitchRequest {
     private String redirectUri;
 
     public String changeTwitchGameIdToTitle(String gameId, UserTwitch userTwitch) {
-        twitchTokenHandler.refresh(userTwitch);
+        try {
+            if (gameId == null || gameId.isEmpty()) return "";
 
-        if (gameId == null || gameId.isEmpty()) return "";
-        HttpsURLConnection connection = urlConnectionPrepare.getConnection(
-                "https://api.twitch.tv/helix/games?id=" + gameId);
-        connection.addRequestProperty("Client-ID", clientId);
-        connection.addRequestProperty("AuthorizationAccept", "application/vnd.twitchtv.v5+json");
-        connection.addRequestProperty("Authorization", "Bearer " + userTwitch.getAccessToken());
+            twitchTokenHandler.refresh(userTwitch);
+            HttpsURLConnection connection = urlConnectionPrepare.getConnection(
+                    "https://api.twitch.tv/helix/games?id=" + gameId);
+            connection.addRequestProperty("Client-ID", clientId);
+            connection.addRequestProperty("AuthorizationAccept", "application/vnd.twitchtv.v5+json");
+            connection.addRequestProperty("Authorization", "Bearer " + userTwitch.getAccessToken());
 
-        JsonObject jObj = ioExtractor.extractJsonObject(connection);
-        JsonArray jArr = jObj.getAsJsonArray("data");
-        jObj = jArr.get(0).getAsJsonObject();
-        return jObj.getAsJsonPrimitive("name").getAsString();
+            JsonObject jObj = ioExtractor.extractJsonObject(connection);
+            JsonArray jArr = jObj.getAsJsonArray("data");
+            jObj = jArr.get(0).getAsJsonObject();
+            return jObj.getAsJsonPrimitive("name").getAsString();
+        } catch (Exception e) {
+            log.error("changeTwitchGameIdToTitle", e);
+            return "";
+        }
     }
 
     public Map<String, Object> changeCodeToToken(String code) {

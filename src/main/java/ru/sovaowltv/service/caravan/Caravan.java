@@ -15,6 +15,8 @@ import ru.sovaowltv.service.user.params.UserCoinsUtil;
 import java.util.HashSet;
 import java.util.Set;
 
+import static ru.sovaowltv.service.unclassified.Constants.*;
+
 /**
  * caravanPrepare          ждем каравана (30 мин)
  * caravanStart            набираем людей для грабежа. (1 мин)
@@ -73,21 +75,21 @@ public class Caravan extends Thread {
     synchronized String joinRobbery(Long id) {
         if (caravanStatus == CaravanStatus.GROUP_UP) {
             if (robbers.contains(id)) {
-                return "caravanErrAlreadyInJoin";
+                return CARAVAN_JOIN_ERR_ALREADY_IN_JOIN;
             } else {
                 return isEnoughMoneyToJoin(id);
             }
         } else {
-            return "caravanErrStatusJoin";
+            return CARAVAN_JOIN_ERR_STATUS_JOIN;
         }
     }
 
     private String isEnoughMoneyToJoin(Long id) {
         if (userCoinsUtil.withdrawMoney(id, getCurrentCaravanPrice())) {
             robbers.add(id);
-            return "caravanJoin";
+            return CARAVAN_JOIN;
         } else {
-            return "caravanJoinNotEnoughMoney";
+            return CARAVAN_JOIN_NOT_ENOUGH_MONEY;
         }
     }
 

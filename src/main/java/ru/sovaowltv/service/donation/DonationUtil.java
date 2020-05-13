@@ -51,6 +51,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.DONATION;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -103,7 +105,7 @@ public class DonationUtil {
 
                 if (donation.getStreamTo() != null) {
                     MessageStatus messageStatus = new MessageStatus();
-                    messageStatus.setType("donation");
+                    messageStatus.setType(DONATION);
 
                     userFrom = donation.getUserFrom();
                     userFrom = usersRepositoryHandler.getUserById(userFrom.getId());
@@ -219,7 +221,7 @@ public class DonationUtil {
 
     public void sendTestDonation(Stream stream) {
         MessageStatus messageStatus = new MessageStatus();
-        messageStatus.setType("donation");
+        messageStatus.setType(DONATION);
 
         Map<String, String> map = new HashMap<>();
         map.put("nick", "nick");

@@ -66,7 +66,7 @@ public class TwitchChatUtil {
     }
 
     public Optional<ApiForChat> getTwitchChatOwner(String webSiteChannel) {
-        return apiChatsUtil.getChatOwner(webSiteChannel, TwitchChat.class);
+        return apiChatsUtil.getChatsByOwner(webSiteChannel, TwitchChat.class);
     }
 
     public void sendMessageToTwitch(Message message, String webSiteChannel, Object apiChatForExclude, User userMessageSender) {

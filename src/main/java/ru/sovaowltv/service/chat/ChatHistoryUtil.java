@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.apiauth.UserGG;
 import ru.sovaowltv.model.apiauth.UserGoogle;
@@ -29,6 +28,8 @@ import ru.sovaowltv.service.user.params.UserPremiumUtil;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static ru.sovaowltv.service.unclassified.Constants.*;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -44,8 +45,6 @@ public class ChatHistoryUtil {
     private final TwitchTokenHandler twitchTokenHandler;
     private final GGTokenHandler ggTokenHandler;
     private final YTTokenHandler ytTokenHandler;
-
-    private final SimpMessagingTemplate simpMessagingTemplate;
 
     private static final String HISTORY = "history";
     private static final String TOPIC = "/topic/";
@@ -77,16 +76,15 @@ public class ChatHistoryUtil {
             );
 
             if (caravanUtil.getCaravanStatus() == CaravanStatus.GROUP_UP) {
-                MessageStatus messageStatus2 = caravanUtil.prepareCaravanStartMessage();
-                simpMessagingTemplate.convertAndSendToUser(
+                messagesUtil.sendMessageWithHeaders(
                         sessionId,
                         TOPIC + channel,
-                        messageStatus2,
+                        caravanUtil.prepareCaravanStartMessage(),
                         createHeaders(sessionId)
                 );
             }
         } else {
-            messagesUtil.createAndSendMessageStatus("caravanErrStatusJoinAnon",
+            messagesUtil.createAndSendMessageStatus(CARAVAN_JOIN_ERR_STATUS_JOIN_ANON,
                     "",
                     sessionId,
                     TOPIC + channel,
@@ -161,7 +159,7 @@ public class ChatHistoryUtil {
 
             if (!found) return;
             String info = firstPart + " " + platforms + " " + lastPart;
-            messagesUtil.sendMessageToLogin(channel, "API MOTIVATION", info, authorUser.getLogin());
+            messagesUtil.sendMessageToLogin(channel, API_MOTIVATION, info, authorUser.getLogin());
         }
     }
 
@@ -169,9 +167,9 @@ public class ChatHistoryUtil {
         UserTwitch userTwitch = authorUser.getUserTwitch();
         if (userTwitch != null) {
             if (!twitchTokenHandler.refresh(userTwitch)) {
-                messagesUtil.sendErrorMessageToLogin(channel, "ACC REJOIN", "You must rejoin your Twitch account", authorUser.getLogin());
+                messagesUtil.sendErrorMessageToLogin(channel, ACC_REJOIN, "You must rejoin your Twitch account", authorUser.getLogin());
             } else {
-                MessageStatus st = messagesUtil.getOkMessageStatus("ACC REJOIN OK", "Your Twitch account link is ok");
+                MessageStatus st = messagesUtil.getOkMessageStatus(ACC_REJOIN_OK, "Your Twitch account link is ok");
                 messagesUtil.convertAndSendToUser(authorUser.getLogin(), channel, st);
             }
         }
@@ -182,9 +180,9 @@ public class ChatHistoryUtil {
         UserGG userGG = authorUser.getUserGG();
         if (userGG != null) {
             if (!ggTokenHandler.refresh(userGG)) {
-                messagesUtil.sendErrorMessageToLogin(channel, "ACC REJOIN", "You must rejoin your GoodGame account", authorUser.getLogin());
+                messagesUtil.sendErrorMessageToLogin(channel, ACC_REJOIN, "You must rejoin your GoodGame account", authorUser.getLogin());
             } else {
-                MessageStatus st = messagesUtil.getOkMessageStatus("ACC REJOIN OK", "Your GoodGame account link is ok");
+                MessageStatus st = messagesUtil.getOkMessageStatus(ACC_REJOIN_OK, "Your GoodGame account link is ok");
                 messagesUtil.convertAndSendToUser(authorUser.getLogin(), channel, st);
             }
         }
@@ -194,9 +192,9 @@ public class ChatHistoryUtil {
         UserGoogle userGoogle = authorUser.getUserGoogle();
         if (userGoogle != null) {
             if (!ytTokenHandler.refresh(userGoogle)) {
-                messagesUtil.sendErrorMessageToLogin(channel, "ACC REJOIN", "You must rejoin your YouTube account", authorUser.getLogin());
+                messagesUtil.sendErrorMessageToLogin(channel, ACC_REJOIN, "You must rejoin your YouTube account", authorUser.getLogin());
             } else {
-                MessageStatus st = messagesUtil.getOkMessageStatus("ACC REJOIN OK", "Your YouTube account link is ok");
+                MessageStatus st = messagesUtil.getOkMessageStatus(ACC_REJOIN_OK, "Your YouTube account link is ok");
                 messagesUtil.convertAndSendToUser(authorUser.getLogin(), channel, st);
             }
         }

@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.SPAM;
+
 @ClientEndpoint
 @PropertySources({
         @PropertySource("classpath:constants.yml"),
@@ -62,7 +64,6 @@ public class YTChat extends ApiForChat {
     private boolean quotaLimited;
     private int sleepSecCauseQuota;
 
-    private HashSet<String> nickNames;
     private final HashSet<String> messages = new HashSet<>();
 
     public YTChat(String topicTarget,
@@ -391,7 +392,7 @@ public class YTChat extends ApiForChat {
 
                 MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
                 if (messageValidationStatus == MessageValidationStatus.SPAM)
-                    banUser(message.getNick(), "SPAM", message);
+                    banUser(message.getNick(), SPAM, message);
                 if (messageValidationStatus != MessageValidationStatus.OK)
                     continue;
 
@@ -400,7 +401,7 @@ public class YTChat extends ApiForChat {
                     sendInviteMessage(map.get("displayName"));
                 }
 
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
+                messageApiDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             }
         }

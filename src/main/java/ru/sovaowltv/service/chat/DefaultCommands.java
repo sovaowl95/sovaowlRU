@@ -9,6 +9,8 @@ import ru.sovaowltv.service.slot.SlotUtil;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static ru.sovaowltv.service.unclassified.Constants.*;
+
 @Component
 @RequiredArgsConstructor
 public class DefaultCommands {
@@ -118,14 +120,14 @@ public class DefaultCommands {
     String robCommand(User user) {
         String res = caravanUtil.joinRobbery(user.getId());
         switch (res) {
-            case "caravanJoin":
-                return "CARAVAN -> caravanJoin";
-            case "caravanJoinNotEnoughMoney":
-                return "CARAVAN -> caravanJoinNotEnoughMoney";
-            case "caravanErrAlreadyInJoin":
-                return "CARAVAN -> caravanErrAlreadyInJoin";
-            case "caravanErrStatusJoin":
-                return "CARAVAN -> caravanErrStatusJoin";
+            case CARAVAN_JOIN:
+                return "CARAVAN -> " + CARAVAN_JOIN;
+            case CARAVAN_JOIN_NOT_ENOUGH_MONEY:
+                return "CARAVAN -> " + CARAVAN_JOIN_NOT_ENOUGH_MONEY;
+            case CARAVAN_JOIN_ERR_ALREADY_IN_JOIN:
+                return "CARAVAN -> " + CARAVAN_JOIN_ERR_ALREADY_IN_JOIN;
+            case CARAVAN_JOIN_ERR_STATUS_JOIN:
+                return "CARAVAN -> " + CARAVAN_JOIN_ERR_STATUS_JOIN;
             default:
                 return "ERR -> some kind of caravan err :(";
         }

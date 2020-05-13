@@ -4,7 +4,7 @@ function printMessage(message, dst) {
         return;
     }
 
-    if (message.type === "donation") {
+    if (message.type === DONATION) {
         printDonationMessage(message);
         return;
     }
@@ -254,7 +254,7 @@ function sendMessage(type, message, secondType) {
     if (message.indexOf("!") === 0) {
         type = "command";
     } else if (message.indexOf("/") === 0) {
-        type = "modAction";
+        type = MOD_ACTION;
     }
 
     let str = {
@@ -273,48 +273,48 @@ function sendMessage(type, message, secondType) {
 }
 
 function deleteMessageShortCut(el) {
-    let id = el.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/clear " + id, "id");
+    let id = el.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/clear " + id, "id");
 }
 
 function timeoutMessageShortCut(el) {
-    let id = el.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/t " + id, "id");
+    let id = el.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/t " + id, "id");
 }
 
 function banMessageShortCut(el) {
-    let id = el.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/b " + id, "id");
+    let id = el.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/b " + id, "id");
 }
 
 function deleteMessage(el) {
-    let id = el.parentNode.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/clear " + id, "id");
+    let id = el.parentNode.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/clear " + id, "id");
 }
 
 function timeoutMessage(el) {
-    let id = el.parentNode.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/timeout " + id, "id");
+    let id = el.parentNode.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/timeout " + id, "id");
 }
 
 function banMessage(el) {
-    let id = el.parentNode.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/ban " + id, "id");
+    let id = el.parentNode.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/ban " + id, "id");
 }
 
 function modMessage(el) {
-    let id = el.parentNode.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/mod " + id, "id");
+    let id = el.parentNode.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/mod " + id, "id");
 }
 
 function unmodMessage(el) {
-    let id = el.parentNode.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/unmod " + id, "id");
+    let id = el.parentNode.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/unmod " + id, "id");
 }
 
 function purgeMessage(el) {
-    let id = el.parentNode.parentNode.id.replace("message", "");
-    sendMessage("modAction", "/purge " + id, "id");
+    let id = el.parentNode.parentNode.id.replace(MESSAGE, "");
+    sendMessage(MOD_ACTION, "/purge " + id, "id");
 }
 
 function moderatorActions(text) {

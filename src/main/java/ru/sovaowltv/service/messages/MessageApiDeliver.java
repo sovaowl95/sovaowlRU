@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 @RequiredArgsConstructor
 @Slf4j
 //todo: ANOTHER API SERVICE
-public class MessageDeliver {
+public class MessageApiDeliver {
     private final MessageRunnable messageRunnable;
 
     private final ThreadPoolExecutor threadPoolExecutor = ((ThreadPoolExecutor) Executors.newCachedThreadPool());

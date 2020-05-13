@@ -2,9 +2,7 @@ package ru.sovaowltv.service.stream.moderation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,6 +24,7 @@ import ru.sovaowltv.service.chat.util.YTChatUtil;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamModerationUtil;
 import ru.sovaowltv.service.stream.StreamRepositoryHandler;
+import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
@@ -33,27 +32,30 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.CLEAR_ALL;
+import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
+
 @Service
 @RequiredArgsConstructor
 @PropertySource("classpath:constants.yml")
 public class ClearUtil {
+    private final UsersRepositoryHandler usersRepositoryHandler;
+    private final StreamRepositoryHandler streamRepositoryHandler;
     private final UsersTwitchRepository usersTwitchRepository;
     private final UsersGGRepository usersGGRepository;
     private final UsersGoogleRepository usersGoogleRepository;
     private final MessageRepository messageRepository;
-    private final StreamRepositoryHandler streamRepositoryHandler;
-    private final UsersRepositoryHandler usersRepositoryHandler;
 
     private final UserUtil userUtil;
+    private final StreamModerationUtil streamModerationUtil;
+    private final MessagesUtil messagesUtil;
+    private final PurgeUtil purgeUtil;
+    private final LanguageUtil languageUtil;
+
     private final TwitchChatUtil twitchChatUtil;
     private final GGChatUtil ggChatUtil;
     private final YTChatUtil ytChatUtil;
-    private final MessagesUtil messagesUtil;
-    private final PurgeUtil purgeUtil;
-    private final StreamModerationUtil streamModerationUtil;
-
     private final ApiWebsiteChats apiWebsiteChats;
-    private final MessageSource messageSource;
 
     @Value("${website}")
     private String website;
@@ -70,8 +72,8 @@ public class ClearUtil {
     public MessageStatus clearUserByNickName(User moderator, String text, String channel) {
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatClearByNick", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatClearByNick"));
         }
         Message message;
         try {
@@ -90,8 +92,8 @@ public class ClearUtil {
         usersRepositoryHandler.saveAndFree(channelOwner);
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatClearById", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatClearById"));
         }
 
         String targetId = split[1];
@@ -111,7 +113,7 @@ public class ClearUtil {
             } else {
                 Optional<ApiForChat> twitchChatOwner = twitchChatUtil.getTwitchChatOwner(channel);
                 twitchChatOwner.ifPresent(twitchChat -> twitchChat.purgeUser(message.getNick(), message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else if (message.getSource().equalsIgnoreCase(gg)) {
@@ -121,7 +123,7 @@ public class ClearUtil {
             } else {
                 Optional<ApiForChat> ggChatOwner = ggChatUtil.getGGChatOwner(channel);
                 ggChatOwner.ifPresent(ggChat -> ggChat.purgeUser(message.getNick(), message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else if (message.getSource().equalsIgnoreCase(yt)) {
@@ -131,67 +133,67 @@ public class ClearUtil {
             } else {
                 Optional<ApiForChat> ytChatOwner = ytChatUtil.getYTChatOwner(channel);
                 ytChatOwner.ifPresent(ytChat -> ytChat.purgeUser(message.getNick(), message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.someErrorContactAdmin", null, LocaleContextHolder.getLocale()) + " clearUserByMessageId");
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.someErrorContactAdmin") + " clearUserByMessageId");
         }
     }
 
     private MessageStatus clearUserOnChannel(User moderator, User userForClear, Stream stream, Message message, String reason) {
         if (message.getStreamId() != stream.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.messageNotFromThisStream", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.messageNotFromThisStream"));
         }
 
         if (stream.getUser().getId() == userForClear.getId() && !userUtil.isAdminOrModerator(moderator)) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.ownerClear", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.ownerClear"));
         }
 
         if (userUtil.isAdminOrModerator(userForClear) && !userUtil.isAdminOrModerator(moderator)) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.adminOrModerator", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.adminOrModerator"));
         }
 
         if (stream.getModeratorsList().contains(userForClear)) {
             if (userUtil.isAdminOrModerator(moderator) || stream.getUser().getId() == moderator.getId() || moderator.getId() == userForClear.getId()) {
                 if (!clearUserFromStream(userForClear, stream.getUser().getNickname())) {
-                    return messagesUtil.getErrorMessageStatus("modAction",
-                            messageSource.getMessage("pages.chat.message.moderator.ClearError", null, LocaleContextHolder.getLocale()));
+                    return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                            languageUtil.getStringFor("pages.chat.message.moderator.ClearError"));
                 }
                 sendClearMessageToAllChats(message, stream.getUser().getNickname());
                 clearMessage(message);
-                return messagesUtil.getOkMessageStatus("modAction", "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
+                return messagesUtil.getOkMessageStatus(MOD_ACTION, "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
             } else {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.channelModerator", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.channelModerator"));
             }
         }
 
         if (!stream.getModeratorsList().contains(userForClear)) {
             if (!clearUserFromStream(userForClear, stream.getUser().getNickname())) {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.clearError", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.clearError"));
             }
             sendClearMessageToAllChats(message, stream.getUser().getNickname());
             clearMessage(message);
-            return messagesUtil.getOkMessageStatus("modAction", "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
+            return messagesUtil.getOkMessageStatus(MOD_ACTION, "clearUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
         }
 
-        return messagesUtil.getErrorMessageStatus("modAction",
-                messageSource.getMessage("pages.chat.message.moderator.someErrorContactAdmin", null, LocaleContextHolder.getLocale()));
+        return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                languageUtil.getStringFor("pages.chat.message.moderator.someErrorContactAdmin"));
     }
 
     public MessageStatus clearAll(User moderator, String text, Stream stream, String channel) {
         if (streamModerationUtil.canModerateStream(moderator, stream)) {
             clearAllMessagesFromScreenLastHalfOur(stream);
-            return messagesUtil.getOkMessageStatus("clearAll", moderator.getNickname());
+            return messagesUtil.getOkMessageStatus(CLEAR_ALL, moderator.getNickname());
         }
-        return messagesUtil.getErrorMessageStatus("modAction",
-                messageSource.getMessage("pages.chat.message.moderator.insufficientPermission", null, LocaleContextHolder.getLocale()));
+        return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                languageUtil.getStringFor("pages.chat.message.moderator.insufficientPermission"));
     }
 
 

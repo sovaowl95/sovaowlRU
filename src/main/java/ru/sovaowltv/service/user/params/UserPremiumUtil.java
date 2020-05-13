@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.sovaowltv.service.unclassified.Constants.INFO_PREMIUM_EXPIRED_IN;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -107,7 +109,7 @@ public class UserPremiumUtil {
                 map.put("day", Math.abs(daysBetween));
                 map.put("hour", Math.abs(hoursBetween));
                 map.put("min", Math.abs(minutesBetween));
-                MessageStatus message = messagesUtil.getOkMessageStatus("premiumExpiredIn", new Gson().toJson(map));
+                MessageStatus message = messagesUtil.getOkMessageStatus(INFO_PREMIUM_EXPIRED_IN, new Gson().toJson(map));
                 messagesUtil.convertAndSendToUser(login, channel, message);
             }
         }

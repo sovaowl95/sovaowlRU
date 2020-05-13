@@ -13,7 +13,7 @@ import ru.sovaowltv.model.chat.MessageStatus;
 import ru.sovaowltv.service.chat.ApiForChatLifeCycle;
 import ru.sovaowltv.service.chat.ApiForChatModeration;
 import ru.sovaowltv.service.io.IOExtractor;
-import ru.sovaowltv.service.messages.MessageDeliver;
+import ru.sovaowltv.service.messages.MessageApiDeliver;
 import ru.sovaowltv.service.messages.MessageValidator;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamModerationUtil;
@@ -24,6 +24,7 @@ import ru.sovaowltv.service.time.TimeUtil;
 import javax.websocket.*;
 import java.io.IOException;
 import java.net.URI;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -59,6 +60,8 @@ public abstract class ApiForChat extends Thread
     @Value("${sovaowlRuHttps}")
     protected String sovaowlRuHttps;
 
+    protected HashSet<String> nickNames;
+
     @Autowired
     protected TimeUtil timeUtil;
     @Autowired
@@ -78,7 +81,7 @@ public abstract class ApiForChat extends Thread
     @Autowired
     protected MessageValidator messageValidator;
     @Autowired
-    protected MessageDeliver messageDeliver;
+    protected MessageApiDeliver messageApiDeliver;
     @Autowired
     protected SimpMessagingTemplate template;
 

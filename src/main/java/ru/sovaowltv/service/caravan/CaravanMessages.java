@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.chat.Message;
 import ru.sovaowltv.model.chat.MessageStatus;
 import ru.sovaowltv.model.shop.Rarity;
-import ru.sovaowltv.service.messages.MessageDeliver;
+import ru.sovaowltv.service.messages.MessageApiDeliver;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamRepositoryHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static ru.sovaowltv.service.unclassified.Constants.CARAVAN_END;
+import static ru.sovaowltv.service.unclassified.Constants.CARAVAN_START;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class CaravanMessages {
     private final StreamRepositoryHandler streamRepositoryHandler;
 
     private final MessagesUtil messagesUtil;
-    private final MessageDeliver messageDeliver;
+    private final MessageApiDeliver messageApiDeliver;
 
     @Value("${sovaowlRuHttps}")
     private String sovaowlRuHttps;
@@ -36,14 +39,14 @@ public class CaravanMessages {
         streamRepositoryHandler.getAll().forEach(stream -> {
             if (stream.isLive()) {
                 messagesUtil.convertAndSend(stream.getUser().getNickname(), caravanStartMessage);
-                messageDeliver.sendMessageToAllApiChats(message, stream.getUser().getNickname(), null, stream.getUser(), stream);
+                messageApiDeliver.sendMessageToAllApiChats(message, stream.getUser().getNickname(), null, stream.getUser(), stream);
             }
         });
     }
 
     void sendToAllStreamsCaravanEnd(int caravanCounter) {
         MessageStatus caravanEndMessage = new MessageStatus();
-        caravanEndMessage.setType("caravanEnd");
+        caravanEndMessage.setType(CARAVAN_END);
         caravanEndMessage.setInfo(String.valueOf(caravanCounter));
         streamRepositoryHandler.getAll().forEach(stream -> {
             if (stream.isLive()) {
@@ -62,7 +65,7 @@ public class CaravanMessages {
 
     MessageStatus prepareCaravanStartMessage(Rarity rarity, int timeToSleep, int price, int caravanCounter) {
         MessageStatus ms = new MessageStatus();
-        ms.setType("caravanStart");
+        ms.setType(CARAVAN_START);
         Map<String, Object> map = new HashMap<>();
         map.put("rarity", rarity.name());
         map.put("caravanCounter", caravanCounter);
@@ -74,7 +77,7 @@ public class CaravanMessages {
 
     private Message prepareCaravanStartMessageForApiChats() {
         Message message = new Message();
-        message.setType("caravanStart");
+        message.setType(CARAVAN_START);
         message.setText("Caravan started! Join website to rob it! " + sovaowlRuHttps);
         message.setOriginalMessage("Caravan started! Join website to rob it!");
         return message;

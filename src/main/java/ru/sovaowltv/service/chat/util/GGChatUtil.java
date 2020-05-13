@@ -66,7 +66,7 @@ public class GGChatUtil {
     }
 
     public Optional<ApiForChat> getGGChatOwner(String webSiteChannel) {
-        return apiChatsUtil.getChatOwner(webSiteChannel, GGChat.class);
+        return apiChatsUtil.getChatsByOwner(webSiteChannel, GGChat.class);
     }
 
     public void sendMessageToGG(Message message, String webSiteChannel, Object apiChatForExclude, User userMessageSender) {

@@ -2,9 +2,7 @@ package ru.sovaowltv.service.stream.moderation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,11 +23,14 @@ import ru.sovaowltv.service.chat.util.TwitchChatUtil;
 import ru.sovaowltv.service.chat.util.YTChatUtil;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamRepositoryHandler;
+import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
 import java.util.List;
 import java.util.Optional;
+
+import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
 
 @Service
 @RequiredArgsConstructor
@@ -47,8 +48,8 @@ public class BanUtil {
     private final GGChatUtil ggChatUtil;
     private final YTChatUtil ytChatUtil;
     private final MessagesUtil messagesUtil;
+    private final LanguageUtil languageUtil;
 
-    private final MessageSource messageSource;
     private final ApiWebsiteChats apiWebsiteChats;
 
     @Value("${website}")
@@ -82,8 +83,8 @@ public class BanUtil {
     public MessageStatus banUserByNickName(User moderator, String text, String channel) {
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatBanByNick", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatBanByNick"));
         }
         Message message;
         try {
@@ -103,8 +104,8 @@ public class BanUtil {
 
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatBanById", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatBanById"));
         }
 
         String targetId = split[1];
@@ -125,7 +126,7 @@ public class BanUtil {
                 Optional<ApiForChat> twitchChatOwner = twitchChatUtil.getTwitchChatOwner(channel);
                 String reason = split.length > 2 ? split[2] : "noReason";
                 twitchChatOwner.ifPresent(twitchChat -> twitchChat.banUser(message.getNick(), reason, message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else if (message.getSource().equalsIgnoreCase(gg)) {
@@ -136,7 +137,7 @@ public class BanUtil {
                 Optional<ApiForChat> ggChatOwner = ggChatUtil.getGGChatOwner(channel);
                 String reason = split.length > 2 ? split[2] : "noReason";
                 ggChatOwner.ifPresent(ggChat -> ggChat.banUser(message.getNick(), reason, message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else if (message.getSource().equalsIgnoreCase(yt)) {
@@ -147,63 +148,63 @@ public class BanUtil {
                 Optional<ApiForChat> ytChatOwner = ytChatUtil.getYTChatOwner(channel);
                 String reason = split.length > 2 ? split[2] : "noReason";
                 ytChatOwner.ifPresent(ytChat -> ytChat.banUser(message.getNick(), reason, message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.someErrorContactAdmin", null, LocaleContextHolder.getLocale()) + " banUserByMessageId");
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.someErrorContactAdmin") + " banUserByMessageId");
         }
     }
 
     private MessageStatus banUserOnChannel(User moderator, User userForBan, Stream stream, Message message, String reason) {
         if (message.getStreamId() != stream.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.messageNotFromThisStream", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.messageNotFromThisStream"));
         }
 
         if (moderator.getId() == userForBan.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.selfBan", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.selfBan"));
         }
 
         if (stream.getUser().getId() == userForBan.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.ownerBan", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.ownerBan"));
         }
 
         if (userUtil.isAdminOrModerator(userForBan)) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.adminOrModerator", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.adminOrModerator"));
         }
 
         if (stream.getModeratorsList().contains(userForBan)) {
             if (userUtil.isAdminOrModerator(moderator) || stream.getUser().getId() == moderator.getId()) {
                 if (!banUserFromStream(userForBan, stream.getUser().getNickname())) {
-                    return messagesUtil.getErrorMessageStatus("modAction",
-                            messageSource.getMessage("pages.chat.message.moderator.banError", null, LocaleContextHolder.getLocale()));
+                    return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                            languageUtil.getStringFor("pages.chat.message.moderator.banError"));
                 }
                 sendBanMessageToAllChats(message, stream.getUser().getNickname(), reason);
                 banMessage(message);
-                return messagesUtil.getOkMessageStatus("modAction", "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
+                return messagesUtil.getOkMessageStatus(MOD_ACTION, "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
             } else {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.channelModerator", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.channelModerator"));
             }
         }
 
         if (!stream.getModeratorsList().contains(userForBan)) {
             if (!banUserFromStream(userForBan, stream.getUser().getNickname())) {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.banError", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.banError"));
             }
             sendBanMessageToAllChats(message, stream.getUser().getNickname(), reason);
             banMessage(message);
-            return messagesUtil.getOkMessageStatus("modAction", "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
+            return messagesUtil.getOkMessageStatus(MOD_ACTION, "banUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
         }
 
-        return messagesUtil.getErrorMessageStatus("modAction",
-                messageSource.getMessage("pages.chat.message.moderator.someErrorContactAdmin", null, LocaleContextHolder.getLocale()));
+        return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                languageUtil.getStringFor("pages.chat.message.moderator.someErrorContactAdmin"));
     }
 
     private void sendBanMessageToAllChats(Message message, String webSiteChannel, String reason) {

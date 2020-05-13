@@ -189,7 +189,7 @@ function getSpinRes(str) {
 
 function doServerSpin() {
     let val = document.getElementById('status').firstChild.value;
-    sendMessage("message", "!slot " + val);
+    sendMessage(MESSAGE, "!slot " + val);
 }
 
 function randomInt(min, max) {

@@ -29,6 +29,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.SPAM;
+
 @ClientEndpoint
 @PropertySource("classpath:constants.yml")
 @Slf4j
@@ -45,7 +47,6 @@ public class GGChat extends ApiForChat {
     @Value("${gg}")
     private String source;
 
-    private HashSet<String> nickNames;
 
     public GGChat(String topicTarget,
                   String ip, String port, String clientId, String clientSecret,
@@ -116,7 +117,8 @@ public class GGChat extends ApiForChat {
     @OnMessage
     public void onMessage(Session session, String ggMessage) {
         try {
-            log.info("<<< {} <<< #{} <<< {}", apiUser.getNick(), channelToConnect, ggMessage);
+            if (!ggMessage.equals("{\"type\":\"channel_counters\",\"data\":{\"channel_id\":\"49907\",\"clients_in_channel\":5,\"users_in_channel\":1}}"))
+                log.info("<<< {} <<< #{} <<< {}", apiUser.getNick(), channelToConnect, ggMessage);
             JsonObject asJsonObject = dataExtractor.extractJsonFromString(ggMessage);
             String type = dataExtractor.getPrimitiveAsStringFromJson(asJsonObject, "type");
             if ("message".equals(type)) {
@@ -142,14 +144,14 @@ public class GGChat extends ApiForChat {
                 if (message == null) return;
 
                 MessageValidationStatus messageValidationStatus = messageValidator.validateMessage(message);
-                if (messageValidationStatus == MessageValidationStatus.SPAM) banUser(userName, "SPAM", message);
+                if (messageValidationStatus == MessageValidationStatus.SPAM) banUser(userName, SPAM, message);
                 if (messageValidationStatus != MessageValidationStatus.OK) return;
 
                 if (nickNames != null && !nickNames.contains(userName)) {
                     nickNames.add(userName);
                     sendInviteMessage(userName);
                 }
-                messageDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
+                messageApiDeliver.sendMessageToAllApiChats(message, topicTarget, this, null, null);
                 template.convertAndSend("/topic/" + topicTarget, message);
             } else if ("channel_counters".equals(type)) {
             }

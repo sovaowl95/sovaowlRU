@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import static ru.sovaowltv.service.unclassified.Constants.CARAVAN_REWARD;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -54,7 +56,7 @@ public class CaravanRewardUtil {
                 user = usersRepositoryHandler.getUserById(userId);
                 MessageStatus ms = new MessageStatus();
                 ms.setInfo(generateRewardAndGetInfoString(user, caravanRarity, qualityInc));
-                ms.setType("caravanReward");
+                ms.setType(CARAVAN_REWARD);
                 list.add(ms);
                 giveCaravanAchievement(user);
             } catch (Exception e) {
@@ -71,7 +73,7 @@ public class CaravanRewardUtil {
         list.add(0, ms);
 
         MessageStatus messageStatus = new MessageStatus();
-        messageStatus.setType("caravanReward");
+        messageStatus.setType(CARAVAN_REWARD);
         messageStatus.setInfo(new Gson().toJson(list));
 
         caravanMessages.sendToAllStreamsCaravanReward(new Gson().toJson(messageStatus));

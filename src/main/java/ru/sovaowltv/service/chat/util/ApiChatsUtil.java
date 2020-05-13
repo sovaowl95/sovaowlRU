@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.sovaowltv.service.chat.realization.ApiForChat;
 import ru.sovaowltv.service.chat.realization.ApiWebsiteChats;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +26,19 @@ public class ApiChatsUtil {
         }
     }
 
-    Optional<ApiForChat> getChatOwner(String webSiteChannel, Class<? extends ApiForChat> target) {
+    public void clearWelcomeList(String webSiteChannel) {
+        List<ApiForChat> apiForChats = apiWebsiteChats.getChatByChannel(webSiteChannel);
+        if (apiForChats != null) {
+            for (ApiForChat apiForChat : apiForChats) {
+                if (apiForChat.getApiUser().getUser().getNickname().equals(webSiteChannel)) {
+                    HashSet<String> nickNames = apiForChat.getNickNames();
+                    if (nickNames != null) nickNames.clear();
+                }
+            }
+        }
+    }
+
+    Optional<ApiForChat> getChatsByOwner(String webSiteChannel, Class<? extends ApiForChat> target) {
         List<ApiForChat> apiForChats = apiWebsiteChats.getChatByChannel(webSiteChannel);
         if (apiForChats != null) {
             for (ApiForChat apiForChat : apiForChats) {

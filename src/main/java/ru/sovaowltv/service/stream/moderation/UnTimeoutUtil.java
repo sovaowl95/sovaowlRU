@@ -2,8 +2,6 @@ package ru.sovaowltv.service.stream.moderation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,29 +22,32 @@ import ru.sovaowltv.service.chat.util.TwitchChatUtil;
 import ru.sovaowltv.service.chat.util.YTChatUtil;
 import ru.sovaowltv.service.messages.MessagesUtil;
 import ru.sovaowltv.service.stream.StreamRepositoryHandler;
+import ru.sovaowltv.service.unclassified.LanguageUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
 import java.util.List;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
+
 @Service
 @RequiredArgsConstructor
 public class UnTimeoutUtil {
+    private final UsersRepositoryHandler usersRepositoryHandler;
+    private final StreamRepositoryHandler streamRepositoryHandler;
     private final UsersTwitchRepository usersTwitchRepository;
     private final UsersGGRepository usersGGRepository;
     private final UsersGoogleRepository usersGoogleRepository;
     private final MessageRepository messageRepository;
-    private final StreamRepositoryHandler streamRepositoryHandler;
 
-    private final UsersRepositoryHandler usersRepositoryHandler;
     private final UserUtil userUtil;
     private final TwitchChatUtil twitchChatUtil;
     private final GGChatUtil ggChatUtil;
     private final YTChatUtil ytChatUtil;
     private final MessagesUtil messagesUtil;
+    private final LanguageUtil languageUtil;
 
-    private final MessageSource messageSource;
     private final ApiTimeouts apiTimeouts;
     private final ApiWebsiteChats apiWebsiteChats;
 
@@ -84,8 +85,8 @@ public class UnTimeoutUtil {
     public MessageStatus unTimeoutUserByNickName(User moderator, String text, String channel) {
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatUnTimeoutByNick", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatUnTimeoutByNick"));
         }
         Message message;
         try {
@@ -104,8 +105,8 @@ public class UnTimeoutUtil {
         usersRepositoryHandler.saveAndFree(channelOwner);
         String[] split = text.trim().split(" ", 3);
         if (split.length < 2) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.wrongFormatUnTimeoutById", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.wrongFormatUnTimeoutById"));
         }
 
         String targetId = split[1];
@@ -126,7 +127,7 @@ public class UnTimeoutUtil {
             } else {
                 Optional<ApiForChat> twitchChatOwner = twitchChatUtil.getTwitchChatOwner(channel);
                 twitchChatOwner.ifPresent(twitchChat -> twitchChat.unTimeoutUser(message.getNick(), message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else if (message.getSource().equalsIgnoreCase(gg)) {
@@ -136,7 +137,7 @@ public class UnTimeoutUtil {
             } else {
                 Optional<ApiForChat> ggChatOwner = ggChatUtil.getGGChatOwner(channel);
                 ggChatOwner.ifPresent(ggChat -> ggChat.unTimeoutUser(message.getNick(), message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else if (message.getSource().equalsIgnoreCase(yt)) {
@@ -146,57 +147,57 @@ public class UnTimeoutUtil {
             } else {
                 Optional<ApiForChat> ytChatOwner = ytChatUtil.getYTChatOwner(channel);
                 ytChatOwner.ifPresent(ytChat -> ytChat.unTimeoutUser(message.getNick(), message));
-                return messagesUtil.getOkMessageStatus("modAction",
+                return messagesUtil.getOkMessageStatus(MOD_ACTION,
                         "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + (split.length > 2 ? split[2] : ""));
             }
         } else {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.someErrorContactAdmin", null, LocaleContextHolder.getLocale()) + " unTimeoutUserByMessageId");
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.someErrorContactAdmin") + " unTimeoutUserByMessageId");
         }
     }
 
     private MessageStatus unTimeoutUserOnChannel(User moderator, User userForUnTimeout, Stream stream, Message message, String reason) {
         if (message.getStreamId() != stream.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.messageNotFromThisStream", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.messageNotFromThisStream"));
         }
 
         if (moderator.getId() == userForUnTimeout.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.selfUnTimeout", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.selfUnTimeout"));
         }
 
         if (stream.getUser().getId() == userForUnTimeout.getId()) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.ownerUnTimeout", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.ownerUnTimeout"));
         }
 
         if (userUtil.isAdminOrModerator(userForUnTimeout)) {
-            return messagesUtil.getErrorMessageStatus("modAction",
-                    messageSource.getMessage("pages.chat.message.moderator.adminOrModerator", null, LocaleContextHolder.getLocale()));
+            return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                    languageUtil.getStringFor("pages.chat.message.moderator.adminOrModerator"));
         }
 
         if (stream.getModeratorsList().contains(userForUnTimeout)) {
             if (userUtil.isAdminOrModerator(moderator) || stream.getUser().getId() == moderator.getId()) {
                 if (!unTimeoutUserFromStream(userForUnTimeout, stream.getUser().getNickname())) {
-                    return messagesUtil.getErrorMessageStatus("modAction",
-                            messageSource.getMessage("pages.chat.message.moderator.unTimeoutError", null, LocaleContextHolder.getLocale()));
+                    return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                            languageUtil.getStringFor("pages.chat.message.moderator.unTimeoutError"));
                 }
                 sendUnTimeoutMessageToAllChats(message, stream.getUser().getNickname());
                 unTimeoutMessage(message);
-                return messagesUtil.getOkMessageStatus("modAction", "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
+                return messagesUtil.getOkMessageStatus(MOD_ACTION, "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
             } else {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.channelModerator", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.channelModerator"));
             }
         } else {
             if (!unTimeoutUserFromStream(userForUnTimeout, stream.getUser().getNickname())) {
-                return messagesUtil.getErrorMessageStatus("modAction",
-                        messageSource.getMessage("pages.chat.message.moderator.timeoutError", null, LocaleContextHolder.getLocale()));
+                return messagesUtil.getErrorMessageStatus(MOD_ACTION,
+                        languageUtil.getStringFor("pages.chat.message.moderator.timeoutError"));
             }
             sendUnTimeoutMessageToAllChats(message, stream.getUser().getNickname());
             unTimeoutMessage(message);
-            return messagesUtil.getOkMessageStatus("modAction", "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
+            return messagesUtil.getOkMessageStatus(MOD_ACTION, "unTimeoutUserByMessageId " + message.getId() + " " + moderator.getNickname() + " " + reason);
         }
     }
 

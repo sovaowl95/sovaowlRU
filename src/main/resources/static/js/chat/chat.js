@@ -86,39 +86,39 @@ function connect() {
                 try {
                     let parse = JSON.parse(message.body);
                     console.log(parse);
-                    if (parse.type === "message") {
+                    if (parse.type === MESSAGE) {
                         printMessage(parse, dst);
-                    } else if (parse.type === "infoBan") {
+                    } else if (parse.type === INFO_BAN) {
                         printSystemMessage('infoFromServer', parse.info);
-                    } else if (parse.type === "infoTimeout") {
+                    } else if (parse.type === INFO_TIMEOUT) {
                         printSystemMessage('infoFromServer', parse.info);
-                    } else if (parse.type === "modAction") {
+                    } else if (parse.type === MOD_ACTION) {
                         moderatorActions(parse);
-                    } else if (parse.type === "donation") {
+                    } else if (parse.type === DONATION) {
                         printDonationMessage(parse);
-                    } else if (parse.type === "rankUp") {
+                    } else if (parse.type === RANK_UP) {
                         printLvlUpMessage(parse.info);
-                    } else if (parse.type === "spam") {
+                    } else if (parse.type === SPAM) {
                         printSpamInfoMessage('systemSpamInfo', parse);
-                    } else if (parse.type === "clearAll") {
-                        printClearAllMessage('clearAll', parse.info);
-                    } else if (parse.type === "commandAnswerOk") {
-                        printCommandMessage("commandAnswerOk", parse.info, parse.streamId);
+                    } else if (parse.type === CLEAR_ALL) {
+                        printClearAllMessage(CLEAR_ALL, parse.info);
+                    } else if (parse.type === COMMAND_ANSWER_OK) {
+                        printCommandMessage(COMMAND_ANSWER_OK, parse.info, parse.streamId);
                     }
                     /**
                      * SLOT
                      */
-                    else if (parse.type === "slotRes") {
-                        printSlotMessage("slotRes", parse.info, parse.streamId);
+                    else if (parse.type === SLOT_RES) {
+                        printSlotMessage(SLOT_RES, parse.info, parse.streamId);
                     }
                     /**
                      * CARAVAN
                      * */
-                    else if (parse.type === "caravanStart") {
+                    else if (parse.type === CARAVAN_START) {
                         printCaravanStartMessage(parse.info);
-                    } else if (parse.type === "caravanEnd") {
-                        printCaravanEndMessage('caravanEnd', caravanEnd, parse.info);
-                    } else if (parse.type === "caravanReward") {
+                    } else if (parse.type === CARAVAN_END) {
+                        printCaravanEndMessage(CARAVAN_END, caravanEnd, parse.info);
+                    } else if (parse.type === CARAVAN_REWARD) {
                         printCaravanReward(parse.info);
                     } else {
                         printSystemMessage('ERROR');
@@ -152,59 +152,59 @@ function connect() {
                             for (let i = parse2.length - 2; i >= 0; i--) {
                                 printMessage(parse2[i]);
                             }
-                    } else if (parse.type === "modAction") {
+                    } else if (parse.type === MOD_ACTION) {
                         moderatorActions(parse);
-                    } else if (parse.type === "infoBan") {
+                    } else if (parse.type === INFO_BAN) {
                         printSystemMessage('infoFromServer', parse.info);
-                    } else if (parse.type === "infoSpam") {
+                    } else if (parse.type === INFO_SPAM) {
                         printSpamMessage('infoFromServer', parse.info);
-                    } else if (parse.type === "infoTimeout") {
+                    } else if (parse.type === INFO_TIMEOUT) {
                         printSystemMessage('infoFromServer', parse.info);
-                    } else if (parse.type === "errCommand") {
-                        printErrMessage('errCommand', parse.info);
-                    } else if (parse.type === "commandAnswerOk") {
-                        printCommandMessage('commandAnswerOk', parse.info);
-                    } else if (parse.type === "premiumExpiredIn") {
+                    } else if (parse.type === COMMAND_ANSWER_ERROR) {
+                        printErrMessage(COMMAND_ANSWER_ERROR, parse.info);
+                    } else if (parse.type === COMMAND_ANSWER_OK) {
+                        printCommandMessage(COMMAND_ANSWER_OK, parse.info);
+                    } else if (parse.type === INFO_PREMIUM_EXPIRED_IN) {
                         printPremiumExpiredMessage(parse.info);
-                    } else if (parse.type === "help") {
-                        printSystemMessage('help', parse.info);
+                    } else if (parse.type === INFO_HELP) {
+                        printSystemMessage(INFO_HELP, parse.info);
                     }
 
                     /**
                      * API PRIVATE
                      */
-                    else if (parse.type === "ACC REJOIN") {
-                        printErrMessage('ACC_REJOIN', parse.info);
-                    } else if (parse.type === "ACC REJOIN OK") {
-                        printGoodMessage('ACC_REJOIN_OK', parse.info);
-                    } else if (parse.type === "ACC REJOIN ASK") {
-                        printSystemMessage('ACC_REJOIN_ASK', parse.info);
-                    } else if (parse.type === "API MOTIVATION") {
-                        printGoodMessage("API MOTIVATION", parse.info);
+                    else if (parse.type === ACC_REJOIN) {
+                        printErrMessage(ACC_REJOIN, parse.info);
+                    } else if (parse.type === ACC_REJOIN_OK) {
+                        printGoodMessage(ACC_REJOIN_OK, parse.info);
+                    } else if (parse.type === ACC_REJOIN_ASK) {
+                        printSystemMessage(ACC_REJOIN_ASK, parse.info);
+                    } else if (parse.type === API_MOTIVATION) {
+                        printGoodMessage(API_MOTIVATION, parse.info);
                     }
 
                     /**
                      * SLOT PRIVATE
                      */
-                    else if (parse.type === "slotNotEnoughMoney") {
-                        printErrMessage('slotNotEnoughMoney', slotNotEnoughMoney);
-                    } else if (parse.type === "slotStart") {
+                    else if (parse.type === SLOT_NOT_ENOUGH_MONEY) {
+                        printErrMessage(SLOT_NOT_ENOUGH_MONEY, slotNotEnoughMoney);
+                    } else if (parse.type === SLOT_START) {
                         starSpinning();
                     }
                     /**
                      * CARAVAN PRIVATE
                      * */
-                    else if (parse.type === "caravanJoin") {
+                    else if (parse.type === CARAVAN_JOIN) {
                         printCaravanJoinMessage();
-                    } else if (parse.type === "caravanJoinNotEnoughMoney") {
-                        printErrMessage('caravanJoinNotEnoughMoney', caravanErrNotEnoughMoney);
-                    } else if (parse.type === 'caravanErrAlreadyInJoin') {
-                        printErrMessage('caravanErrAlreadyInJoin', caravanErrAlreadyInJoin);
-                    } else if (parse.type === 'caravanErrStatusJoin') {
-                        printErrMessage('caravanErrStatusJoin', caravanErrStatusJoin);
-                    } else if (parse.type === 'caravanErrStatusJoinAnon') {
-                        printErrMessage('caravanErrStatusJoinAnon', caravanErrStatusJoinAnon);
-                    } else if (parse.type === "caravanStart") {
+                    } else if (parse.type === CARAVAN_JOIN_NOT_ENOUGH_MONEY) {
+                        printErrMessage(CARAVAN_JOIN_NOT_ENOUGH_MONEY, caravanErrNotEnoughMoney);
+                    } else if (parse.type === CARAVAN_JOIN_ERR_ALREADY_IN_JOIN) {
+                        printErrMessage(CARAVAN_JOIN_ERR_ALREADY_IN_JOIN, caravanErrAlreadyInJoin);
+                    } else if (parse.type === CARAVAN_JOIN_ERR_STATUS_JOIN) {
+                        printErrMessage(CARAVAN_JOIN_ERR_STATUS_JOIN, caravanErrStatusJoin);
+                    } else if (parse.type === CARAVAN_JOIN_ERR_STATUS_JOIN_ANON) {
+                        printErrMessage(CARAVAN_JOIN_ERR_STATUS_JOIN_ANON, caravanErrStatusJoinAnon);
+                    } else if (parse.type === CARAVAN_START) {
                         printCaravanStartMessage(parse.info);
                     } else {
                         console.log("ERR");
@@ -392,6 +392,7 @@ function printClearAllMessage(clazz, nick) {
 
 
 let timeoutOp;
+
 function printSpamMessage(clazz, message) {
     if (document.getElementById('bodyChatBottomInputTimeout') !== null) {
         try {
@@ -501,7 +502,7 @@ function sendMessageAndClearTextArea(ev) {
             closeSlotHtml();
             textArea.innerHTML = "";
         } else {
-            sendMessage("message", textArea.innerHTML);
+            sendMessage(MESSAGE, textArea.innerHTML);
             textArea.innerHTML = "";
         }
     }

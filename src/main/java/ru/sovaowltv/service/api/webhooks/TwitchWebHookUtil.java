@@ -8,7 +8,6 @@ import ru.sovaowltv.model.api.twitch.TwitchWebHook;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.service.api.requsts.TwitchRequest;
-import ru.sovaowltv.service.stream.StreamRepositoryHandler;
 import ru.sovaowltv.service.stream.StreamUtil;
 import ru.sovaowltv.service.user.UserTwitchUtil;
 
@@ -20,8 +19,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 @PropertySource("classpath:api/twitch.yml")
 public class TwitchWebHookUtil {
-    private final StreamRepositoryHandler streamRepositoryHandler;
-
     private final UserTwitchUtil userTwitchUtil;
     private final StreamUtil streamUtil;
 
@@ -37,8 +34,6 @@ public class TwitchWebHookUtil {
 
         stream.setStreamName(streamTitle);
         stream.setGame(game);
-        stream.setLive(true);
-        streamRepositoryHandler.save(stream);
 
         return stream;
     }

@@ -32,6 +32,9 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 
+import static ru.sovaowltv.service.unclassified.Constants.MESSAGE;
+import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
+
 @Controller
 @RequiredArgsConstructor
 @Slf4j
@@ -109,7 +112,7 @@ public class ChatController {
                 return null;
             }
             switch (messageType) {
-                case "message":
+                case MESSAGE:
                     return chatUtil.solveMessageMessage(channel, map, user, stream);
                 case "command":
                     return chatUtil.solveCommandMessage(channel, map, user, stream);
@@ -118,7 +121,7 @@ public class ChatController {
                 case "moderator":
                     chatUtil.solveIsUserModeratorMessage(channel, user, stream);
                     return null;
-                case "modAction":
+                case MOD_ACTION:
                     return chatUtil.solveModActionMessage(channel, map, user, stream);
                 default:
                     log.error("cant find message type:{}", messageType);

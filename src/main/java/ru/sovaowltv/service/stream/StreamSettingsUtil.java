@@ -98,7 +98,10 @@ public class StreamSettingsUtil {
     public void changeStreamStatus(Stream stream, String body) {
         Map<String, Object> map = dataExtractor.extractMapFromString(body);
         streamUtil.isYourStream(stream);
-        stream.setLive(Boolean.parseBoolean(map.get("status").toString()));
-        streamRepositoryHandler.save(stream);
+        if (Boolean.parseBoolean(map.get("status").toString())) {
+            streamUtil.goOnline(stream);
+        } else {
+            streamUtil.goOffline(stream);
+        }
     }
 }
