@@ -10,7 +10,7 @@
          th:onclick="'showGGPlayer(this,'+${stream.getId()}+');'">
     <img th:if="${stream.getUser().getUserGoogle()!=null}" alt="youtube"
          src="/authicons/yt.svg"
-         th:onclick="'showYTPlayer(this'+${stream.getId()} +');'">
+         th:onclick="'showYTPlayer(this,'+${stream.getId()} +');'">
 </th:block>
 </body>
 </html>
