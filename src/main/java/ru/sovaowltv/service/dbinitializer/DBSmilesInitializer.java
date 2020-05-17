@@ -69,6 +69,11 @@ public class DBSmilesInitializer {
         saveSmile("Rage.png", "Rage", 0, Rarity.COMMON);
         saveSmile("Slowpoke.png", "Slowpoke", 0, Rarity.COMMON);
         saveSmile("Strawberry.png", "Strawberry", 0, Rarity.COMMON);
+
+        saveSmile("bananya.png", "bananya", 0, Rarity.COMMON);
+        saveSmile("rero.gif", "rero", 0, Rarity.COMMON);
+        saveSmile("sex1.svg", "sex1", 0, Rarity.COMMON);
+        saveSmile("sex2.svg", "sex2", 0, Rarity.COMMON);
     }
 
     private void saveSmile(String link, String smileName, int price, Rarity rarity) {
