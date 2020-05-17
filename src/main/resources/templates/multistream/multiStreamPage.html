@@ -30,7 +30,7 @@
             <div id="playerSelector">
                 <th:block th:each="stream: ${streams}">
                     <div class="linkToUser"
-                         th:onclick="'window.location=\'/'  + __${stream.getUser().getLogin()}__ + '\''"
+                         th:onclick="'window.location=\'/'  + __${stream.getUser().getNickname()}__ + '\''"
                          th:text="${stream.getUser().getNickname()}"></div>
                     <th:block th:include="stream/playerSelects::streamPlayersSelector"/>
                 </th:block>
