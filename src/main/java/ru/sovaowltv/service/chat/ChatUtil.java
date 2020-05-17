@@ -373,8 +373,7 @@ public class ChatUtil {
 
         prepareSmiles(message);
 
-        long styleId = user.getUserSettings().getStyleId();
-        message.setStyle(stylesRepository.findById(styleId)
+        message.setStyle(stylesRepository.findByName("White")
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Style not found"))
                 .getName());
         message.setIssuerId(String.valueOf(user.getId()));

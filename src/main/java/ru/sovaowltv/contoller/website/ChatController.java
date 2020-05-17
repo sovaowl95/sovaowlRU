@@ -21,7 +21,6 @@ import ru.sovaowltv.service.chat.ChatHistoryUtil;
 import ru.sovaowltv.service.chat.ChatUtil;
 import ru.sovaowltv.service.data.DataExtractor;
 import ru.sovaowltv.service.log.LoggerUtil;
-import ru.sovaowltv.service.stream.StreamRepositoryHandler;
 import ru.sovaowltv.service.stream.StreamUtil;
 import ru.sovaowltv.service.unclassified.HtmlTagsClear;
 import ru.sovaowltv.service.user.UserUtil;
@@ -41,7 +40,6 @@ import static ru.sovaowltv.service.unclassified.Constants.MOD_ACTION;
 @PropertySource("classpath:constants.yml")
 public class ChatController {
     private final UsersRepositoryHandler usersRepositoryHandler;
-    private final StreamRepositoryHandler streamRepositoryHandler;
     private final MultiStreamRepository multiStreamRepository;
 
     private final UserUtil userUtil;

@@ -180,9 +180,9 @@ function printMessage(message, dst) {
     }
 
     messageDiv.appendChild(divLogin);
-    if (msId !== null) {
+    if (msId !== null && dst !== undefined && dst.indexOf('ms/') === -1) {
         let fromChannel = document.createElement('div');
-        fromChannel.innerHTML = '(' + nick + ')';
+        fromChannel.innerHTML = '(' + dst + ')';
         fromChannel.className = 'nick';
         messageDiv.appendChild(fromChannel);
     }

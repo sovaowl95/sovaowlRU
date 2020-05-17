@@ -98,7 +98,7 @@ public class MultiStreamUtil {
         model.addAttribute("streams", multiStream.getStreamSet());
         model.addAttribute("streamsLogins", multiStream.getStreamSet()
                 .stream()
-                .map(stream -> stream.getUser().getLogin())
+                .map(stream -> stream.getUser().getNickname())
                 .collect(Collectors.toList())
         );
         model.addAttribute("msId", multiStream.getId());

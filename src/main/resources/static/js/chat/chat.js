@@ -82,7 +82,7 @@ function connect() {
             let destinationSub = destinationSubArray[i];
 
             client.subscribe(destinationSub, function (message) {
-                let dst = destinationSub.substring(destinationSub.lastIndexOf('/') + 1);
+                let dst = destinationSub.replace('/topic/', '');
                 try {
                     let parse = JSON.parse(message.body);
                     console.log(parse);

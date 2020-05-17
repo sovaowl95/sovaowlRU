@@ -47,6 +47,7 @@ public class StreamUtil {
         return streamRepositoryHandler.getAll();
     }
 
+
     public Stream getStreamByUserNickname(String streamName) {
         User userByNickname = null;
         try {
