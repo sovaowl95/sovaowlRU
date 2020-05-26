@@ -21,6 +21,8 @@ import ru.sovaowltv.service.user.UserGGUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
@@ -46,7 +48,9 @@ public class GGOauthController {
     public String ggO2Auth(HttpSession session,
                            @RequestParam(required = false) String state,
                            @RequestParam(required = false) String code,
-                           Model model) {
+                           Model model,
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
         securityUtil.verifyToken(session, state);
 
         Map<String, Object> map = ggRequest.changeCodeToToken(code);
@@ -56,7 +60,9 @@ public class GGOauthController {
         String userId = data.get("user_id").toString();
         Optional<UserGG> userGG = userGGUtil.getUserGGBySub(userId);
         if (userGG.isPresent()) {
-            return userGGUtil.authUser(userGG.get().getUser());
+            userUtil.setAuthContext(userGG.get().getUser());
+            userUtil.remember(request, response);
+            return "redirect:/";
         } else {
             Optional<User> userOptional = Optional.empty();
             try {
@@ -87,13 +93,15 @@ public class GGOauthController {
             if (userByEmail.getUserGG() != null)
                 throw new EmailAlreadyInUseException("User with this email already have gg acc " + email);
             userGGFactory.createAndSaveUserGG(userByEmail, data);
-            return userGGUtil.authUser(userByEmail);
+            userUtil.setAuthContext(userByEmail);
+            return "redirect:/";
         } catch (UserNotFoundException e) {
             log.info("user not found. create new user");
             User user = userFactory.createUserFromMap(data, true);
             userGGFactory.createAndSaveUserGG(user, data);
             usersRepositoryHandler.saveUser(user);
-            return userGGUtil.authUser(user);
+            userUtil.setAuthContext(user);
+            return "redirect:/";
         } finally {
             usersRepositoryHandler.saveAndFree(userByEmail);
         }

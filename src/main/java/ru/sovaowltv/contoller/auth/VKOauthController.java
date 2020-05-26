@@ -18,6 +18,8 @@ import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UserVKUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
@@ -42,7 +44,9 @@ public class VKOauthController {
     public String vkO2Auth(HttpSession session,
                            @RequestParam(required = false) String state,
                            @RequestParam(required = false) String code,
-                           Model model) {
+                           Model model,
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
         securityUtil.verifyToken(session, state);
 
         Map<String, Object> mapToken = vkRequest.changeCodeToToken(code);
@@ -52,6 +56,7 @@ public class VKOauthController {
         Optional<UserVK> userVKOptional = userVKUtil.getUserVKBySub(userId);
         if (userVKOptional.isPresent()) {
             userUtil.setAuthContext(userVKOptional.get().getUser());
+            userUtil.remember(request, response);
             return "redirect:/";
         } else {
             Optional<User> userOptional = Optional.empty();

@@ -35,6 +35,7 @@ public class StreamSettingsUtil {
         streamRepositoryHandler.delete(stream);
     }
 
+    //todo: ANOTHER API SERVICE
     public void changeStreamName(String json) {
         Map<String, Object> map = dataExtractor.extractMapFromString(json);
         Stream stream = streamUtil.getStreamByAuthContext();
@@ -44,6 +45,7 @@ public class StreamSettingsUtil {
         streamRepositoryHandler.save(stream);
     }
 
+    //todo: ANOTHER API SERVICE
     public void changeGame(String json) {
         Map<String, Object> map = dataExtractor.extractMapFromString(json);
         Stream stream = streamUtil.getStreamByAuthContext();

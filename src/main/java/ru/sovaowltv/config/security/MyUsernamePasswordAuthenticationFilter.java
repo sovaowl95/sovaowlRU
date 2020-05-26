@@ -69,6 +69,7 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
     }
 
     private void rememberUser(HttpServletRequest request, HttpServletResponse response, Map<String, Object> map) {
+        if (map == null) return;
         if (map.get("remember").equals("true")) {
             for (Cookie cookie : request.getCookies()) {
                 if (cookie.getName().equals("SESSION")) {
@@ -79,6 +80,4 @@ public class MyUsernamePasswordAuthenticationFilter extends UsernamePasswordAuth
             }
         }
     }
-
-
 }

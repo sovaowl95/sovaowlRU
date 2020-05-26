@@ -22,6 +22,8 @@ import ru.sovaowltv.service.user.UserGoogleUtil;
 import ru.sovaowltv.service.user.UserUtil;
 import ru.sovaowltv.service.user.UsersRepositoryHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.Optional;
@@ -47,14 +49,18 @@ public class GoogleOauthController {
     public String google(HttpSession session,
                          @RequestParam(required = false) String state,
                          @RequestParam(required = false) String code,
-                         Model model) {
+                         Model model,
+                         HttpServletRequest request,
+                         HttpServletResponse response) {
         securityUtil.verifyToken(session, state);
         Map<String, Object> mapTokens = googleRequest.changeCodeToToken(code);
 
         String sub = ((String) mapTokens.get("sub"));
         Optional<UserGoogle> userGoogleOptional = userGoogleUtil.getGoogleUserBySub(sub);
         if (userGoogleOptional.isPresent()) {
-            return userGoogleUtil.authUser(userGoogleOptional.get().getUser());
+            userUtil.setAuthContext(userGoogleOptional.get().getUser());
+            userUtil.remember(request, response);
+            return "redirect:/";
         } else {
             Optional<User> userOptional = userUtil.getUserOptionalFromContext();
             if (userOptional.isPresent()) {
@@ -81,13 +87,14 @@ public class GoogleOauthController {
             if (userByEmail.getUserGoogle() != null)
                 throw new EmailAlreadyInUseException("User with this email already have google acc " + email);
             userGoogleFactory.linkAndSaveUserGoogle(userByEmail, data);
-            return userGoogleUtil.authUser(userByEmail);
-
+            userUtil.setAuthContext(userByEmail);
+            return "redirect:/";
         } catch (UserNotFoundException e) {
             log.info("user not found. create new user");
             User user = userFactory.createUserFromMap(data, false);
             userGoogleFactory.linkAndSaveUserGoogle(user, data);
-            return userGoogleUtil.authUser(user);
+            userUtil.setAuthContext(user);
+            return "redirect:/";
         } finally {
             usersRepositoryHandler.saveAndFree(userByEmail);
         }

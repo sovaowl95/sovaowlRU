@@ -14,9 +14,7 @@ import ru.sovaowltv.service.stream.StreamRepositoryHandler;
 import ru.sovaowltv.service.stream.StreamUtil;
 import ru.sovaowltv.service.user.UserUtil;
 
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -86,13 +84,6 @@ public class MultiStreamUtil {
         multiStreamRepository.save(multiStream);
     }
 
-    public void initSettings(Long multiStreamId, Model model) {
-        MultiStream multiStream = getMultiStream(multiStreamId);
-        model.addAttribute("multiStream", multiStream);
-
-        userUtil.setUserIfExistInModelREADONLY(model);
-    }
-
     public void init(Long multiStreamId, Model model) {
         MultiStream multiStream = getMultiStream(multiStreamId);
         model.addAttribute("streams", multiStream.getStreamSet());
@@ -127,6 +118,25 @@ public class MultiStreamUtil {
     public void setMSIfExist(Model model, User user) {
         if (user == null) return;
         Optional<MultiStream> multiStreamOptional = multiStreamRepository.findByUserId(user.getId());
-        multiStreamOptional.ifPresent(multiStream -> model.addAttribute("multiStream", multiStream));
+        if (multiStreamOptional.isPresent()) {
+            model.addAttribute("multiStream", multiStreamOptional.get());
+            return;
+        }
+
+        List<MultiStream> results = new ArrayList<>();
+
+        List<MultiStream> multiStreams = multiStreamRepository.findAll();
+        for (MultiStream multiStream : multiStreams) {
+            Set<Stream> streamSet = multiStream.getStreamSet();
+            for (Stream stream : streamSet) {
+                if (stream.getUser().equals(user)) {
+                    results.add(multiStream);
+                }
+            }
+        }
+
+        if (!results.isEmpty()) {
+            model.addAttribute("multiStreamIn", results);
+        }
     }
 }

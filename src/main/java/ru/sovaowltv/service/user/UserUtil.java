@@ -16,6 +16,9 @@ import ru.sovaowltv.model.user.Role;
 import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.service.unclassified.UserDataValidator;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.*;
 
@@ -144,5 +147,15 @@ public class UserUtil {
 
     public Optional<User> getUserOptionalFromContext() {
         return usersRepositoryHandler.getUserOptionalByLogin(getLoginFromSecurityContext());
+    }
+
+    public void remember(HttpServletRequest request, HttpServletResponse response) {
+        for (Cookie cookie : request.getCookies()) {
+            if (cookie.getName().equals("SESSION")) {
+                cookie.setMaxAge(Integer.MAX_VALUE);
+                response.addCookie(cookie);
+                break;
+            }
+        }
     }
 }

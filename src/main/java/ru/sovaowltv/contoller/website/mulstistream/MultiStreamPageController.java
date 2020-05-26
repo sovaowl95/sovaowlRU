@@ -18,12 +18,6 @@ public class MultiStreamPageController {
         return "multistream/multiStreamPage";
     }
 
-    @GetMapping("/ms/{multiStreamId}/settings")
-    public String getMultiStreamSettings(@PathVariable Long multiStreamId, Model model) {
-        multiStreamUtil.initSettings(multiStreamId, model);
-        return "multistream/multiStreamPageSettings";
-    }
-
     @GetMapping("/ms/{multiStreamId}/chat")
     public String getOnlyChat(@PathVariable Long multiStreamId, Model model) {
         multiStreamUtil.init(multiStreamId, model);
@@ -56,7 +50,7 @@ public class MultiStreamPageController {
         return "redirect:/ms/" + multiStreamUtil.join(msId, code).getId();
     }
 
-    @PostMapping("/ms/left/{msId}")
+    @GetMapping("/ms/left/{msId}")
     public String leftMultiStream(@PathVariable Long msId) {
         multiStreamUtil.left(msId);
         return "redirect:/";

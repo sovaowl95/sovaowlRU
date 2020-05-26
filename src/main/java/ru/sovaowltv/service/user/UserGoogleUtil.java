@@ -40,11 +40,6 @@ public class UserGoogleUtil {
         return usersGoogleRepository.findBySub(sub);
     }
 
-    public String authUser(User user) {
-        userUtil.setAuthContext(user);
-        return "redirect:/";
-    }
-
     public String linkUser(Map<String, Object> mapTokens) {
         User user = userUtil.getUser();
         if (user.getUserGoogle() != null) {

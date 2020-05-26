@@ -140,7 +140,6 @@ public class ChatUtil {
             usersForCoins.add(String.valueOf(user.getId()));
         }
         return chatMessage;
-
     }
 
     private ChatMessage solveMessage(String text, String channel, User user, Stream stream) {
@@ -271,7 +270,6 @@ public class ChatUtil {
     }
 
     private MessageStatus solveModAction(String text, String channel, String secondType, User user, Stream stream) {
-
         if (text.startsWith("/")) {
             if (text.startsWith("/help")) {
                 sendHelpAnswer(user.getLogin(), channel);
@@ -373,7 +371,7 @@ public class ChatUtil {
 
         prepareSmiles(message);
 
-        message.setStyle(stylesRepository.findByName("White")
+        message.setStyle(stylesRepository.findById(user.getUserSettings().getStyleId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Style not found"))
                 .getName());
         message.setIssuerId(String.valueOf(user.getId()));

@@ -3,22 +3,29 @@ package ru.sovaowltv.contoller.website.stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.sovaowltv.model.stream.Stream;
+import ru.sovaowltv.model.user.User;
 import ru.sovaowltv.service.factorys.StreamFactory;
+import ru.sovaowltv.service.multistream.MultiStreamUtil;
 import ru.sovaowltv.service.notifications.NotificationUtil;
+import ru.sovaowltv.service.security.SecurityUtil;
 import ru.sovaowltv.service.stream.StreamSettingsUtil;
 import ru.sovaowltv.service.stream.StreamUtil;
+import ru.sovaowltv.service.user.UserUtil;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
 public class StreamSettingsController {
+    private final UserUtil userUtil;
     private final StreamUtil streamUtil;
     private final NotificationUtil notificationUtil;
     private final StreamSettingsUtil streamSettingsUtil;
+    private final MultiStreamUtil multiStreamUtil;
+    private final SecurityUtil securityUtil;
 
     private final StreamFactory streamFactory;
 
@@ -41,6 +48,18 @@ public class StreamSettingsController {
         notificationUtil.notifyAll(stream);
     }
 
+    @GetMapping("/stream/settings")
+    public String getStreamSettingsPage(Model model, HttpSession session) {
+        securityUtil.generateSecTokenStateForSession(session, model);
+        User user = userUtil.setUserIfExistInModelREADONLY(model);
+        if (user == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("stream", streamUtil.getStreamByUserNickname(user.getNickname()));
+        multiStreamUtil.setMSIfExist(model, user);
+        return "stream/settings/streamSettings";
+    }
+
     @PostMapping("/stream/settings/changeStatus")
     @ResponseStatus(HttpStatus.OK)
     public void changeStatus(@RequestBody String body) {
@@ -48,15 +67,12 @@ public class StreamSettingsController {
         streamSettingsUtil.changeStreamStatus(stream, body);
     }
 
-
-    //todo: ANOTHER API SERVICE
     @PostMapping("/stream/settings/changeStreamName")
     @ResponseStatus(HttpStatus.OK)
     public void changeStreamName(@RequestBody String json) {
         streamSettingsUtil.changeStreamName(json);
     }
 
-    //todo: ANOTHER API SERVICE
     @PostMapping("/stream/settings/changeStreamGame")
     @ResponseStatus(HttpStatus.OK)
     public void changeGame(@RequestBody String json) {

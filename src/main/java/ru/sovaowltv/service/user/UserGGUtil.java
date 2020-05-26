@@ -63,11 +63,6 @@ public class UserGGUtil {
         }
     }
 
-    public String authUser(User user) {
-        userUtil.setAuthContext(user);
-        return "redirect:/";
-    }
-
     public void deleteAndSaveGGUser(User user) {
         UserGG userGG = user.getUserGG();
         userGG.setUser(null);

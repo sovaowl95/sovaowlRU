@@ -7,13 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.model.user.User;
-import ru.sovaowltv.service.multistream.MultiStreamUtil;
-import ru.sovaowltv.service.security.SecurityUtil;
 import ru.sovaowltv.service.stream.StreamUtil;
 import ru.sovaowltv.service.user.UserHaveStreamUtil;
 import ru.sovaowltv.service.user.UserUtil;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -21,8 +18,6 @@ import java.util.List;
 public class StreamPageController {
     private final UserUtil userUtil;
     private final StreamUtil streamUtil;
-    private final MultiStreamUtil multiStreamUtil;
-    private final SecurityUtil securityUtil;
     private final UserHaveStreamUtil userHaveStreamUtil;
 
     @GetMapping("/")
@@ -60,17 +55,5 @@ public class StreamPageController {
         Stream stream = streamUtil.getStreamByUserNickname(streamName);
         model.addAttribute("stream", stream);
         return "fragments/chatPublic";
-    }
-
-    @GetMapping("/stream/settings")
-    public String getStreamSettingsPage(Model model, HttpSession session) {
-        securityUtil.generateSecTokenStateForSession(session, model);
-        User user = userUtil.setUserIfExistInModelREADONLY(model);
-        if (user == null) {
-            return "redirect:/login";
-        }
-        model.addAttribute("stream", streamUtil.getStreamByUserNickname(user.getNickname()));
-        multiStreamUtil.setMSIfExist(model, user);
-        return "stream/settings/streamSettings";
     }
 }

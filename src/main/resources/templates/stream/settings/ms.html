@@ -2,6 +2,7 @@
 <body>
 <th:block style="display: none" th:fragment="ms">
     <!--/*@thymesVar id="multiStream" type="ru.sovaowltv.model.multistream.MultiStream"*/-->
+    <!--/*@thymesVar id="multiStreamIn" type="java.util.List<ru.sovaowltv.model.multistream.MultiStream>"*/-->
     <div class="content" style="display: none">
         <div th:if="${multiStream != null}">
             <a href="#" th:href="'/ms/'+${multiStream.getId()}" th:text="#{pages.streamSettings.yourMS}"></a>
@@ -18,6 +19,11 @@
 
         <div th:if="${multiStream != null}">
             <a href="#" onclick="deleteMultiStream()" th:text="#{pages.streamSettings.deleteMS}"></a>
+        </div>
+
+        <div th:each="ms:${multiStreamIn}" th:if="${multiStreamIn != null}">
+            <div th:text="'left multistream ' + ${ms.getId()}">left multistream</div>
+            <div th:text="'https://sovaowl.ru/ms/left/' + ${ms.getId()}"></div>
         </div>
     </div>
 </th:block>
