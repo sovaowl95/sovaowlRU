@@ -38,4 +38,9 @@ public class AdminSmilesUtil {
         }
         return smileOptional.get();
     }
+
+    public void reloadWebsiteSmiles() {
+        webSiteSmilesUtil.clearWebsiteSmiles();
+        webSiteSmilesUtil.initSmiles();
+    }
 }

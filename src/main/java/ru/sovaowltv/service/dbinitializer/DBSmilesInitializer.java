@@ -31,7 +31,7 @@ public class DBSmilesInitializer {
             saveRareSmiles();
             saveCommonSmiles();
         }
-        webSiteSmilesUtil.initSiteSmiles();
+        webSiteSmilesUtil.initSmiles();
         twitchSmiles.initSmiles();
         ggSmilesUtil.initSmiles();
         ytSmiles.initSmiles();

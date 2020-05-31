@@ -183,6 +183,13 @@ public class AdminPanelController {
     /**
      * SMILES
      */
+    @PostMapping("/admin/smiles/reloadWebsiteSmiles")
+    @ResponseStatus(HttpStatus.OK)
+    public void reloadWebsiteSmiles() {
+        adminSmilesUtil.reloadWebsiteSmiles();
+    }
+
+
     @PostMapping("/admin/smiles/addNewSmile")
     @ResponseStatus(HttpStatus.OK)
     public void addNewSmile() {

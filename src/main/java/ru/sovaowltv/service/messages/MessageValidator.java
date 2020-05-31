@@ -18,21 +18,24 @@ public class MessageValidator {
     }
 
     private boolean isSpam(Message message) {
-        return message.getText().toLowerCase().contains("getviewers.pro")
-                || message.getText().toLowerCase().contains("getviewers .pro")
-                || message.getText().toLowerCase().contains("getviewers")
+        String text = message.getText().toLowerCase();
+        return text.contains("getviewers.pro")
+                || text.contains("getviewers .pro")
+                || text.contains("getviewers")
 
-                || message.getText().toLowerCase().contains("streamhub.us")
-                || message.getText().toLowerCase().contains("streamhub .us")
-                || message.getText().toLowerCase().contains("streamhub")
+                || text.contains("streamhub.us")
+                || text.contains("streamhub .us")
+                || text.contains("streamhub")
 
-                || message.getText().toLowerCase().contains("twitchviewer com")
+                || text.contains("twitchviewer com")
 
-                || message.getText().toLowerCase().contains("twitchviewbot")
+                || text.contains("twitchviewbot")
 
-                || message.getText().toLowerCase().contains("addviewers.com")
-                || message.getText().toLowerCase().contains("addviewers. com")
+                || text.contains("addviewers.com")
+                || text.contains("addviewers. com")
 
+
+                || text.contains("streamdetails")
                 ;
     }
 }

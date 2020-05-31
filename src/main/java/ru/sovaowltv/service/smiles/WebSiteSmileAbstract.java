@@ -47,11 +47,6 @@ public class WebSiteSmileAbstract extends SmileAbstract {
         }
     }
 
-    public void initSiteSmiles() {
-        List<Smile> smileList = smilesRepository.findAll();
-        smileList.forEach(smile -> smiles.put(smile.getName(), smile.getLink()));
-    }
-
     public void createNewSmile() {
         Smile smile;
         smile = new Smile();
@@ -69,9 +64,14 @@ public class WebSiteSmileAbstract extends SmileAbstract {
         });
     }
 
+    public void clearWebsiteSmiles() {
+        smiles.clear();
+    }
+
     @Override
     public void initSmiles() {
-        log.info("website init smiles no need to implement");
+        List<Smile> smileList = smilesRepository.findAll();
+        smileList.forEach(smile -> smiles.put(smile.getName(), smile.getLink()));
     }
 
     @Override

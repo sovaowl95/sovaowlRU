@@ -107,6 +107,10 @@ function addSmileForEveryone() {
     sendAdminRequest("/admin/smiles/addSmileForEveryone", JSON.stringify({'id': body}));
 }
 
+function reloadWebsiteSmiles() {
+    sendAdminRequest("/admin/smiles/reloadWebsiteSmiles");
+}
+
 /**STYLES*/
 function addNewStyle() {
     sendAdminRequest('/admin/styles/addNewStyle');

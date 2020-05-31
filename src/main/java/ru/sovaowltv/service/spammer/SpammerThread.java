@@ -4,17 +4,14 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.sovaowltv.model.apinotification.NotificationFor;
 import ru.sovaowltv.model.chat.Message;
 import ru.sovaowltv.model.spammer.Spammer;
 import ru.sovaowltv.model.spammer.SpammerStatus;
 import ru.sovaowltv.model.stream.Stream;
 import ru.sovaowltv.model.user.User;
-import ru.sovaowltv.repositories.stream.SpammerRepository;
 import ru.sovaowltv.service.messages.MessageApiDeliver;
 import ru.sovaowltv.service.messages.MessagesUtil;
-import ru.sovaowltv.service.stream.StreamRepositoryHandler;
 import ru.sovaowltv.service.time.TimeUtil;
 import ru.sovaowltv.service.unclassified.KeyWordsReplacerUtil;
 
@@ -27,40 +24,22 @@ import static ru.sovaowltv.service.unclassified.Constants.SPAM;
 @Setter
 @Slf4j
 class SpammerThread extends Thread {
-    @Autowired
-    private SpammerRepository spammerRepository;
-    @Autowired
-    private StreamRepositoryHandler streamRepositoryHandler;
-
-    @Autowired
-    private KeyWordsReplacerUtil keyWordsReplacerUtil;
-    @Autowired
-    private TimeUtil timeUtil;
-
-    @Autowired
-    private MessageApiDeliver messageApiDeliver;
-
-    @Autowired
-    private MessagesUtil messageUtil;
-
-    private Spammer spammer;
-    private boolean work = true;
+    private final KeyWordsReplacerUtil keyWordsReplacerUtil;
+    private final TimeUtil timeUtil;
+    private final MessageApiDeliver messageApiDeliver;
+    private final MessagesUtil messageUtil;
+    private final Spammer spammer;
 
     void stopSpam() {
-        spammer.setSpammerStatus(SpammerStatus.STOP);
-        spammerRepository.save(spammer);
-        work = false;
         this.interrupt();
     }
 
     @Override
     public void run() {
-        spammer.setSpammerStatus(SpammerStatus.RUN);
-        spammerRepository.save(spammer);
         timeUtil.sleepSeconds(spammer.getDelay());
-        while (work && spammer.getSpammerStatus() == SpammerStatus.RUN) {
+        while (!this.isInterrupted() && spammer.getSpammerStatus() == SpammerStatus.RUN) {
             try {
-                Stream stream = streamRepositoryHandler.getStreamById(spammer.getStream().getId());
+                Stream stream = spammer.getStream();
 
                 if (stream.isLive()) {
                     Message message = new Message();
@@ -75,7 +54,7 @@ class SpammerThread extends Thread {
                     User user = stream.getUser();
 
                     messageApiDeliver.sendMessageToAllApiChats(message, user.getNickname(), null, user, stream);
-                    messageUtil.convertAndSend("/topic/" + user.getNickname(), message);
+                    messageUtil.convertAndSend(user.getNickname(), message);
                 }
                 timeUtil.sleepSeconds(spammer.getTime());
             } catch (Exception e) {
