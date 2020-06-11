@@ -136,9 +136,9 @@ public class ChatHistoryUtil {
     private void checkAllApiAuthCorrect(User authorUser, String channel, User channelOwnerUser) {
         //streamer request
         if (authorUser.getId() == channelOwnerUser.getId()) {
-            checkTwitch(authorUser, channel);
-            checkGG(authorUser, channel);
-            checkYT(authorUser, channel);
+            checkTwitch(channelOwnerUser, channel);
+            checkGG(channelOwnerUser, channel);
+            checkYT(channelOwnerUser, channel);
         } else {
             String firstPart = "You can join";
             String lastPart = "accounts in your profile!";

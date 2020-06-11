@@ -1,5 +1,6 @@
 package ru.sovaowltv;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -24,8 +25,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableCaching
 @EnableConfigurationProperties
+@Slf4j
 public class Application {
     public static void main(String[] args) {
+        log.info("2020-06-05");
         if (!args[0].equals("SS")) System.exit(999);
         SpringApplication.run(Application.class, args);
     }

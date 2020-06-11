@@ -153,6 +153,7 @@ public class UserUtil {
         for (Cookie cookie : request.getCookies()) {
             if (cookie.getName().equals("SESSION")) {
                 cookie.setMaxAge(Integer.MAX_VALUE);
+                cookie.setPath("/");
                 response.addCookie(cookie);
                 break;
             }

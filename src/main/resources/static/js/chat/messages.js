@@ -169,7 +169,7 @@ function printMessage(message, dst) {
             levelDiv.style.color = "#000000";
         } else if (lvl >= 201) {
             background = "url('/textures/diamond.jpg')";
-            levelDiv.style.color = "rgb(251, 255, 4)";
+            levelDiv.style.color = "rgb(251,255,4)";
             levelDiv.style.fontWeight = "700";
             levelDiv.classList.add('diamondShadow');
         }

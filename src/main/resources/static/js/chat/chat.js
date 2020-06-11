@@ -52,8 +52,8 @@ function connect() {
             console.log(str);
         },
         reconnectDelay: 5000,
-        heartbeatIncoming: 10000,
-        heartbeatOutgoing: 10000
+        heartbeatIncoming: 5000,
+        heartbeatOutgoing: 5000
     });
 
     client.webSocketFactory = function () {

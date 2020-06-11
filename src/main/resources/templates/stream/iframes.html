@@ -4,7 +4,7 @@
     <!--/*@thymesVar id="stream" type="ru.sovaowltv.model.stream.Stream"*/-->
     <iframe th:if="${stream.getUser().getUserTwitch()!=null}"
             th:id="'playerTwitch_' + ${stream.getId()}"
-            th:src="'https://player.twitch.tv/?autoplay=false&channel='+${stream.getUser().getUserTwitch().getNick()}"
+            th:src="'https://player.twitch.tv/?parent=sovaowl.ru&autoplay=false&channel='+${stream.getUser().getUserTwitch().getNick()}"
             frameborder="0" allowfullscreen scrolling="no">
     </iframe>
     <iframe th:if="${stream.getUser().getUserGG()!=null}"
