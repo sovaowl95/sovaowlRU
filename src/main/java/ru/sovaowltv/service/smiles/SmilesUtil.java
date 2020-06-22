@@ -70,15 +70,8 @@ public class SmilesUtil {
                 String name = input.split(" ")[1];
                 if (!smiles.containsKey(name)) {
                     String smileLink = input.split(" ")[0];
-                    if (name.length() < 3) {
-                        boolean flag = false;
-                        for (char c : name.toCharArray()) {
-                            if (!Character.isDigit(c)) {
-                                flag = true;
-                                break;
-                            }
-                        }
-                        if (flag) continue;
+                    if (name.length() < 3 && smileIsNumber(name)) {
+                        continue;
                     }
                     smiles.put(name, smileLink);
                 }
@@ -86,6 +79,13 @@ public class SmilesUtil {
         } catch (Exception e) {
             log.error("smile init", e);
         }
+    }
+
+    private boolean smileIsNumber(String name) {
+        for (char c : name.toCharArray()) {
+            if (!Character.isDigit(c)) return false;
+        }
+        return true;
     }
 
     public void buySmileById(String id) {
