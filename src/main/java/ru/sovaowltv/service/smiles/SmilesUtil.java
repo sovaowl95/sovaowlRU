@@ -67,8 +67,21 @@ public class SmilesUtil {
         try (BufferedReader br = Files.newBufferedReader(Paths.get(link))) {
             String input;
             while ((input = br.readLine()) != null) {
-                if (!smiles.containsKey(input.split(" ")[1]))
-                    smiles.put(input.split(" ")[1], input.split(" ")[0]);
+                String name = input.split(" ")[1];
+                if (!smiles.containsKey(name)) {
+                    String smileLink = input.split(" ")[0];
+                    if (name.length() < 3) {
+                        boolean flag = false;
+                        for (char c : name.toCharArray()) {
+                            if (!Character.isDigit(c)) {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (flag) continue;
+                    }
+                    smiles.put(name, smileLink);
+                }
             }
         } catch (Exception e) {
             log.error("smile init", e);
