@@ -36,10 +36,6 @@ function doLogout() {
     req.addEventListener("load", function (ev) {
         if (req.status === 200) {
             window.location.replace("/");
-        } else {
-            console.log("ELSE");
-            //todo:
-            //document.getElementsByClassName('button')[0].style.border = ".5px solid red";
         }
     });
     let json = {'session': getCookie('session')};

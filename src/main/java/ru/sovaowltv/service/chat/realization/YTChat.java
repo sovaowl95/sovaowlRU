@@ -302,6 +302,7 @@ public class YTChat extends ApiForChat {
             try {
                 if (!work) break;
                 while (!connect()) {
+                    if (!work) break;
                     if (quotaLimited) {
                         log.info("YT QUOTA! TIME TO SLEEP D:");
                         timeUtil.sleepSeconds(sleepSecCauseQuota);
@@ -438,5 +439,6 @@ public class YTChat extends ApiForChat {
     @Override
     public void disconnect() {
         work = false;
+        messages.clear();
     }
 }

@@ -17,3 +17,5 @@ logging:
     ru.sovaowltv.service.user.UsersRepositoryHandler: debug
   file:
     name: logs/log.log
+    max-history: 3
+    max-size: 3MB

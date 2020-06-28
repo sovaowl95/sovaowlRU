@@ -22,5 +22,7 @@ public class Scheduler {
 
         // Maximum available memory
         log.info("Max Memory: {}", instance.maxMemory() / MB);
+
+        System.gc();
     }
 }
