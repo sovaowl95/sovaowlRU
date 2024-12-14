@@ -14,3 +14,7 @@
 /target/
 /src/main/resources/ssl/jksCert.jks
 /src/main/java/ru/sovaowltv/config/SslConfiguration.java
+
+.idea
+logs
+target
