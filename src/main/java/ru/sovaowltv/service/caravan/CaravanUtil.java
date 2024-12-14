@@ -1,6 +1,7 @@
 package ru.sovaowltv.service.caravan;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.sovaowltv.model.admin.AdminSettings;
 import ru.sovaowltv.model.chat.MessageStatus;
@@ -8,6 +9,7 @@ import ru.sovaowltv.repositories.admin.AdminSettingsRepository;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CaravanUtil {
     private final AdminSettingsRepository adminSettingsRepository;
 
