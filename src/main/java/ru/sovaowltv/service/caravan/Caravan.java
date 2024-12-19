@@ -72,6 +72,7 @@ public class Caravan extends Thread {
     private CaravanStatus caravanStatus;
     private Set<Long> robbers = new HashSet<>();
 
+
     synchronized String joinRobbery(Long id) {
         if (caravanStatus == CaravanStatus.GROUP_UP) {
             if (robbers.contains(id)) {
@@ -95,8 +96,11 @@ public class Caravan extends Thread {
 
     @Override
     public void run() {
+        log.info("caravan run begin");
         while (true) {
+            log.info("caravan run while-true");
             try {
+                log.info("caravan run try");
                 caravanInnerCycle();
                 timeUtil.sleepMinutes(1); // if cycle suddenly stop :(
             } catch (Exception e) {
@@ -107,10 +111,12 @@ public class Caravan extends Thread {
 
     private void caravanInnerCycle() {
         while (work) {
+            log.info("caravan work");
             timeUtil.sleepMinutes(randomUtil.getIntWithBounds(caravanIdleTimeMINInMin, caravanIdleTimeMAXInMin));
             startRobberyPrepare();
             timeUtil.sleepMinutes(timeToSleep);
             finishRobbery();
+            log.info("caravan end");
         }
     }
 
